@@ -1,0 +1,8 @@
+<%= content_tag(:div, @html_content[:title], {:id => 'title', :class => 'mdwiki_title'}) %>
+<%= content_tag(:div, nil, {:class => 'mdwiki_date'}) do %>
+  <%= content_tag(:span, @html_content[:create_user]) %>
+  <%= content_tag(:span, @html_content[:create_date]) %>
+  <%= content_tag(:span, @html_content[:update_user]) %>
+  <%= content_tag(:span, @html_content[:update_date]) %>
+<% end %>
+<%= content_tag(:div, @html_content[:content].html_safe, {:id => 'content', :class => 'mdwiki_content'}) %>

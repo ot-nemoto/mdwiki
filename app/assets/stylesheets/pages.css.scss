@@ -1,0 +1,260 @@
+// Place all the styles related to the pages controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+body, input, button {
+  font-family: monospace;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.mdwiki_header {
+  position: absolute;
+  left:     0px;
+  top:      40px;
+  width:    100%;
+}
+
+.mdwiki_header ul {
+  list-style: none;
+  margin:     0px;
+  padding:    0px 10px;
+}
+
+.mdwiki_header li {
+  float: right;
+}
+
+.mdwiki_logo {
+  position: absolute;
+  left:     0px;
+  top:      0px;
+  height:   40px;
+  width:    100%;
+}
+
+.mdwiki_logo ul {
+  list-style: none;
+  margin:     0px;
+  padding:    0px;
+}
+
+.mdwiki_logo li {
+  float: left;
+}
+
+.mdwiki_menu {
+  position: absolute;
+  left:     0px;
+  top:      50px;
+}
+
+.mdwiki_menu ul {
+  list-style: none;
+}
+
+.mdwiki_breadcrumb {
+  position: absolute;
+  left:     0px;
+  top:      60px;
+  padding:  5px 10px;
+}
+
+.mdwiki_show {
+  position: absolute;
+  width:    100%;
+  left:     0px;
+  top:      90px;
+}
+
+.mdwiki_button {
+  font-size:     large;
+  border:        3px solid;
+  border-radius: 20px;
+  padding:       5px 10px;
+  margin:        0px 5px;
+}
+
+.mdwiki_title {
+  font-size: xx-large;
+  padding:   0px 10px;
+  margin:    0px 5px;
+}
+
+.mdwiki_date {
+  color:     #777777;
+  font-size: small;
+  padding:   0px 10px;
+  margin:    0px 10px;
+}
+
+.mdwiki_content {
+  padding: 10px 10px;
+  margin:  0px 5px;
+}
+
+.mdwiki_content pre {
+  background-color: #f8f8f8;
+  border:           1px solid #ddd;
+  padding:          10px;
+  border-radius:    3px;
+}
+
+.mdwiki_content p code {
+  background-color: #f8f8f8;
+  border:           1px solid #ddd;
+  padding:          1px 3px;
+  border-radius:    3px;
+}
+
+.mdwiki_edit {
+  position: absolute;
+  left:     0px;
+  right:    210px;
+  top:      90px;
+}
+
+.mdwiki_edit input {
+  font-size:  xx-large;
+  width:      97%;
+  box-sizing: border-box;
+  margin:     5px 10px;
+}
+
+.mdwiki_edit textarea  {
+  width:      97%;
+  height:     365px;
+  resize:     none;
+  box-sizing: border-box;
+  margin:     5px 10px;
+}
+
+.mdwiki_attachment {
+  position: absolute;
+  width:    200px;
+  right:    0px;
+  top:      90px;
+  margin:   5px 10px;
+}
+
+.mdwiki_attachment_drop {
+  position:         relative;
+  width:            200px;
+  height:           100px;
+  overflow:         hidden;
+  border-radius:    8px 8px 8px;
+  background-color: white;
+  border:           1px dashed black;
+}
+
+.attachment {
+  position:  absolute;
+  bottom:    0;
+  right:     0;
+  z-index:   2;
+  font-size: 100px;
+  opacity:   0;
+  filter:    alpha(opacity=0); 
+}
+
+.mdwiki_attachment_lbl {
+  position:   absolute;
+  width:      100%;
+  height:     100%;
+  text-align: center;
+  font-size:  large;
+  top:        40%
+}
+
+.mdwiki_no_attachment_drop {
+  position:         relative;
+  width:            200px;
+  height:           410px;
+  overflow:         hidden;
+  border-radius:    8px 8px 8px;
+  background-color: white;
+  border:           1px dashed black;
+}
+
+.mdwiki_no_attachment_lbl {
+  position:   absolute;
+  width:      100%;
+  height:     100%;
+  text-align: center;
+  color:      red;
+  font-size:  small;
+  top:        50%;
+}
+
+.mdwiki_attach_list {
+  overflow-y: auto;
+  overflow-x: hidden;
+  width:      200px;
+  height:     300px;
+  border:     1px solid silver;
+  margin:     10px 0px;
+}
+
+.mdwiki_attach_box {
+  width: 100%;
+  float:left;
+  text-align : center ;
+  border-bottom: 1px solid silver;
+}
+
+.mdwiki_attach_remove {
+  font-size:            large;
+  background-image:     url('/assets/mdwiki_remove.png');
+  background-position:  center center;
+  background-repeat:    no-repeat;
+  -moz-background-size: contain;
+  background-size:      contain;
+}
+
+.mdwiki_preview {
+  position: absolute;
+  width:    100%;
+  left:     0px;
+  top:      515px;
+}
+
+.mdwiki_next {
+  font-size:            large;
+  background-image:     url('/assets/mdwiki_next.png');
+  background-position:  center center;
+  background-repeat:    no-repeat;
+  -moz-background-size: contain;
+  background-size:      contain;
+}
+
+.mdwiki_next:hover {
+  background-image:     url('/assets/mdwiki_next_sel.png');
+}
+
+.mdwiki_down {
+  font-size:            large;
+  background-image:     url('/assets/mdwiki_down.png');
+  background-position:  center center;
+  background-repeat:    no-repeat;
+  -moz-background-size: contain;
+  background-size:      contain;
+}
+
+.mdwiki_down:hover {
+  background-image:     url('/assets/mdwiki_down_sel.png');
+}
+
+.mdwiki_none {
+  font-size:            large;
+  background-image:     url('/assets/mdwiki_none.png');
+  background-position:  center center;
+  background-repeat:    no-repeat;
+  -moz-background-size: contain;
+  background-size:      contain;
+}
