@@ -1,0 +1,29 @@
+<%= content_tag(:div, nil, {:class => 'mdwiki_logo'}) do %>
+  <%= content_tag(:ul) do %>
+    <%= content_tag(:li) do %>
+      <%= link_to image_tag('/assets/mdwiki-logo.png',:height => '40px'), '/mdwiki' %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<%= content_tag(:div, nil, {:class => 'mdwiki_header'}) do %>
+  <%= content_tag(:ul) do %>
+    <%= content_tag(:li) do %>
+      <%= link_to('Remove', nil, {:class => 'mdwiki_button'}) %>
+    <% end %>
+    <%= content_tag(:li) do %>
+      <%= link_to('Edit',   '/mdwiki/' + @id + '/edit', {:class => 'mdwiki_button'}) %>
+    <% end %>
+    <%= content_tag(:li) do %>
+      <%= link_to('Create', '/mdwiki/' + @id + '/new', {:class => 'mdwiki_button'}) %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<%= content_tag(:div, nil, {:class => 'mdwiki_breadcrumb'}) do %>
+  <%= render(:partial => 'breadcrumb', :object => @breadcrumb_list) %>
+<% end %>
+
+<%= content_tag(:div, nil, {:class => 'mdwiki_show'}) do %>
+  <%= render(:partial => "preview", :object => @html_content) %>
+<% end %>
