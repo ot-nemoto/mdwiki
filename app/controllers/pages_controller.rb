@@ -44,11 +44,9 @@ class PagesController < ApplicationController
     @html_content.store(:update_user, SUMMARIES[id.to_sym][:update_user])
     @html_content.store(:update_date, SUMMARIES[id.to_sym][:update_date])
 
-    #@title    = SUMMARIES[id.to_sym][:title]
     file_path = Pathname(Settings.data_path).join(id)
     File.open(file_path, mode = 'r') {|f|
       @html_content.store(:content, Kramdown::Document.new(f.read).to_html)
-      #@content = Kramdown::Document.new(f.read).to_html
       @content = @html_content[:content]
     }
     @id = id
@@ -75,16 +73,6 @@ class PagesController < ApplicationController
     @breadcrumb_list = get_breadcrumb_list(SUMMARIES[id.to_sym][:parent])
 
     @attachment_list = get_attachment_list(id)
-    #@attachment_list = Array.new
-    #@attachment_list.push('test.jpg')
-    #@attachment_list.push('test.jpg')
-    #@attachment_list.push('test.jpg')
-    #@attachment_list.push('test.jpg')
-    #@attachment_list.push('test.jpg')
-    #@attachment_list.push('test.jpg')
-    #@attachment_list.push('test.jpg')
-    #@attachment_list.push('test.jpg')
-    #@attachment_list.push('test2.jpg')
 
     render 'edit'
   end

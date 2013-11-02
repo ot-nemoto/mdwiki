@@ -14,6 +14,42 @@ a:hover {
   text-decoration: underline;
 }
 
+.mdwiki_login {
+  position: absolute;
+  left: 5px;
+  right: 5px;
+  top:   30%;
+  text-align: center;
+}
+
+.mdwiki_login_btn {
+  font-size:            xx-large;
+  background-image:     url('/assets/mdwiki_lock-open_alt.png');
+  background-position:  center center;
+  background-repeat:    no-repeat;
+  -moz-background-size: contain;
+  background-size:      contain;
+}
+
+.mdwiki_login_btn:hover {
+  background-image: url('/assets/mdwiki_lock.png');
+  text-decoration:  none;
+}
+
+.mdwiki_logout_btn {
+  font-size:            x-large;
+  background-image:     url('/assets/mdwiki_lock_alt.png');
+  background-position:  center center;
+  background-repeat:    no-repeat;
+  -moz-background-size: contain;
+  background-size:      contain;
+}
+
+.mdwiki_logout_btn:hover {
+  background-image: url('/assets/mdwiki_lock-open.png');
+  text-decoration:  none;
+}
+
 .mdwiki_header {
   position: absolute;
   left:     0px;
@@ -37,6 +73,11 @@ a:hover {
   top:      0px;
   height:   40px;
   width:    100%;
+}
+
+.mdwiki_user {
+  text-align: right;
+  margin:     5px 10px;
 }
 
 .mdwiki_logo ul {

@@ -1,5 +1,9 @@
 Mdwiki::Application.routes.draw do
 
+  get 'mdwiki/login'     => 'login#index'
+  post 'mdwiki/login'    => 'login#login'
+  post 'mdwiki/logout'   => 'login#logout'
+
   get 'mdwiki'           => 'pages#main'
   get 'mdwiki/:id'       => 'pages#show'
   get 'mdwiki/:id/new'   => 'pages#new'

@@ -16,7 +16,7 @@ $ ->
       md_content: $('#md_content').val()
       (data) ->
         if data.href
-          $(location).attr('href', data.href);
+          $(location).attr('href', data.href)
 
   @update =() ->
     $.post '/mdwiki/' + $('#page_id').val() + '/update', 
@@ -24,7 +24,7 @@ $ ->
       md_content: $('#md_content').val()
       (data) ->
         if data.href
-          $(location).attr('href', data.href);
+          $(location).attr('href', data.href)
 
   @upload =() ->
     $form  = $('#mdwiki_attachment_form')
