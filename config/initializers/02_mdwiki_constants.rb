@@ -7,3 +7,13 @@ if FileTest.exist?(file_path)
 else
   SUMMARIES = Hash.new
 end
+
+# Loading Users Cache
+users_conf = Pathname(Settings.users_conf_path).join(Settings.users_conf)
+if FileTest.exist?(file_path)
+  USERS = YAML.load_file(users_conf);
+  USERS.symbolize_keys!
+  USERS[:users].each{|u|
+    u.symbolize_keys!
+  }
+end

@@ -3,6 +3,10 @@ defaults: &defaults
   root_parent: ROOT
   data_path: <%= "#{Rails.root}/db/wiki" %>
   image_path: <%= "#{Rails.root}/public/images" %>
+  users_conf: users.yml
+  users_conf_path: <%= "#{Rails.root}/config" %>
+
+  anonymous: true
 
 development:
   <<: *defaults

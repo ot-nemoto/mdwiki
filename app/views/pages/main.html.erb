@@ -1,10 +1,7 @@
 <%= content_tag(:div, nil, {:class => 'mdwiki_logo'}) do %>
-  <%= content_tag(:ul) do %>
-    <%= content_tag(:li) do %>
-      <%= link_to image_tag('/assets/mdwiki-logo.png',:height => '40px'), '/mdwiki' %>
-    <% end %>
-  <% end %>
+  <%= render(:partial => "header") %>
 <% end %>
+
 <%= content_tag(:div, nil, {:class => 'mdwiki_header'}) do %>
   <%= content_tag(:ul) do %>
     <%= content_tag(:li) do %>
