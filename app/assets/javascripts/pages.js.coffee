@@ -17,6 +17,7 @@ $ ->
       (data) ->
         if data.href
           $(location).attr('href', data.href)
+    return false
 
   @update =() ->
     $.post '/mdwiki/' + $('#page_id').val() + '/update', 
@@ -25,6 +26,7 @@ $ ->
       (data) ->
         if data.href
           $(location).attr('href', data.href)
+    return false
 
   @upload =() ->
     $form  = $('#mdwiki_attachment_form')
