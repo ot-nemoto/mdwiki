@@ -148,14 +148,15 @@ a:hover {
   float: left;
 }
 
-.mdwiki_menu {
+.mdwiki_list {
   position: absolute;
   left:     0px;
   top:      50px;
 }
 
-.mdwiki_menu ul {
+.mdwiki_list ul {
   list-style: none;
+  padding:    0px 20px;
 }
 
 .mdwiki_breadcrumb {
