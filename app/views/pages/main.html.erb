@@ -12,6 +12,6 @@
   <% end %>
 <% end %>
 
-<%= content_tag(:div, nil, {:id => ('div_' + Settings.root_parent), :class => 'mdwiki_menu'}) do %>
+<%= content_tag(:div, nil, {:id => ('div_' + Settings.root_parent), :class => 'mdwiki_list'}) do %>
   <%= render(:partial => "list", :object => @summaries) %>
 <% end %>
