@@ -45,11 +45,11 @@ $ ->
     return false
 
   @showChild = (id) ->
-    if $('#cur_' + id).hasClass('mdwiki_next')
+    if $('#cur_' + id).hasClass('mdwiki_open_btn')
       $.post '/mdwiki/' + id + '/list', 
         (data) ->
           $('#div_' + id).html(data)
-          $('#cur_' + id).removeClass('mdwiki_next').addClass('mdwiki_down')
+          $('#cur_' + id).removeClass('mdwiki_open_btn').addClass('mdwiki_close_btn')
     else
       $('#div_' + id).html('')
-      $('#cur_' + id).removeClass('mdwiki_down').addClass('mdwiki_next')
+      $('#cur_' + id).removeClass('mdwiki_close_btn').addClass('mdwiki_open_btn')
