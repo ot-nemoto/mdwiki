@@ -31,9 +31,13 @@ a:hover {
   margin:               0px 10px;
 }
 
+.mdwiki_btn:hover {
+  text-decoration: none;
+}
+
 .mdwiki_login_btn {
-  font-size:            xx-large;
-  background-image:     url('/assets/mdwiki_login.png');
+  font-size:        xx-large;
+  background-image: url('/assets/mdwiki_login.png');
 }
 
 .mdwiki_login_btn:hover {
@@ -41,71 +45,67 @@ a:hover {
 }
 
 .mdwiki_logout_btn {
-  background-image:     url('/assets/mdwiki_logout.png');
+  background-image: url('/assets/mdwiki_logout.png');
 }
 
 .mdwiki_logout_btn:hover {
   background-image: url('/assets/mdwiki_logout_h.png');
 }
 
-.mdwiki_btn:hover {
-  text-decoration:      none;
-}
-
 .mdwiki_remove_btn {
-  background-image:     url('/assets/mdwiki_remove.png');
+  background-image: url('/assets/mdwiki_remove.png');
 }
 
 .mdwiki_remove_btn:hover {
-  background-image:     url('/assets/mdwiki_remove_h.png');
+  background-image: url('/assets/mdwiki_remove_h.png');
 }
 
 .mdwiki_edit_btn {
-  background-image:     url('/assets/mdwiki_edit.png');
+  background-image: url('/assets/mdwiki_edit.png');
 }
 
 .mdwiki_edit_btn:hover {
-  background-image:     url('/assets/mdwiki_edit_h.png');
+  background-image: url('/assets/mdwiki_edit_h.png');
 }
 
 .mdwiki_create_btn {
-  background-image:     url('/assets/mdwiki_create.png');
+  background-image: url('/assets/mdwiki_create.png');
 }
 
 .mdwiki_create_btn:hover {
-  background-image:     url('/assets/mdwiki_create_h.png');
+  background-image: url('/assets/mdwiki_create_h.png');
 }
 
 .mdwiki_cancel_btn {
-  background-image:     url('/assets/mdwiki_cancel.png');
+  background-image: url('/assets/mdwiki_cancel.png');
 }
 
 .mdwiki_cancel_btn:hover {
-  background-image:     url('/assets/mdwiki_cancel_h.png');
+  background-image: url('/assets/mdwiki_cancel_h.png');
 }
 
 .mdwiki_save_btn {
-  background-image:     url('/assets/mdwiki_save.png');
+  background-image: url('/assets/mdwiki_save.png');
 }
 
 .mdwiki_save_btn:hover {
-  background-image:     url('/assets/mdwiki_save_h.png');
+  background-image: url('/assets/mdwiki_save_h.png');
 }
 
 .mdwiki_preview_btn {
-  background-image:     url('/assets/mdwiki_preview.png');
+  background-image: url('/assets/mdwiki_preview.png');
 }
 
 .mdwiki_preview_btn:hover {
-  background-image:     url('/assets/mdwiki_preview_h.png');
+  background-image: url('/assets/mdwiki_preview_h.png');
 }
 
 .mdwiki_search_btn {
-  background-image:     url('/assets/mdwiki_search.png');
+  background-image: url('/assets/mdwiki_search.png');
 }
 
 .mdwiki_search_btn:hover {
-  background-image:     url('/assets/mdwiki_search_h.png');
+  background-image: url('/assets/mdwiki_search_h.png');
 }
 
 .mdwiki_header {
@@ -307,18 +307,14 @@ a:hover {
   border-bottom: 1px solid silver;
 }
 
-.mdwiki_attach_remove {
-  font-size:            large;
-  background-image:     url('/assets/mdwiki_attach_remove.png');
-  background-position:  center center;
-  background-repeat:    no-repeat;
-  -moz-background-size: contain;
-  background-size:      contain;
+.mdwiki_attach_remove_btn {
+  font-size:        large;
+  background-image: url('/assets/mdwiki_attach_remove.png');
+  margin:           0px;
 }
 
-.mdwiki_attach_remove:hover {
-  background-image:     url('/assets/mdwiki_attach_remove_h.png');
-  text-decoration:      none;
+.mdwiki_attach_remove_btn:hover {
+  background-image: url('/assets/mdwiki_attach_remove_h.png');
 }
 
 .mdwiki_preview {
@@ -328,36 +324,24 @@ a:hover {
   top:      515px;
 }
 
-.mdwiki_next {
-  font-size:            large;
-  //background-image:     url('/assets/mdwiki_next.png');
-  background-image:     url('/assets/mdwiki_open.png');
-  background-position:  center center;
-  background-repeat:    no-repeat;
-  -moz-background-size: contain;
-  background-size:      contain;
+.mdwiki_open_btn {
+  font-size:        large;
+  background-image: url('/assets/mdwiki_open.png');
+  margin:           0px;
 }
 
-.mdwiki_next:hover {
-  //background-image:     url('/assets/mdwiki_next_sel.png');
-  background-image:     url('/assets/mdwiki_open_h.png');
-  text-decoration:  none;
+.mdwiki_open_btn:hover {
+  background-image: url('/assets/mdwiki_open_h.png');
 }
 
-.mdwiki_down {
-  font-size:            large;
-  //background-image:     url('/assets/mdwiki_down.png');
-  background-image:     url('/assets/mdwiki_close.png');
-  background-position:  center center;
-  background-repeat:    no-repeat;
-  -moz-background-size: contain;
-  background-size:      contain;
+.mdwiki_close_btn {
+  font-size:        large;
+  background-image: url('/assets/mdwiki_close.png');
+  margin:           0px;
 }
 
-.mdwiki_down:hover {
-  //background-image:     url('/assets/mdwiki_down_sel.png');
-  background-image:     url('/assets/mdwiki_close_h.png');
-  text-decoration:  none;
+.mdwiki_close_btn:hover {
+  background-image: url('/assets/mdwiki_close_h.png');
 }
 
 .mdwiki_none {

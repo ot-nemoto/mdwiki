@@ -9,7 +9,7 @@
   <% @attachment_list.each do |attachment| %>
     <%= content_tag(:div, nil, {:class => 'mdwiki_attach_box'}) do %>
       <%= image_tag(attachment, :size => '150x150') %>
-      <%= link_to('&nbsp;&nbsp;'.html_safe, nil, {:class => 'mdwiki_attach_remove'}) %>
+      <%= link_to('&nbsp;&nbsp;'.html_safe, nil, {:class => 'mdwiki_btn mdwiki_attach_remove_btn'}) %>
     <% end %>
   <% end %>
 <% end %>
