@@ -5,13 +5,16 @@
 <%= content_tag(:div, nil, {:class => 'mdwiki_header'}) do %>
   <%= content_tag(:ul) do %>
     <%= content_tag(:li) do %>
-      <%= link_to('Preview', nil, {:onclick => 'preview();return false;', :class => 'mdwiki_button'}) %>
+      <%= link_to('&nbsp;&nbsp;'.html_safe, nil, 
+                  {:title => 'Preview', :onclick => 'return preview();', :class => 'mdwiki_btn mdwiki_preview_btn'}) %>
     <% end %>
     <%= content_tag(:li) do %>
-      <%= link_to('Save', nil, {:onclick => @command + '();return false;', :class => 'mdwiki_button'}) %>
+      <%= link_to('&nbsp;&nbsp;'.html_safe, nil,
+                  {:title => 'Save', :onclick => 'return ' + @command + '();', :class => 'mdwiki_btn mdwiki_save_btn'}) %>
     <% end %>
     <%= content_tag(:li) do %>
-      <%= link_to('Cancel', '/mdwiki/' + @id, {:class => 'mdwiki_button'}) %>
+      <%= link_to('&nbsp;&nbsp;'.html_safe, '/mdwiki/' + @id,
+                  {:title => 'Cancel', :class => 'mdwiki_btn mdwiki_cancel_btn'}) %>
     <% end %>
   <% end %>
 <% end %>
