@@ -1,22 +1,5 @@
-<%= content_tag(:div, nil, {:class => 'mdwiki_logo'}) do %>
-  <%= render(:partial => "header") %>
-<% end %>
-
 <%= content_tag(:div, nil, {:class => 'mdwiki_header'}) do %>
-  <%= content_tag(:ul) do %>
-    <%= content_tag(:li) do %>
-      <%= link_to('&nbsp;&nbsp;'.html_safe, nil, 
-                  {:title => 'Remove', :class => 'mdwiki_btn mdwiki_remove_btn'}) %>
-    <% end %>
-    <%= content_tag(:li) do %>
-      <%= link_to('&nbsp;&nbsp;'.html_safe, '/mdwiki/' + @id + '/edit', 
-                  {:title => 'Edit', :class => 'mdwiki_btn mdwiki_edit_btn'}) %>
-    <% end %>
-    <%= content_tag(:li) do %>
-      <%= link_to('&nbsp;&nbsp;'.html_safe, '/mdwiki/' + @id + '/new', 
-                  {:title => 'Create', :class => 'mdwiki_btn mdwiki_create_btn'}) %>
-    <% end %>
-  <% end %>
+  <%= render(:partial => "header", :object  => @menu_flg) %>
 <% end %>
 
 <%= content_tag(:div, nil, {:class => 'mdwiki_breadcrumb'}) do %>

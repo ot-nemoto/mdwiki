@@ -2,6 +2,12 @@ class PagesController < ApplicationController
 
   def main
     @summaries = get_list(Settings.root_parent)
+    @menu_flg = {:create  => true,  :create_id => Settings.root_parent,
+                 :save    => false, :save_cmd  => nil,
+                 :preview => false,
+                 :remove  => false,
+                 :edit    => false, :edit_id   => nil,
+                 :cancel  => false, :cancel_id => nil}
     render 'main'
   end
 
@@ -51,6 +57,12 @@ class PagesController < ApplicationController
     }
     @id = id
     @breadcrumb_list = get_breadcrumb_list(SUMMARIES[id.to_sym][:parent])
+    @menu_flg = {:create  => true,  :create_id => @id,
+                 :save    => false, :save_cmd  => nil,
+                 :preview => false,
+                 :remove  => true,
+                 :edit    => true,  :edit_id   => @id,
+                 :cancel  => false, :cancel_id => nil}
   end
 
   def get_breadcrumb_list(id)
@@ -73,7 +85,12 @@ class PagesController < ApplicationController
     @breadcrumb_list = get_breadcrumb_list(SUMMARIES[id.to_sym][:parent])
 
     @attachment_list = get_attachment_list(id)
-
+    @menu_flg = {:create  => false, :create_id => nil,
+                 :save    => true,  :save_cmd  => 'update',
+                 :preview => true,
+                 :remove  => false,
+                 :edit    => false, :edit_id   => nil,
+                 :cancel  => true,  :cancel_id => @id}
     render 'edit'
   end
 
@@ -105,6 +122,12 @@ class PagesController < ApplicationController
     @id = id
     @breadcrumb_list = get_breadcrumb_list(id)
     @attachment_list = Array.new
+    @menu_flg = {:create  => false, :create_id => nil,
+                 :save    => true,  :save_cmd  => 'insert',
+                 :preview => true,
+                 :remove  => false,
+                 :edit    => false, :edit_id   => nil,
+                 :cancel  => true,  :cancel_id => @id}
     render 'edit'
   end
 
