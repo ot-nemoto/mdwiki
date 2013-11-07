@@ -1,8 +1,7 @@
-<%= content_tag(:ul) do %>
-  <%= content_tag(:li) do %>
-    <%= link_to image_tag('/assets/mdwiki-logo.png',:height => '40px'), '/mdwiki' %>
-  <% end %>
+<%= content_tag(:div, nil, {:class => 'mdwiki_header'}) do %>
+  <%= link_to image_tag('/assets/mdwiki-logo.png',:height => '40px'), '/mdwiki' %>
 <% end %>
+
 <%= content_tag(:div, nil, {:class => 'mdwiki_menu'}) do %>
   <%= if @menu_flg[:preview] 
         content_tag(:span, link_to('&nbsp;&nbsp;'.html_safe, nil, 
