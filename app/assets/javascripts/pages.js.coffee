@@ -27,11 +27,19 @@ $ ->
         if data.href
           $(location).attr('href', data.href)
     return false
+    
+  @remove_attach =(id, file) ->
+    $.post '/mdwiki/remove/attach',
+      id: id
+      file: file
+      (data) ->
+        $('#attachment_content').html(data)
+    return false
 
   @upload =() ->
     $form  = $('#mdwiki_attachment_form')
     form_data = new FormData($form[0])
-    $.ajax '/mdwiki/' + $('#page_id').val() + '/upload',
+    $.ajax '/mdwiki/upload/attach',
       type: 'POST'
       processData : false
       contentType : false

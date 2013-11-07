@@ -9,10 +9,11 @@ Mdwiki::Application.routes.draw do
   get 'mdwiki/:id/new'   => 'pages#new'
   get 'mdwiki/:id/edit'  => 'pages#edit'
 
+  post 'mdwiki/remove/attach' => 'pages#remove_attach'
+  post 'mdwiki/upload/attach' => 'pages#upload_attach'
   post 'mdwiki/preview'  => 'pages#preview'
   post 'mdwiki/:id/insert'   => 'pages#insert'
   post 'mdwiki/:id/update'   => 'pages#update'
-  post 'mdwiki/:id/upload'   => 'pages#upload'
   post 'mdwiki/:id/list' => 'pages#list'
 
 #  post 'mdwiki/:id/new'  => 'pages#new'
