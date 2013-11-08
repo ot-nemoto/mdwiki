@@ -16,7 +16,7 @@
   <%= if @command == 'insert' then
         render(:partial => "noattachment")
       else
-        render(:partial => "attachment", :object  => @attachment_list)
+        render(:partial => "attachment", :locals => {:id => @id, :attachments => @attachments})
       end %>
 <% end %>
 
