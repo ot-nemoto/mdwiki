@@ -83,8 +83,7 @@ class PagesController < ApplicationController
     @command = 'update'
     @id = params[:id]
     @breadcrumb_list = get_breadcrumb_list(SUMMARIES[id.to_sym][:parent])
-
-    @attachment_list = get_attachment_list(id)
+    @attachments = Attachment.find(id)
     @menu_flg = {:create  => false, :create_id => nil,
                  :save    => true,  :save_cmd  => 'update',
                  :preview => true,
@@ -121,7 +120,7 @@ class PagesController < ApplicationController
     @command = 'insert'
     @id = id
     @breadcrumb_list = get_breadcrumb_list(id)
-    @attachment_list = Array.new
+    @attachments = Array.new
     @menu_flg = {:create  => false, :create_id => nil,
                  :save    => true,  :save_cmd  => 'insert',
                  :preview => true,
@@ -139,42 +138,16 @@ class PagesController < ApplicationController
     render :partial => "preview", :object => @html_content
   end
 
-  def upload_attach(id = params[:id])
-    a = params[:attachment]
-    dir_path = Pathname(Settings.image_path).join(id)
-    FileUtils.mkdir_p(dir_path) \
-      unless FileTest.exists?(dir_path)
-    file_path = dir_path.join(a.original_filename)
-    File.open(file_path, mode = 'wb') do |f|
-      f.write(a.read)
-    end
-    @attachment_list = get_attachment_list(id)
-    render :partial => "attachment", :object => @attachment_list
+  def upload_attach(id = params[:id], a = params[:attachment])
+    Attachment.upload(id, a)
+    render :partial => "attachment", 
+      :locals => {:id => id, :attachments => Attachment.find(id)}
   end
 
   def remove_attach(id = params[:id], filename = params[:file])
-    dir_path = Pathname(Settings.image_path).join(id)
-    file_path = dir_path.join(filename)
-    puts file_path
-    File.unlink file_path \
-      if FileTest.exists?(file_path)
-    @attachment_list = get_attachment_list(id)
-    render :partial => "attachment", :object => @attachment_list
-  end
-
-  def get_attachment_list(id)
-    rt = Hash.new
-    attachments = Array.new
-    rt.store(:id, id)
-    dir_path = Pathname(Settings.image_path).join(id)
-    if FileTest.exists?(dir_path)
-      Dir::entries(dir_path).each {|f|
-        attachments.push(f) \
-          if File::ftype(dir_path.join(f)) == 'file'
-      }
-    end
-    rt.store(:file, attachments)
-    return rt
+    Attachment.remove(id, filename)
+    render :partial => "attachment", 
+      :locals => {:id => id, :attachments => Attachment.find(id)}
   end
 
   # There is content with the same name?
