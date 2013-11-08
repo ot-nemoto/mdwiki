@@ -157,7 +157,7 @@ class PagesController < ApplicationController
   end
 
   def save(id, parent, edit = false)
-    update_user = 'anonymous'
+    update_user = User.exist(session[:user_id]) ? session[:user_id] : 'anonymous'
     update_date = Time.now.strftime("%Y-%m-%d %H:%M:%S")
     create_user = edit ? SUMMARIES[id.to_sym][:create_user] : update_user
     create_date = edit ? SUMMARIES[id.to_sym][:create_date] : update_date
