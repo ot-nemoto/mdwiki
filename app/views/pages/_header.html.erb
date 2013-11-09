@@ -9,7 +9,7 @@
       end %>
   <%= if @menu_flg[:save] 
         content_tag(:span, link_to('&nbsp;&nbsp;'.html_safe, nil, 
-          {:title => 'Save', :onclick => 'return ' + @menu_flg[:save_cmd] + '();', :class => 'mdwiki_btn mdwiki_save_btn'})) 
+          {:title => 'Save', :onclick => 'return ' + @menu_flg[:save_cmd] + '_page();', :class => 'mdwiki_btn mdwiki_save_btn'})) 
       end %>
   <%= if @menu_flg[:cancel] 
         content_tag(:span, link_to('&nbsp;&nbsp;'.html_safe, '/mdwiki/' + @menu_flg[:cancel_id], 
@@ -19,18 +19,18 @@
         content_tag(:span, link_to('&nbsp;&nbsp;'.html_safe, '/mdwiki/' + @menu_flg[:create_id] + '/new', 
           {:title => 'Create', :class => 'mdwiki_btn mdwiki_create_btn'})) 
       end %>
-  <%= if @menu_flg[:edit] 
+  <%= if @menu_flg[:edit]
         content_tag(:span, link_to('&nbsp;&nbsp;'.html_safe, '/mdwiki/' + @menu_flg[:edit_id] + '/edit', 
           {:title => 'Edit', :class => 'mdwiki_btn mdwiki_edit_btn'})) 
       end %>
   <%= if @menu_flg[:remove] 
         content_tag(:span, link_to('&nbsp;&nbsp;'.html_safe, nil, 
-          {:title => 'Remove', :class => 'mdwiki_btn mdwiki_remove_btn'})) 
+          {:title => 'Remove', :class => 'mdwiki_btn mdwiki_remove_btn', :onclick => 'return remove_page(\'' + @menu_flg[:remove_id] + '\');'}))
       end %>
   <%= content_tag(:span, text_field_tag('search_key')) %>
   <%= content_tag(:span, link_to('&nbsp;&nbsp;'.html_safe, nil, 
-                                 {:title => 'Search', :class => 'mdwiki_btn mdwiki_search_btn'})) %>
+          {:title => 'Search', :class => 'mdwiki_btn mdwiki_search_btn'})) %>
   <%= content_tag(:span, session[:user_id]) %>
   <%= content_tag(:span, link_to('&nbsp;&nbsp;'.html_safe, nil, 
-                                 {:title => 'Logout', :class => 'mdwiki_btn mdwiki_logout_btn', :onclick => 'return logout();'})) %>
+          {:title => 'Logout', :class => 'mdwiki_btn mdwiki_logout_btn', :onclick => 'return logout();'})) %>
 <% end %>

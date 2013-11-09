@@ -3,9 +3,9 @@
 <% end %>
 
 <%= content_tag(:div, nil, {:class => 'mdwiki_breadcrumb'}) do %>
-  <%= render(:partial => 'breadcrumb', :object => @breadcrumb_list) %>
+  <%= render(:partial => 'breadcrumb', :locals => {:breadcrumb_list => @content.breadcrumb_list}) %>
 <% end %>
 
 <%= content_tag(:div, nil, {:class => 'mdwiki_show'}) do %>
-  <%= render(:partial => "preview", :object => @html_content) %>
+  <%= render(:partial => "preview", :object => @content) %>
 <% end %>

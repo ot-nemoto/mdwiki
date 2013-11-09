@@ -1,40 +1,19 @@
 class PagesController < ApplicationController
 
   def main
-    @summaries = get_list(Settings.root_parent)
+    @summaries = Content.child_list(Settings.root_parent)
     @menu_flg = {:create  => true,  :create_id => Settings.root_parent,
                  :save    => false, :save_cmd  => nil,
                  :preview => false,
-                 :remove  => false,
+                 :remove  => false, :remove_id => nil,
                  :edit    => false, :edit_id   => nil,
                  :cancel  => false, :cancel_id => nil}
     render 'main'
   end
 
-  def list
-    @summaries = get_list(params[:id])
+  def list(id = params[:id])
+    @summaries = Content.child_list(id)
     render :partial => "list", :object => @summaries
-  end
-
-  def get_list(parent)
-    result = Array.new
-    SUMMARIES.keys.each {|key|
-      if SUMMARIES[key.to_sym][:parent].to_s == parent.to_s
-        result.push({:key => key, \
-                        :title => SUMMARIES[key.to_sym][:title], \
-                        :child => has_children(key)})
-      end
-    }
-    return result.sort {|a,b|
-      a[:title] <=> b[:title]
-    }
-  end
-
-  def has_children(parent)
-    SUMMARIES.keys.each {|key|
-      return true if SUMMARIES[key.to_sym][:parent].to_s == parent.to_s
-    }
-    return false
   end
 
   def show(id = params[:id])
@@ -43,99 +22,83 @@ class PagesController < ApplicationController
       redirect_to '/mdwiki/' and return
     end
 
-    @html_content = Hash.new
-    @html_content.store(:title, SUMMARIES[id.to_sym][:title])
-    @html_content.store(:create_user, SUMMARIES[id.to_sym][:create_user])
-    @html_content.store(:create_date, SUMMARIES[id.to_sym][:create_date])
-    @html_content.store(:update_user, SUMMARIES[id.to_sym][:update_user])
-    @html_content.store(:update_date, SUMMARIES[id.to_sym][:update_date])
+    if !Content.exist(id)
+      redirect_to '/mdwiki/' and return
+    end
 
-    file_path = Pathname(Settings.data_path).join(id)
-    File.open(file_path, mode = 'r') {|f|
-      @html_content.store(:content, Kramdown::Document.new(f.read).to_html)
-      @content = @html_content[:content]
-    }
-    @id = id
-    @breadcrumb_list = get_breadcrumb_list(SUMMARIES[id.to_sym][:parent])
-    @menu_flg = {:create  => true,  :create_id => @id,
+    @content = Content.new(id)
+    @menu_flg = {:create  => true,  :create_id => id,
                  :save    => false, :save_cmd  => nil,
                  :preview => false,
-                 :remove  => true,
-                 :edit    => true,  :edit_id   => @id,
+                 :remove  => true,  :remove_id => id,
+                 :edit    => true,  :edit_id   => id,
                  :cancel  => false, :cancel_id => nil}
   end
 
-  def get_breadcrumb_list(id)
-    result = Array.new
-    if id != Settings.root_parent
-      result = get_breadcrumb_list(SUMMARIES[id.to_sym][:parent])
-      result.push({:id => id, :title => SUMMARIES[id.to_sym][:title]})
-    end
-    return result
-  end
-
-  def edit(id = params[:id])
-    @md_title = SUMMARIES[id.to_sym][:title]
-    file_path = Pathname(Settings.data_path).join(id)
-    File.open(file_path, mode = 'r') {|f|
-      @md_content = f.read
-    }
-    @command = 'update'
-    @id = params[:id]
-    @breadcrumb_list = get_breadcrumb_list(SUMMARIES[id.to_sym][:parent])
-    @attachments = Attachment.find(id)
+  def new(parent_id = params[:id])
+    @content = Content.new(Content::NEW_CONTENT_ID)
+    @content.parent = parent_id
+    @content.title = ''
+    @content.content = ''
+    @attachments = Array.new
+    @command = 'insert'
     @menu_flg = {:create  => false, :create_id => nil,
-                 :save    => true,  :save_cmd  => 'update',
+                 :save    => true,  :save_cmd  => 'insert',
                  :preview => true,
-                 :remove  => false,
+                 :remove  => false, :remove_id => nil,
                  :edit    => false, :edit_id   => nil,
-                 :cancel  => true,  :cancel_id => @id}
+                 :cancel  => true,  :cancel_id => parent_id}
     render 'edit'
   end
 
-  def insert(parent_id = params[:id])
-    # Validation Check
+  def edit(id = params[:id])
+    @content = Content.new(id)
+    @attachments = Attachment.find(id)
+    @command = 'update'
+    @menu_flg = {:create  => false, :create_id => nil,
+                 :save    => true,  :save_cmd  => 'update',
+                 :preview => true,
+                 :remove  => false, :remove_id => nil,
+                 :edit    => false, :edit_id   => nil,
+                 :cancel  => true,  :cancel_id => id}
+    render 'edit'
+  end
+
+  def insert(parent_id = params[:parent_id])
+    id = make_content_id()
+    content = Content.new(id)
+    content.parent = parent_id
+    content.update_user = session[:user_id]
+    content.update_date = Time.now.strftime("%Y-%m-%d %H:%M:%S")
+    content.create_user = content.update_user
+    content.create_date = content.update_date
+    content.title = params[:md_title]
+    content.content = params[:md_content]
+    content.save()
 
     rt = Hash.new
-    id = Digest::MD5.hexdigest(SecureRandom.uuid)
-    unless is_content(id)
-      save(id, parent_id)
-      rt.store('href', '/mdwiki/' + id)
-    end
-
+    rt.store('href', '/mdwiki/' + id)
     render :json => rt
   end
 
   def update(id = params[:id])
-    # Validation Check
+    content = Content.new(id)
+    content.update_user = session[:user_id]
+    content.update_date = Time.now.strftime("%Y-%m-%d %H:%M:%S")
+    content.title = params[:md_title]
+    content.content = params[:md_content]
+    content.save()
 
     rt = Hash.new
-    save(id, SUMMARIES[id.to_sym][:parent], true)
     rt.store('href', '/mdwiki/' + id)
-
     render :json => rt
   end
 
-  def new(id = params[:id])
-    @command = 'insert'
-    @id = id
-    @breadcrumb_list = get_breadcrumb_list(id)
-    @attachments = Array.new
-    @menu_flg = {:create  => false, :create_id => nil,
-                 :save    => true,  :save_cmd  => 'insert',
-                 :preview => true,
-                 :remove  => false,
-                 :edit    => false, :edit_id   => nil,
-                 :cancel  => true,  :cancel_id => @id}
-    render 'edit'
-  end
-
   def preview
-    @html_content = Hash.new
-    @html_content.store(:title, params[:md_title])
-    @html_content.store(:content, Kramdown::Document.new(params[:md_content]).to_html)
-
-    render :partial => "preview", :object => @html_content
+    @content = Content.new(Content::PREVIEW_ID)
+    @content.title = params[:md_title]
+    @content.content = params[:md_content]
+    render :partial => "preview", :object => @content
   end
 
   def upload_attach(id = params[:id], a = params[:attachment])
@@ -150,39 +113,25 @@ class PagesController < ApplicationController
       :locals => {:id => id, :attachments => Attachment.find(id)}
   end
 
+  def make_content_id
+    id = nil
+    begin
+      id = Digest::MD5.hexdigest(SecureRandom.uuid)
+    end while is_content(id)
+    return id
+  end
+
   # There is content with the same name?
   def is_content(id)
     file_path = Pathname(Settings.data_path).join(id)
     return FileTest.exist?(file_path)
   end
 
-  def save(id, parent, edit = false)
-    update_user = User.exist(session[:user_id]) ? session[:user_id] : 'anonymous'
-    update_date = Time.now.strftime("%Y-%m-%d %H:%M:%S")
-    create_user = edit ? SUMMARIES[id.to_sym][:create_user] : update_user
-    create_date = edit ? SUMMARIES[id.to_sym][:create_date] : update_date
-
-    # save content to file
-    file_path = Pathname(Settings.data_path).join(id)
-    File.open(file_path, mode = 'w') {|f|
-      f.puts params[:md_content]
-    }
-
-    # save SUMMARIES.keys.eachsummary to json
-    summary = Hash.new
-    summary.store(:title, params[:md_title])
-    summary.store(:parent, parent)
-    summary.store(:create_user, create_user)
-    summary.store(:create_date, create_date)
-    summary.store(:update_user, update_user)
-    summary.store(:update_date, update_date)
-
-    SUMMARIES.store(id.to_sym, summary)
-
-    file_path = Pathname(Settings.data_path).join(Settings.summary_file)
-    File.open(file_path, mode = 'w') {|f|
-      JSON.dump(SUMMARIES, f)
-    }
+  def remove(id = params[:id])
+    if Content.exist(id)
+      content = Content.new(id)
+    end
+    render :json => Hash.new
   end
 
 end

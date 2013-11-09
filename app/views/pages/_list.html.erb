@@ -6,7 +6,7 @@
       <%= content_tag(:div) do %>
         <%= if summary[:child]
               link_to('&nbsp;&nbsp;'.html_safe, nil, \
-                      {:id => ('cur_' + key), :onclick => 'showChild(\'' + key + '\');return false;', :class => 'mdwiki_btn mdwiki_open_btn'})
+                      {:id => ('cur_' + key), :onclick => 'return show_child(\'' + key + '\');', :class => 'mdwiki_btn mdwiki_open_btn'})
             else
               content_tag(:span, '&nbsp;&nbsp;'.html_safe, :class => 'mdwiki_none')
             end %>
