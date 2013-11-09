@@ -3,52 +3,41 @@ class Content
   PREVIEW_ID = 'PREVIEW'
   NEW_CONTENT_ID = 'NEW_CONTENT_ID'
 
-  @@id
-  @@title
-  @@parent
-  @@create_user
-  @@create_date
-  @@update_user
-  @@update_date
-
-  @@file_path
-  @@content
-
   def initialize(id)
-    @@id          = id
-    @@file_path = Pathname(Settings.data_path).join(@@id)
+    @id          = id
+    @file_path = Pathname(Settings.data_path).join(@id.to_s)
     if Content.exist(id)
       s             = SUMMARIES[id.to_sym]
-      @@title       = s[:title]
-      @@parent      = s[:parent]
-      @@create_user = s[:create_user]
-      @@create_date = s[:create_date]
-      @@update_user = s[:update_user]
-      @@update_date = s[:update_date]
-      File.open(@@file_path, mode = 'r') {|f|
-        @@content     = f.read
+      @title       = s[:title]
+      @parent      = s[:parent]
+      @create_user = s[:create_user]
+      @create_date = s[:create_date]
+      @update_user = s[:update_user]
+      @update_date = s[:update_date]
+      File.open(@file_path, mode = 'r') {|f|
+        @content     = f.read
       }
     end
   end
 
   def id
-    return @@id
+    return @id
   end
 
   def title
-    return @@title
+    return @title
   end
 
   def title=(s)
-    @@title = s
+    @title = s
   end
 
   def parent
-    return @@parent
+    return @parent
   end
 
   def parent=(s)
-    @@parent = s
+    @parent = s
   end
 
   def self.parent(id)
@@ -56,55 +45,55 @@ class Content
   end
 
   def create_user
-    return @@create_user
+    return @create_user
   end
 
   def create_user=(s)
-    @@create_user = s
+    @create_user = s
   end
 
   def create_date
-    return @@create_date
+    return @create_date
   end
 
   def create_date=(s)
-    @@create_date = s
+    @create_date = s
   end
 
   def update_user
-    return @@update_user
+    return @update_user
   end
 
   def update_user=(s)
-    @@update_user = s
+    @update_user = s
   end
 
   def update_date
-    return @@update_date
+    return @update_date
   end
 
   def update_date=(s)
-    @@update_date = s
+    @update_date = s
   end
 
   def file_path
-    return @@file_path
+    return @file_path
   end
 
   def content
-    return @@content
+    return @content
   end
 
   def content=(s)
-    @@content = s
+    @content = s
   end
 
   def content_to_html
-    return Kramdown::Document.new(@@content).to_html
+    return Kramdown::Document.new(@content).to_html
   end
 
   def breadcrumb_list
-    return self.class.breadcrumb_list(@@parent)
+    return self.class.breadcrumb_list(@parent)
   end
 
   def self.breadcrumb_list(id)
@@ -117,7 +106,7 @@ class Content
   end
 
   def child_list
-    return self.class.breadcrumb_list(@@id)
+    return self.class.child_list(@id)
   end
   
   def self.child_list(id)
@@ -142,30 +131,49 @@ class Content
     return false
   end
 
+  def summary
+    rt = Hash.new
+    rt.store(:title, @title)
+    rt.store(:parent, @parent)
+    rt.store(:create_user, @create_user)
+    rt.store(:create_date, @create_date)
+    rt.store(:update_user, @update_user)
+    rt.store(:update_date, @update_date)
+    return rt
+  end
+
   def save
-    File.open(@@file_path, mode = 'w') {|f|
-      f.puts @@content
+    File.open(@file_path, mode = 'w') {|f|
+      f.puts @content
     }
+    save_summary()
+  end
 
-    # save SUMMARIES.keys.eachsummary to json
-    summary = Hash.new
-    summary.store(:title, @@title)
-    summary.store(:parent, @@parent)
-    summary.store(:create_user, @@create_user)
-    summary.store(:create_date, @@create_date)
-    summary.store(:update_user, @@update_user)
-    summary.store(:update_date, @@update_date)
+  def remove
+    File.unlink(@file_path)
+    remove_summary()
 
-    SUMMARIES.store(@@id.to_sym, summary)
+    child_list.each {|child|
+      c = Content.new(child[:key])
+      c.parent = @parent
+      c.save_summary()
+    }
+  end
 
+  def save_summary
+    SUMMARIES.store(@id.to_sym, summary())
     file_path = Pathname(Settings.data_path).join(Settings.summary_file)
     File.open(file_path, mode = 'w') {|f|
       JSON.dump(SUMMARIES, f)
     }
   end
 
-  def remove
-    #File.unlink(@@file_path)
+  def remove_summary
+    SUMMARIES.delete(@id.to_sym)
+    file_path = Pathname(Settings.data_path).join(Settings.summary_file)
+    File.open(file_path, mode = 'w') {|f|
+      JSON.dump(SUMMARIES, f)
+    }
   end
 
   def self.exist(id)

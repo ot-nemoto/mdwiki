@@ -34,7 +34,8 @@ $ ->
     $.post '/mdwiki/remove',
       id: id
       (data) ->
-        alert data
+        if data.href
+          $(location).attr('href', data.href)
     return false
 
   @remove_attachment =(id, file) ->
