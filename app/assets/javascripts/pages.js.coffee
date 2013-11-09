@@ -10,8 +10,9 @@ $ ->
         $('#preview_content').html(data)
     return false
 
-  @insert =() ->
-    $.post '/mdwiki/' + $('#page_id').val() + '/insert', 
+  @insert_page =() ->
+    $.post '/mdwiki/insert', 
+      parent_id: $('#page_parent_id').val()
       md_title: $('#md_title').val()
       md_content: $('#md_content').val()
       (data) ->
@@ -19,15 +20,23 @@ $ ->
           $(location).attr('href', data.href)
     return false
 
-  @update =() ->
-    $.post '/mdwiki/' + $('#page_id').val() + '/update', 
+  @update_page =() ->
+    $.post '/mdwiki/update', 
+      id: $('#page_id').val()
       md_title: $('#md_title').val()
       md_content: $('#md_content').val()
       (data) ->
         if data.href
           $(location).attr('href', data.href)
     return false
-    
+
+  @remove_page =(id) ->
+    $.post '/mdwiki/remove',
+      id: id
+      (data) ->
+        alert data
+    return false
+
   @remove_attachment =(id, file) ->
     $.post '/mdwiki/attachment/remove',
       id: id
@@ -52,12 +61,14 @@ $ ->
         $('#attachment_content').html(data)
     return false
 
-  @showChild = (id) ->
+  @show_child = (id) ->
     if $('#cur_' + id).hasClass('mdwiki_open_btn')
-      $.post '/mdwiki/' + id + '/list', 
+      $.post '/mdwiki/list', 
+        id: id 
         (data) ->
           $('#div_' + id).html(data)
           $('#cur_' + id).removeClass('mdwiki_open_btn').addClass('mdwiki_close_btn')
     else
       $('#div_' + id).html('')
       $('#cur_' + id).removeClass('mdwiki_close_btn').addClass('mdwiki_open_btn')
+    return false

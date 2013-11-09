@@ -12,9 +12,10 @@ Mdwiki::Application.routes.draw do
   post 'mdwiki/attachment/remove' => 'pages#remove_attach'
   post 'mdwiki/attachment/upload' => 'pages#upload_attach'
   post 'mdwiki/preview'  => 'pages#preview'
-  post 'mdwiki/:id/insert'   => 'pages#insert'
-  post 'mdwiki/:id/update'   => 'pages#update'
-  post 'mdwiki/:id/list' => 'pages#list'
+  post 'mdwiki/remove'   => 'pages#remove'
+  post 'mdwiki/insert'   => 'pages#insert'
+  post 'mdwiki/update'   => 'pages#update'
+  post 'mdwiki/list'     => 'pages#list'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
