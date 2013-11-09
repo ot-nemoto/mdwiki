@@ -94,6 +94,16 @@ class PagesController < ApplicationController
     render :json => rt
   end
 
+  def remove(id = params[:id])
+    rt = Hash.new
+    if Content.exist(id)
+      content = Content.new(id)
+      rt.store('href', '/mdwiki/' + content.parent)
+      content.remove()
+    end
+    render :json => rt
+  end
+
   def preview
     @content = Content.new(Content::PREVIEW_ID)
     @content.title = params[:md_title]
@@ -125,13 +135,6 @@ class PagesController < ApplicationController
   def is_content(id)
     file_path = Pathname(Settings.data_path).join(id)
     return FileTest.exist?(file_path)
-  end
-
-  def remove(id = params[:id])
-    if Content.exist(id)
-      content = Content.new(id)
-    end
-    render :json => Hash.new
   end
 
 end
