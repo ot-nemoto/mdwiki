@@ -100,6 +100,7 @@ class PagesController < ApplicationController
       content = Content.new(id)
       rt.store('href', '/mdwiki/' + content.parent)
       content.remove()
+      Attachment.remove(id)
     end
     render :json => rt
   end
