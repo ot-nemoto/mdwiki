@@ -9,10 +9,18 @@ class Attachment
     }
   end
 
-  def self.remove(id, filename)
+  def self.remove(id, filename = nil)
     dir_path = Pathname(Settings.image_path).join(id)
-    file_path = dir_path.join(filename)
-    File.unlink file_path if FileTest.exists?(file_path)
+    if filename != nil
+      file_path = dir_path.join(filename)
+      File.unlink file_path if FileTest.exists?(file_path)
+      return
+    end
+    Attachment.find(id).each {|f|
+      file_path = dir_path.join(f)
+      File.unlink file_path if FileTest.exists?(file_path)
+    }
+    Dir.unlink(dir_path) if FileTest.exists?(dir_path)
   end
 
   def self.find(id)
