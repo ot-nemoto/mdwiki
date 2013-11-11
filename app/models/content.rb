@@ -146,30 +146,44 @@ class Content
     File.open(@file_path, mode = 'w') {|f|
       f.puts @content
     }
-    save_summary()
+    update_summary()
+    commit_summary()
+  end
+
+  def remove_all
+    rt = Array.new()
+    child_list().each {|child|
+      c = Content.new(child[:key])
+      c.remove_all().each {|removed_id|
+        rt.push(removed_id)
+      }
+    }
+    rt.push(remove())
+    return rt
   end
 
   def remove
     File.unlink(@file_path)
     remove_summary()
 
-    child_list.each {|child|
+    child_list().each {|child|
       c = Content.new(child[:key])
       c.parent = @parent
-      c.save_summary()
+      c.update_summary()
     }
+    commit_summary()
+    return @id
   end
 
-  def save_summary
+  def update_summary
     SUMMARIES.store(@id.to_sym, summary())
-    file_path = Pathname(Settings.data_path).join(Settings.summary_file)
-    File.open(file_path, mode = 'w') {|f|
-      JSON.dump(SUMMARIES, f)
-    }
   end
 
   def remove_summary
     SUMMARIES.delete(@id.to_sym)
+  end
+
+  def commit_summary
     file_path = Pathname(Settings.data_path).join(Settings.summary_file)
     File.open(file_path, mode = 'w') {|f|
       JSON.dump(SUMMARIES, f)

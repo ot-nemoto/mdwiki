@@ -1,21 +1,23 @@
 Mdwiki::Application.routes.draw do
 
-  get 'mdwiki/login'     => 'login#index'
-  post 'mdwiki/login'    => 'login#login'
-  post 'mdwiki/logout'   => 'login#logout'
+  get 'mdwiki/login'              => 'login#index'
 
-  get 'mdwiki'           => 'pages#main'
-  get 'mdwiki/:id'       => 'pages#show'
-  get 'mdwiki/:id/new'   => 'pages#new'
-  get 'mdwiki/:id/edit'  => 'pages#edit'
+  post 'mdwiki/login'             => 'login#login'
+  post 'mdwiki/logout'            => 'login#logout'
+
+  get 'mdwiki'                    => 'pages#main'
+  get 'mdwiki/:id'                => 'pages#show'
+  get 'mdwiki/:id/new'            => 'pages#new'
+  get 'mdwiki/:id/edit'           => 'pages#edit'
 
   post 'mdwiki/attachment/remove' => 'pages#remove_attach'
   post 'mdwiki/attachment/upload' => 'pages#upload_attach'
-  post 'mdwiki/preview'  => 'pages#preview'
-  post 'mdwiki/remove'   => 'pages#remove'
-  post 'mdwiki/insert'   => 'pages#insert'
-  post 'mdwiki/update'   => 'pages#update'
-  post 'mdwiki/list'     => 'pages#list'
+  post 'mdwiki/preview'           => 'pages#preview'
+  post 'mdwiki/remove'            => 'pages#remove'
+  post 'mdwiki/removeall'         => 'pages#remove_all'
+  post 'mdwiki/insert'            => 'pages#insert'
+  post 'mdwiki/update'            => 'pages#update'
+  post 'mdwiki/list'              => 'pages#list'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

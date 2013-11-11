@@ -2,12 +2,13 @@ class PagesController < ApplicationController
 
   def main
     @summaries = Content.child_list(Settings.root_parent)
-    @menu_flg = {:create  => true,  :create_id => Settings.root_parent,
-                 :save    => false, :save_cmd  => nil,
-                 :preview => false,
-                 :remove  => false, :remove_id => nil,
-                 :edit    => false, :edit_id   => nil,
-                 :cancel  => false, :cancel_id => nil}
+    @menu_flg = {
+      :create  => true,  :create_id => Settings.root_parent,
+      :save    => false, :save_cmd  => nil,
+      :preview => false,
+      :remove  => false, :remove_id => nil,
+      :edit    => false, :edit_id   => nil,
+      :cancel  => false, :cancel_id => nil}
     render 'main'
   end
 
@@ -27,12 +28,13 @@ class PagesController < ApplicationController
     end
 
     @content = Content.new(id)
-    @menu_flg = {:create  => true,  :create_id => id,
-                 :save    => false, :save_cmd  => nil,
-                 :preview => false,
-                 :remove  => true,  :remove_id => id,
-                 :edit    => true,  :edit_id   => id,
-                 :cancel  => false, :cancel_id => nil}
+    @menu_flg = {
+      :create  => true,  :create_id => id,
+      :save    => false, :save_cmd  => nil,
+      :preview => false,
+      :remove  => true,  :remove_id => id,
+      :edit    => true,  :edit_id   => id,
+      :cancel  => false, :cancel_id => nil}
   end
 
   def new(parent_id = params[:id])
@@ -42,12 +44,13 @@ class PagesController < ApplicationController
     @content.content = ''
     @attachments = Array.new
     @command = 'insert'
-    @menu_flg = {:create  => false, :create_id => nil,
-                 :save    => true,  :save_cmd  => 'insert',
-                 :preview => true,
-                 :remove  => false, :remove_id => nil,
-                 :edit    => false, :edit_id   => nil,
-                 :cancel  => true,  :cancel_id => parent_id}
+    @menu_flg = {
+      :create  => false, :create_id => nil,
+      :save    => true,  :save_cmd  => 'insert',
+      :preview => true,
+      :remove  => false, :remove_id => nil,
+      :edit    => false, :edit_id   => nil,
+      :cancel  => true,  :cancel_id => parent_id}
     render 'edit'
   end
 
@@ -55,12 +58,13 @@ class PagesController < ApplicationController
     @content = Content.new(id)
     @attachments = Attachment.find(id)
     @command = 'update'
-    @menu_flg = {:create  => false, :create_id => nil,
-                 :save    => true,  :save_cmd  => 'update',
-                 :preview => true,
-                 :remove  => false, :remove_id => nil,
-                 :edit    => false, :edit_id   => nil,
-                 :cancel  => true,  :cancel_id => id}
+    @menu_flg = {
+      :create  => false, :create_id => nil,
+      :save    => true,  :save_cmd  => 'update',
+      :preview => true,
+      :remove  => false, :remove_id => nil,
+      :edit    => false, :edit_id   => nil,
+      :cancel  => true,  :cancel_id => id}
     render 'edit'
   end
 
@@ -94,13 +98,25 @@ class PagesController < ApplicationController
     render :json => rt
   end
 
+  def remove_all(id = params[:id])
+    rt = Hash.new
+    if Content.exist(id)
+      content = Content.new(id)
+      content.remove_all().each {|removed_id|
+        Attachment.remove(removed_id) if removed_id != nil
+      }
+      rt.store('href', '/mdwiki/' + content.parent)
+    end
+    render :json => rt
+  end
+
   def remove(id = params[:id])
     rt = Hash.new
     if Content.exist(id)
       content = Content.new(id)
+      removed_id = content.remove()
+      Attachment.remove(removed_id) if removed_id != nil
       rt.store('href', '/mdwiki/' + content.parent)
-      content.remove()
-      Attachment.remove(id)
     end
     render :json => rt
   end
