@@ -38,6 +38,14 @@ $ ->
           $(location).attr('href', data.href)
     return false
 
+  @remove_page_with_children =(id) ->
+    $.post '/mdwiki/removeall',
+      id: id
+      (data) ->
+        if data.href
+          $(location).attr('href', data.href)
+    return false
+
   @remove_attachment =(id, file) ->
     $.post '/mdwiki/attachment/remove',
       id: id
