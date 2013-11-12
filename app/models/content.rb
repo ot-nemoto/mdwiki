@@ -4,16 +4,10 @@ class Content
   NEW_CONTENT_ID = 'NEW_CONTENT_ID'
 
   def initialize(id)
-    @id          = id
+    @id        = id
     @file_path = Pathname(Settings.data_path).join(@id.to_s)
-    if Content.exist(id)
-      s             = SUMMARIES[id.to_sym]
-      @title       = s[:title]
-      @parent      = s[:parent]
-      @create_user = s[:create_user]
-      @create_date = s[:create_date]
-      @update_user = s[:update_user]
-      @update_date = s[:update_date]
+    @summary   = Summary.new(id)
+    if Summary.exist(id)
       File.open(@file_path, mode = 'r') {|f|
         @content     = f.read
       }
@@ -25,55 +19,51 @@ class Content
   end
 
   def title
-    return @title
+    return @summary == nil ? '' : @summary.title
   end
 
   def title=(s)
-    @title = s
+    @summary.title = s
   end
 
   def parent
-    return @parent
+    return @summary == nil ? '' : @summary.parent
   end
 
   def parent=(s)
-    @parent = s
-  end
-
-  def self.parent(id)
-    return SUMMARIES[id.to_sym][:parent]
+    @summary.parent = s
   end
 
   def create_user
-    return @create_user
+    return @summary == nil ? '' : @summary.create_user
   end
 
   def create_user=(s)
-    @create_user = s
+    @summary.create_user = s
   end
 
   def create_date
-    return @create_date
+    return @summary == nil ? '' : @summary.create_date
   end
 
   def create_date=(s)
-    @create_date = s
+    @summary.create_date = s
   end
 
   def update_user
-    return @update_user
+    return @summary == nil ? '' : @summary.update_user
   end
 
   def update_user=(s)
-    @update_user = s
+    @summary.update_user = s
   end
 
   def update_date
-    return @update_date
+    return @summary == nil ? '' : @summary.update_date
   end
 
   def update_date=(s)
-    @update_date = s
+    @summary.update_date = s
   end
 
   def file_path
@@ -93,61 +83,24 @@ class Content
   end
 
   def breadcrumb_list
-    return self.class.breadcrumb_list(@parent)
-  end
-
-  def self.breadcrumb_list(id)
-    rt = Array.new
-    if id != Settings.root_parent
-      rt = Content.breadcrumb_list(SUMMARIES[id.to_sym][:parent])
-      rt.push({:id => id, :title => SUMMARIES[id.to_sym][:title]})
-    end
-    return rt
+    return @summary == nil ? Array.new() : @summary.breadcrumb_list() 
   end
 
   def child_list
-    return self.class.child_list(@id)
+    return @summary == nil ? Array.new() : @summary.child_list() 
+    #return self.class.child_list(@id)
   end
   
   def self.child_list(id)
-    result = Array.new
-    SUMMARIES.keys.each {|key|
-      if SUMMARIES[key.to_sym][:parent].to_s == id.to_s
-        result.push({
-          :key => key,
-          :title => SUMMARIES[key.to_sym][:title],
-          :child => Content.has_child(key)})
-      end
-    }
-    return result.sort {|a,b|
-      a[:title] <=> b[:title]
-    }
-  end
-
-  def self.has_child(id)
-    SUMMARIES.keys.each {|key|
-      return true if SUMMARIES[key.to_sym][:parent].to_s == id.to_s
-    }
-    return false
-  end
-
-  def summary
-    rt = Hash.new
-    rt.store(:title, @title)
-    rt.store(:parent, @parent)
-    rt.store(:create_user, @create_user)
-    rt.store(:create_date, @create_date)
-    rt.store(:update_user, @update_user)
-    rt.store(:update_date, @update_date)
-    return rt
+    return Summary.child_list(id)
   end
 
   def save
     File.open(@file_path, mode = 'w') {|f|
       f.puts @content
     }
-    update_summary()
-    commit_summary()
+    @summary.update()
+    @summary.commit()
   end
 
   def remove_all
@@ -164,34 +117,19 @@ class Content
 
   def remove
     File.unlink(@file_path)
-    remove_summary()
+    @summary.remove()
 
     child_list().each {|child|
-      c = Content.new(child[:key])
-      c.parent = @parent
-      c.update_summary()
+      summary = Summary.new(child[:key])
+      summary.parent = @parent
+      summary.update()
     }
-    commit_summary()
+    @summary.commit()
     return @id
   end
 
-  def update_summary
-    SUMMARIES.store(@id.to_sym, summary())
-  end
-
-  def remove_summary
-    SUMMARIES.delete(@id.to_sym)
-  end
-
-  def commit_summary
-    file_path = Pathname(Settings.data_path).join(Settings.summary_file)
-    File.open(file_path, mode = 'w') {|f|
-      JSON.dump(SUMMARIES, f)
-    }
-  end
-
   def self.exist(id)
-    return (SUMMARIES[id.to_sym] != nil)
+    return Summary.exist(id)
   end
 
 end

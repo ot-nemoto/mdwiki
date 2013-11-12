@@ -2,6 +2,7 @@ defaults: &defaults
   summary_file: wiki.json
   root_parent: ROOT
   data_path: <%= "#{Rails.root}/db/wiki" %>
+  #data_path: <%= "#{Rails.root}/db/mdwiki" %>
   image_path: <%= "#{Rails.root}/public/images" %>
   users_conf: users.yml
   users_conf_path: <%= "#{Rails.root}/config" %>
