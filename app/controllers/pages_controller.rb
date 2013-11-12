@@ -144,14 +144,8 @@ class PagesController < ApplicationController
     id = nil
     begin
       id = Digest::MD5.hexdigest(SecureRandom.uuid)
-    end while is_content(id)
+    end while Content.exist(id)
     return id
-  end
-
-  # There is content with the same name?
-  def is_content(id)
-    file_path = Pathname(Settings.data_path).join(id)
-    return FileTest.exist?(file_path)
   end
 
 end
