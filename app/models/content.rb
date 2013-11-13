@@ -6,11 +6,10 @@ class Content
 
   def initialize(id)
     @id        = id
-    @file_path = Pathname(Settings.data_path).join(@id.to_s)
     @summary   = Summary.new(id)
     if Summary.exist(id)
-      File.open(@file_path, mode = 'r') {|f|
-        @content     = f.read
+      File.open(file_path(), mode = 'r') {|f|
+        @content = f.read
       }
     end
   end
@@ -67,10 +66,6 @@ class Content
     @summary.update_date = s
   end
 
-  def file_path
-    return @file_path
-  end
-
   def content
     return @content
   end
@@ -83,13 +78,22 @@ class Content
     return Kramdown::Document.new(@content).to_html
   end
 
+  def dir_path
+    return nil if id() == nil
+    return Pathname(Settings.data_path).join(id().to_s[0,1]).join(id().to_s[1,1])
+  end
+
+  def file_path
+    return nil if dir_path() == nil
+    return dir_path().join(id())
+  end
+
   def breadcrumb_list
     return @summary == nil ? Array.new() : @summary.breadcrumb_list() 
   end
 
   def child_list
     return @summary == nil ? Array.new() : @summary.child_list() 
-    #return self.class.child_list(@id)
   end
   
   def self.child_list(id)
@@ -97,7 +101,8 @@ class Content
   end
 
   def save
-    File.open(@file_path, mode = 'w') {|f|
+    FileUtils.mkdir_p(dir_path()) unless FileTest.exists?(dir_path())
+    File.open(file_path(), mode = 'w') {|f|
       f.puts @content
     }
     @summary.update()
@@ -117,7 +122,7 @@ class Content
   end
 
   def remove
-    File.unlink(@file_path)
+    File.unlink(file_path())
     @summary.remove()
 
     child_list().each {|child|
