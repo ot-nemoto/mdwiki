@@ -2,6 +2,7 @@ class Content
 
   PREVIEW_ID = 'PREVIEW'
   NEW_CONTENT_ID = 'NEW_CONTENT_ID'
+  ROOT_PARENT_ID = Summary::ROOT_PARENT_ID
 
   def initialize(id)
     @id        = id

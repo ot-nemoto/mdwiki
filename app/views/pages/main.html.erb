@@ -2,6 +2,8 @@
   <%= render(:partial => "header", :object  => @menu_flg) %>
 <% end %>
 
-<%= content_tag(:div, nil, {:id => ('div_' + Settings.root_parent), :class => 'mdwiki_list'}) do %>
+<%= content_tag(:div, nil, {
+  :id => ('div_' + Content::ROOT_PARENT_ID), 
+  :class => 'mdwiki_list'}) do %>
   <%= render(:partial => "list", :object => @summaries) %>
 <% end %>

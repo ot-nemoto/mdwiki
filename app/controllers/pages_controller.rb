@@ -1,9 +1,9 @@
 class PagesController < ApplicationController
 
   def main
-    @summaries = Content.child_list(Settings.root_parent)
+    @summaries = Content.child_list(Content::ROOT_PARENT_ID)
     @menu_flg = {
-      :create  => true,  :create_id => Settings.root_parent,
+      :create  => true,  :create_id => Content::ROOT_PARENT_ID,
       :save    => false, :save_cmd  => nil,
       :preview => false,
       :remove  => false, :remove_id => nil,
@@ -19,7 +19,7 @@ class PagesController < ApplicationController
 
   def show(id = params[:id])
     # Redirect to Top
-    if id == Settings.root_parent
+    if id == Content::ROOT_PARENT_ID
       redirect_to '/mdwiki/' and return
     end
 
