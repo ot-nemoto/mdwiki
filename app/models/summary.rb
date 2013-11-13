@@ -1,5 +1,7 @@
 class Summary
 
+  ROOT_PARENT_ID = 'ROOT'
+
   def initialize(id)
     @id = id
     s   = SUMMARIES[id.to_sym]
@@ -71,7 +73,7 @@ class Summary
 
   def self.breadcrumb_list(id)
     rt = Array.new()
-    if id != Settings.root_parent
+    if id != Summary::ROOT_PARENT_ID
       rt = Summary.breadcrumb_list(SUMMARIES[id.to_sym][:parent])
       rt.push({:id => id, :title => SUMMARIES[id.to_sym][:title]})
     end
