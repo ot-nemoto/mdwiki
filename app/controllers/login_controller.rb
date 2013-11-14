@@ -6,10 +6,11 @@ class LoginController < ApplicationController
   def login
     rt = Hash.new
     u  = User.find(params[:username])
-    if u == nil || u[:pass] != nil && u[:pass] != params[:password]
+    #if u == nil || u[:pass] != nil && u[:pass] != params[:password]
+    if u == nil || !u.auth(params[:password])
       rt.store('alert', "Invalid username or password.")
     else
-      session[:user_id] = u[:user]
+      session[:user_id] = u.user
       rt.store('href', '/mdwiki')
     end
     render :json => rt
