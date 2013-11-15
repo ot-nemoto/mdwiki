@@ -10,7 +10,7 @@ end
 
 # Loading Users Cache
 users_conf = Pathname(Settings.users_conf_path).join(Settings.users_conf)
-if FileTest.exist?(file_path)
+if FileTest.exist?(users_conf)
   USERS = YAML.load_file(users_conf);
   USERS.symbolize_keys!
   USERS[:users].each{|u|
