@@ -2,13 +2,7 @@ class PagesController < ApplicationController
 
   def main
     @summaries = Content.child_list(Content::ROOT_PARENT_ID)
-    @menu_flg = {
-      :create  => true,  :create_id => Content::ROOT_PARENT_ID,
-      :save    => false, :save_cmd  => nil,
-      :preview => false,
-      :remove  => false, :remove_id => nil,
-      :edit    => false, :edit_id   => nil,
-      :cancel  => false, :cancel_id => nil}
+    @header_params = HeaderParams.new(HeaderParams::MAIN, Content::ROOT_PARENT_ID)
     render 'main'
   end
 
@@ -28,43 +22,21 @@ class PagesController < ApplicationController
     end
 
     @content = Content.new(id)
-    @menu_flg = {
-      :create  => true,  :create_id => id,
-      :save    => false, :save_cmd  => nil,
-      :preview => false,
-      :remove  => true,  :remove_id => id,
-      :edit    => true,  :edit_id   => id,
-      :cancel  => false, :cancel_id => nil}
+    @header_params = HeaderParams.new(HeaderParams::SHOW, id)
   end
 
   def new(parent_id = params[:id])
     @content = Content.new(Content::NEW_CONTENT_ID)
     @content.parent = parent_id
-    @content.title = ''
-    @content.content = ''
     @attachments = Array.new
-    @command = 'insert'
-    @menu_flg = {
-      :create  => false, :create_id => nil,
-      :save    => true,  :save_cmd  => 'insert',
-      :preview => true,
-      :remove  => false, :remove_id => nil,
-      :edit    => false, :edit_id   => nil,
-      :cancel  => true,  :cancel_id => parent_id}
+    @header_params = HeaderParams.new(HeaderParams::NEW, parent_id)
     render 'edit'
   end
 
   def edit(id = params[:id])
     @content = Content.new(id)
     @attachments = Attachment.find(id)
-    @command = 'update'
-    @menu_flg = {
-      :create  => false, :create_id => nil,
-      :save    => true,  :save_cmd  => 'update',
-      :preview => true,
-      :remove  => false, :remove_id => nil,
-      :edit    => false, :edit_id   => nil,
-      :cancel  => true,  :cancel_id => id}
+    @header_params = HeaderParams.new(HeaderParams::EDIT, id)
     render 'edit'
   end
 

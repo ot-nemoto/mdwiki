@@ -1,15 +1,14 @@
 Mdwiki::Application.routes.draw do
 
   get 'mdwiki/login'              => 'login#index'
-
-  post 'mdwiki/login'             => 'login#login'
-  post 'mdwiki/logout'            => 'login#logout'
-
+  get 'mdwiki/search'             => 'search#search'
   get 'mdwiki'                    => 'pages#main'
   get 'mdwiki/:id'                => 'pages#show'
   get 'mdwiki/:id/new'            => 'pages#new'
   get 'mdwiki/:id/edit'           => 'pages#edit'
 
+  post 'mdwiki/login'             => 'login#login'
+  post 'mdwiki/logout'            => 'login#logout'
   post 'mdwiki/attachment/remove' => 'pages#remove_attach'
   post 'mdwiki/attachment/upload' => 'pages#upload_attach'
   post 'mdwiki/preview'           => 'pages#preview'
