@@ -128,6 +128,10 @@ class Summary
     }
   end
 
+  def self.ids()
+    return SUMMARIES.keys
+  end
+
   def self.exist(id)
     return (SUMMARIES[id.to_sym] != nil)
   end

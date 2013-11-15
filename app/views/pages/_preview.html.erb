@@ -2,8 +2,11 @@
       {:id => 'title', :class => 'mdwiki_title'}) %>
 <% if @content.id != Content::PREVIEW_ID %>
   <%= content_tag(:div, nil, {:class => 'mdwiki_date'}) do %>
+    <%= content_tag(:span, 'Created by') %>
     <%= content_tag(:span, @content.create_user) %>
     <%= content_tag(:span, @content.create_date) %>
+    <%= content_tag(:span, '/') %>
+    <%= content_tag(:span, 'Updated by') %>
     <%= content_tag(:span, @content.update_user) %>
     <%= content_tag(:span, @content.update_date) %>
   <% end %>

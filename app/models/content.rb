@@ -134,6 +134,17 @@ class Content
     return @id
   end
 
+  def self.find(keyword)
+    rt = Array.new()
+    Summary.ids.each {|id|
+      c = Content.new(id.to_s)
+      if c.title.index(keyword) || c.content.index(keyword)
+        rt.push(c)
+      end
+    }
+    return rt
+  end
+
   def self.exist(id)
     return Summary.exist(id)
   end
