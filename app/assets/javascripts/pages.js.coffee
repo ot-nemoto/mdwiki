@@ -2,6 +2,10 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 $ ->
+  $(window).resize ->
+    adjust_position("#mdwiki_dlg")
+    return false
+
   @preview = () ->
     $.post '/mdwiki/preview', 
       md_title: $('#md_title').val()
@@ -31,27 +35,54 @@ $ ->
     return false
 
   @remove_page =(id) ->
-    $.post '/mdwiki/remove',
-      id: id
-      (data) ->
-        if data.href
-          $(location).attr('href', data.href)
-    return false
+    mdwiki_dialog(
+      "Are you sure?"
+      () ->
+        $.post '/mdwiki/remove',
+          id: id
+          (data) ->
+            if data.href
+              $(location).attr('href', data.href)
+        $("#mdwiki_modal").fadeOut(250)
+        return false
+      () ->
+        $("#mdwiki_modal").fadeOut(250)
+        return false
+    )
+    return false;
 
   @remove_page_with_children =(id) ->
-    $.post '/mdwiki/removeall',
-      id: id
-      (data) ->
-        if data.href
-          $(location).attr('href', data.href)
-    return false
+    mdwiki_dialog(
+      "Are you sure?"
+      () ->
+        $.post '/mdwiki/removeall',
+          id: id
+          (data) ->
+            if data.href
+              $(location).attr('href', data.href)
+        $("#mdwiki_modal").fadeOut(250)
+        return false
+      () ->
+        $("#mdwiki_modal").fadeOut(250)
+        return false
+    )
+    return false;
 
   @remove_attachment =(id, file) ->
-    $.post '/mdwiki/attachment/remove',
-      id: id
-      file: file
-      (data) ->
-        $('#attachment_content').html(data)
+    mdwiki_dialog(
+      "Are you sure?"
+      () ->
+        $.post '/mdwiki/attachment/remove',
+          id: id
+          file: file
+          (data) ->
+            $('#attachment_content').html(data)
+        $("#mdwiki_modal").fadeOut(250)
+        return false
+      () ->
+        $("#mdwiki_modal").fadeOut(250)
+        return false
+    )
     return false
 
   @upload_attachment =() ->
@@ -81,3 +112,23 @@ $ ->
       $('#div_' + id).html('')
       $('#cur_' + id).removeClass('mdwiki_close_btn').addClass('mdwiki_open_btn')
     return false
+  return false
+
+mdwiki_dialog =(message, accept_func, cancel_func) ->
+  adjust_position("#mdwiki_dlg")
+  $("#mdwiki_dlg_message").text(message)
+  $("#mdwiki_dlg_accept_btn").unbind()
+  $("#mdwiki_dlg_accept_btn").bind("click", accept_func)
+  $("#mdwiki_dlg_cancel_btn").unbind()
+  $("#mdwiki_dlg_cancel_btn").bind("click", cancel_func)
+  $("#mdwiki_dlg_bg").unbind()
+  $("#mdwiki_dlg_bg").bind("click", cancel_func)
+  $("#mdwiki_modal").fadeIn(500)
+  return false;
+
+adjust_position =(target) ->
+  margin_top  = ($(window).height() - $(target).height()) / 2
+  margin_left = ($(window).width() - $(target).width()) / 2
+  $(target).css
+    top: margin_top + "px"
+    left: margin_left + "px"

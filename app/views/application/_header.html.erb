@@ -35,6 +35,12 @@
       :title => 'Remove', 
       :class => 'mdwiki_btn mdwiki_remove_btn', 
       :onclick => 'return remove_page(\'' + @header_params.id + '\');'})) %>
+<!--
+    <%= content_tag(:span, link_to('&nbsp;&nbsp;'.html_safe, nil, {
+      :title => 'Remove', 
+      :class => 'mdwiki_btn mdwiki_remove_btn', 
+      :onclick => 'return dialog_open();'})) %>
+-->
     <%= content_tag(:span, link_to('&nbsp;&nbsp;'.html_safe, nil, {
       :title => 'Remove with children', 
       :class => 'mdwiki_btn mdwiki_remove_with_children_btn', 
@@ -51,3 +57,16 @@
     :class => 'mdwiki_btn mdwiki_logout_btn', 
     :onclick => 'return logout();'})) %>
 <% end %>
+
+<div id="mdwiki_modal">
+  <div id="mdwiki_dlg_bg"></div>
+  <div id="mdwiki_dlg">
+    <div id="mdwiki_dlg_message">message...</div>
+    <a id="mdwiki_dlg_accept_btn"
+      class="mdwiki_btn mdwiki_dlg_accept_btn"
+      title="OK">&nbsp;&nbsp;</a>
+    <a id="mdwiki_dlg_cancel_btn" 
+      class="mdwiki_btn mdwiki_dlg_cancel_btn" 
+      title="Cancel">&nbsp;&nbsp;</a>
+  </div>
+</div>
