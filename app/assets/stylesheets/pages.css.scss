@@ -150,6 +150,23 @@ a:hover {
   border-radius:    3px;
 }
 
+.mdwiki_content table {
+  border-top: 1px solid gray;
+  border-right: 1px solid gray;
+}
+
+.mdwiki_content th {
+  border-left: 1px solid gray;
+  border-bottom: 1px solid gray;
+  color: white;
+  background-color: slateblue;
+}
+
+.mdwiki_content td  {
+  border-left: 1px solid gray;
+  border-bottom: 1px solid gray;
+}
+
 .mdwiki_edit {
   position: absolute;
   left:     0px;
@@ -277,4 +294,52 @@ a:hover {
   background-repeat:    no-repeat;
   -moz-background-size: contain;
   background-size:      contain;
+}
+
+#mdwiki_modal {
+  display:  none;
+  position: fixed;
+  top:      0px;
+  left:     0px;
+  width:    100%;
+  height:   100%;
+  z-index:  100;
+}
+
+#mdwiki_dlg_bg {
+  position:         fixed;
+  width:            100%;
+  height:           100%;
+  background-color: #000000;
+  opacity:          0.75;
+  filter:           alpha(opacity=75);
+  -ms-filter:       "alpha(opacity=75)";
+}
+
+#mdwiki_dlg {
+  position:         relative;
+  width:            300px;
+  height:           200px;
+  background-color: #ffffff;
+}
+
+#mdwiki_dlg_message {
+  position:   absolute;
+  text-align: center;
+  width:      100%;
+  top:        40%;
+}
+
+.mdwiki_dlg_accept_btn {
+  position:         absolute;
+  bottom:           10px;
+  right:            50px;
+  background-image: url('/assets/mdwiki_dlg_accept.png');
+}
+
+.mdwiki_dlg_cancel_btn {
+  position:         absolute;
+  bottom:           10px;
+  right:            10px;
+  background-image: url('/assets/mdwiki_dlg_cancel.png');
 }

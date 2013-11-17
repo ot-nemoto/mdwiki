@@ -85,7 +85,7 @@ class Content
 
   def file_path
     return nil if dir_path() == nil
-    return dir_path().join(id())
+    return dir_path().join(id().to_s)
   end
 
   def breadcrumb_list
@@ -123,13 +123,12 @@ class Content
 
   def remove
     File.unlink(file_path())
-    @summary.remove()
-
     child_list().each {|child|
       summary = Summary.new(child[:key])
-      summary.parent = @parent
+      summary.parent = parent()
       summary.update()
     }
+    @summary.remove()
     @summary.commit()
     return @id
   end
@@ -146,7 +145,7 @@ class Content
   end
 
   def self.exist(id)
-    return Summary.exist(id)
+    return Summary.exist(id.to_s)
   end
 
 end
