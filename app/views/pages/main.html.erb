@@ -1,0 +1,9 @@
+<%= content_tag(:div, nil) do %>
+  <%= render(:partial => "header", :object  => @header_params) %>
+<% end %>
+
+<%= content_tag(:div, nil, {
+  :id => ('div_' + Content::ROOT_PARENT_ID), 
+  :class => 'mdwiki_list'}) do %>
+  <%= render(:partial => "list", :object => @summaries) %>
+<% end %>

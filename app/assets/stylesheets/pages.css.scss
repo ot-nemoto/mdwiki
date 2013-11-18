@@ -1,0 +1,345 @@
+// Place all the styles related to the pages controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+body, input, button {
+  font-family: monospace;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.mdwiki_login {
+  position: absolute;
+  left: 5px;
+  right: 5px;
+  top:   30%;
+  text-align: center;
+}
+
+.mdwiki_btn {
+  font-size:            xx-large;
+  background-position:  center center;
+  background-repeat:    no-repeat;
+  -moz-background-size: contain;
+  background-size:      contain;
+  margin:               0px 5px;
+  border:               1px solid #dddddd;
+  border-radius:        5px;
+}
+
+.mdwiki_btn:hover {
+  text-decoration:  none;
+  opacity:          0.5;
+  background-color: #ffff22;
+}
+
+.mdwiki_login_btn {
+  font-size:        xx-large;
+  background-image: url('/assets/mdwiki_login.png');
+}
+
+.mdwiki_logout_btn {
+  background-image: url('/assets/mdwiki_logout.png');
+}
+
+.mdwiki_remove_btn {
+  background-image: url('/assets/mdwiki_remove.png');
+}
+
+.mdwiki_remove_with_children_btn {
+  background-image: url('/assets/mdwiki_remove_with_children.png');
+}
+
+.mdwiki_edit_btn {
+  background-image: url('/assets/mdwiki_edit.png');
+}
+
+.mdwiki_create_btn {
+  background-image: url('/assets/mdwiki_create.png');
+}
+
+.mdwiki_cancel_btn {
+  background-image: url('/assets/mdwiki_cancel.png');
+}
+
+.mdwiki_save_btn {
+  background-image: url('/assets/mdwiki_save.png');
+}
+
+.mdwiki_preview_btn {
+  background-image: url('/assets/mdwiki_preview.png');
+}
+
+.mdwiki_search_btn {
+  background-image: url('/assets/mdwiki_search.png');
+}
+
+.mdwiki_header {
+  position: absolute;
+  left:     0px;
+  top:      0px;
+  height:   40px;
+  width:    200px;
+}
+
+.mdwiki_menu {
+  text-align: right;
+  margin:     5px 10px;
+}
+
+.mdwiki_list {
+  position: absolute;
+  left:     0px;
+  top:      50px;
+}
+
+.mdwiki_list ul {
+  list-style: none;
+  padding:    0px 20px;
+}
+
+.mdwiki_breadcrumb {
+  position: absolute;
+  left:     0px;
+  top:      60px;
+  padding:  5px 10px;
+}
+
+.mdwiki_show {
+  position: absolute;
+  width:    100%;
+  left:     0px;
+  top:      90px;
+}
+
+.mdwiki_title {
+  font-size: xx-large;
+  padding:   0px 10px;
+  margin:    0px 5px;
+}
+
+.mdwiki_date {
+  color:     #777777;
+  font-size: small;
+  padding:   0px 10px;
+  margin:    0px 10px;
+}
+
+.mdwiki_content {
+  padding: 10px 10px;
+  margin:  0px 5px;
+}
+
+.mdwiki_content pre {
+  background-color: #f8f8f8;
+  border:           1px solid #ddd;
+  padding:          10px;
+  border-radius:    3px;
+}
+
+.mdwiki_content p code {
+  background-color: #f8f8f8;
+  border:           1px solid #ddd;
+  padding:          1px 3px;
+  border-radius:    3px;
+}
+
+.mdwiki_content table {
+  border-top: 1px solid gray;
+  border-right: 1px solid gray;
+}
+
+.mdwiki_content th {
+  border-left: 1px solid gray;
+  border-bottom: 1px solid gray;
+  color: white;
+  background-color: slateblue;
+}
+
+.mdwiki_content td  {
+  border-left: 1px solid gray;
+  border-bottom: 1px solid gray;
+}
+
+.mdwiki_edit {
+  position: absolute;
+  left:     0px;
+  right:    210px;
+  top:      90px;
+}
+
+.mdwiki_edit input {
+  font-size:  xx-large;
+  width:      97%;
+  box-sizing: border-box;
+  margin:     5px 10px;
+}
+
+.mdwiki_edit textarea  {
+  width:      97%;
+  height:     365px;
+  resize:     none;
+  box-sizing: border-box;
+  margin:     5px 10px;
+}
+
+.mdwiki_attachment {
+  position: absolute;
+  width:    200px;
+  right:    0px;
+  top:      90px;
+  margin:   5px 10px;
+}
+
+.mdwiki_attachment_drop {
+  position:         relative;
+  width:            200px;
+  height:           100px;
+  overflow:         hidden;
+  border-radius:    8px 8px 8px;
+  background-color: white;
+  border:           1px dashed black;
+}
+
+.attachment {
+  position:  absolute;
+  bottom:    0;
+  right:     0;
+  z-index:   2;
+  font-size: 100px;
+  opacity:   0;
+  filter:    alpha(opacity=0); 
+}
+
+.mdwiki_attachment_lbl {
+  position:   absolute;
+  width:      100%;
+  height:     100%;
+  text-align: center;
+  font-size:  large;
+  top:        40%
+}
+
+.mdwiki_no_attachment_drop {
+  position:         relative;
+  width:            200px;
+  height:           410px;
+  overflow:         hidden;
+  border-radius:    8px 8px 8px;
+  background-color: white;
+  border:           1px dashed black;
+}
+
+.mdwiki_no_attachment_lbl {
+  position:   absolute;
+  width:      100%;
+  height:     100%;
+  text-align: center;
+  color:      red;
+  font-size:  small;
+  top:        50%;
+}
+
+.mdwiki_attach_list {
+  overflow-y: auto;
+  overflow-x: hidden;
+  width:      200px;
+  height:     300px;
+  border:     1px solid silver;
+  margin:     10px 0px;
+}
+
+.mdwiki_attach_box {
+  width: 100%;
+  float:left;
+  text-align : center ;
+  border-bottom: 1px solid silver;
+}
+
+.mdwiki_attach_remove_btn {
+  font-size:        large;
+  background-image: url('/assets/mdwiki_attach_remove.png');
+  margin:           0px;
+}
+
+.mdwiki_preview {
+  position: absolute;
+  width:    100%;
+  left:     0px;
+  top:      515px;
+}
+
+.mdwiki_open_btn {
+  font-size:        large;
+  background-image: url('/assets/mdwiki_open.png');
+  margin:           0px;
+}
+
+.mdwiki_close_btn {
+  font-size:        large;
+  background-image: url('/assets/mdwiki_close.png');
+  margin:           0px;
+}
+
+.mdwiki_none {
+  font-size:            large;
+  background-image:     url('/assets/mdwiki_none.png');
+  background-position:  center center;
+  background-repeat:    no-repeat;
+  -moz-background-size: contain;
+  background-size:      contain;
+}
+
+#mdwiki_modal {
+  display:  none;
+  position: fixed;
+  top:      0px;
+  left:     0px;
+  width:    100%;
+  height:   100%;
+  z-index:  100;
+}
+
+#mdwiki_dlg_bg {
+  position:         fixed;
+  width:            100%;
+  height:           100%;
+  background-color: #000000;
+  opacity:          0.75;
+  filter:           alpha(opacity=75);
+  -ms-filter:       "alpha(opacity=75)";
+}
+
+#mdwiki_dlg {
+  position:         relative;
+  width:            300px;
+  height:           200px;
+  background-color: #ffffff;
+}
+
+#mdwiki_dlg_message {
+  position:   absolute;
+  text-align: center;
+  width:      100%;
+  top:        40%;
+}
+
+.mdwiki_dlg_accept_btn {
+  position:         absolute;
+  bottom:           10px;
+  right:            50px;
+  background-image: url('/assets/mdwiki_dlg_accept.png');
+}
+
+.mdwiki_dlg_cancel_btn {
+  position:         absolute;
+  bottom:           10px;
+  right:            10px;
+  background-image: url('/assets/mdwiki_dlg_cancel.png');
+}

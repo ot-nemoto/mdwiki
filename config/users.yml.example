@@ -1,0 +1,7 @@
+users:
+  - user: subscriber
+    pass: 
+    mail:
+  - user: admin
+    pass: admin
+    mail:

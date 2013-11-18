@@ -1,0 +1,15 @@
+<%= content_tag(:div, @content.title, 
+      {:id => 'title', :class => 'mdwiki_title'}) %>
+<% if @content.id != Content::PREVIEW_ID %>
+  <%= content_tag(:div, nil, {:class => 'mdwiki_date'}) do %>
+    <%= content_tag(:span, 'Created by') %>
+    <%= content_tag(:span, @content.create_user) %>
+    <%= content_tag(:span, @content.create_date) %>
+    <%= content_tag(:span, '/') %>
+    <%= content_tag(:span, 'Updated by') %>
+    <%= content_tag(:span, @content.update_user) %>
+    <%= content_tag(:span, @content.update_date) %>
+  <% end %>
+<% end %>
+<%= content_tag(:div, @content.content_to_html.html_safe, 
+      {:id => 'content', :class => 'mdwiki_content'}) %>

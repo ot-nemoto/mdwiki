@@ -1,0 +1,31 @@
+<%= content_tag(:div, nil) do %>
+  <%= render(:partial => "header", :object  => @header_params) %>
+<% end %>
+
+<%= content_tag(:div, nil, {:class => 'mdwiki_breadcrumb'}) do %>
+  <%= render(:partial => 'breadcrumb', :locals => {
+    :breadcrumb_list => @content.breadcrumb_list}) %>
+<% end %>
+
+<%= content_tag(:div, nil, {:class => 'mdwiki_edit'}) do %>
+  <%= hidden_field_tag('page_id', @content.id) %>
+  <%= hidden_field_tag('page_parent_id', @content.parent) %>
+  <%= content_tag(:div, text_field_tag('md_title', @content.title)) %>
+  <%= content_tag(:div, text_area_tag('md_content', @content.content)) %>
+<% end %>
+
+<%= content_tag(:div, nil, {
+  :id => 'attachment_content', 
+  :class => 'mdwiki_attachment'}) do %>
+  <%= if @header_params.save_cmd == 'insert' then
+        render(:partial => "noattachment")
+      else
+        render(:partial => "attachment", :locals => {
+          :id => @content.id,
+          :attachments => @attachments})
+      end %>
+<% end %>
+
+<%= content_tag(:div, nil, {
+  :id => 'preview_content',
+  :class => 'mdwiki_preview'}) %>

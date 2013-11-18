@@ -1,0 +1,11 @@
+<%= content_tag(:div, nil, :class => 'mdwiki_login') do %>
+  <%= content_tag(:div, image_tag('/assets/mdwiki-logo.png',:height => '40px')) %>
+  <%= content_tag(:div, text_field_tag('username')) %>
+  <%= content_tag(:div, password_field_tag('password')) %>
+  <%= content_tag(:div, '&nbsp;'.html_safe) %>
+  <%= content_tag(:div, link_to('&nbsp;&nbsp;'.html_safe, nil, 
+        {:title => 'Login', :class => 'mdwiki_btn mdwiki_login_btn', :onclick => 'return login();'})) %>
+  <%= content_tag(:div, '&nbsp;'.html_safe) %>
+  <%= content_tag(:p, @notice,{:id => 'notice', :class => 'notice'}) %>
+  <%= content_tag(:p, @alert, {:id => 'alert', :class => 'alert'}) %>
+<% end %>

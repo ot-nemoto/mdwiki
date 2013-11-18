@@ -1,0 +1,18 @@
+<%= content_tag(:ul, nil) do %>
+  <% @summaries.each do |summary| %>
+    <% key   = summary[:key].to_s %>
+    <% title = summary[:title].to_s %>
+    <%= content_tag(:li) do %>
+      <%= content_tag(:div) do %>
+        <%= if summary[:child]
+              link_to('&nbsp;&nbsp;'.html_safe, nil, \
+                      {:id => ('cur_' + key), :onclick => 'return show_child(\'' + key + '\');', :class => 'mdwiki_btn mdwiki_open_btn'})
+            else
+              content_tag(:span, '&nbsp;&nbsp;'.html_safe, :class => 'mdwiki_none')
+            end %>
+        <%= link_to(title, '/mdwiki/' + key, {:class => 'content_list'}) %>
+        <%= content_tag(:div, nil, :id => ('div_' + key)) %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

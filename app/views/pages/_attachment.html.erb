@@ -1,0 +1,18 @@
+<%= content_tag(:div, nil, :class => 'mdwiki_attachment_drop') do %>
+  <%= form_tag(nil, :multipart => true, :id => 'mdwiki_attachment_form') do %>
+    <%= file_field_tag('attachment',{:class => 'attachment', :onchange => 'return upload_attachment();'}) %>
+    <%= hidden_field_tag('id', id) %>
+    <%= content_tag(:span, 'Drop Attachment', :class => 'mdwiki_attachment_lbl') %>
+  <% end %>
+<% end %>
+
+<%= content_tag(:div, nil, {:class => 'mdwiki_attach_list'}) do %>
+  <% attachments.each do |attach| %>
+    <%= content_tag(:div, nil, {:class => 'mdwiki_attach_box'}) do %>
+      <%= image_tag(id + '/' + attach, :size => '150x150') %>
+      <%= link_to('&nbsp;&nbsp;'.html_safe, nil, {
+        :class => 'mdwiki_btn mdwiki_attach_remove_btn', 
+        :onclick => 'return remove_attachment(\'' + id + '\', \'' + attach + '\');'}) %>
+    <% end %>
+  <% end %>
+<% end %>
