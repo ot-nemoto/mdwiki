@@ -35,12 +35,6 @@
       :title => 'Remove', 
       :class => 'mdwiki_btn mdwiki_remove_btn', 
       :onclick => 'return remove_page(\'' + @header_params.id + '\');'})) %>
-<!--
-    <%= content_tag(:span, link_to('&nbsp;&nbsp;'.html_safe, nil, {
-      :title => 'Remove', 
-      :class => 'mdwiki_btn mdwiki_remove_btn', 
-      :onclick => 'return dialog_open();'})) %>
--->
     <%= content_tag(:span, link_to('&nbsp;&nbsp;'.html_safe, nil, {
       :title => 'Remove with children', 
       :class => 'mdwiki_btn mdwiki_remove_with_children_btn', 
