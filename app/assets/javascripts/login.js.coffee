@@ -2,7 +2,9 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 $ ->
-  $("#password").keypress (e) ->
+  $('#username').focus()
+
+  $('#password').keypress (e) ->
     if e.which == 13
       return login()
 
@@ -25,4 +27,6 @@ login =() ->
         $(location).attr('href', data.href)
       if data.alert
         $('#alert').html(data.alert)
+        $('#password').focus()
+        $('#password').select()
   return false
