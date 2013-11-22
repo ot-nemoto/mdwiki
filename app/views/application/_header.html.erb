@@ -3,34 +3,34 @@
 <% end %>
 
 <%= content_tag(:div, nil, {:class => 'mdwiki_menu'}) do %>
-  <% if @header_params.preview %>
+  <% if @header_params.preview? %>
     <%= content_tag(:span, link_to('&nbsp;&nbsp;'.html_safe, nil, {
       :title => 'Preview', 
       :onclick => 'return preview();', 
       :class => 'mdwiki_btn mdwiki_preview_btn'})) %>
   <% end %>
-  <% if @header_params.save %>
+  <% if @header_params.save? %>
     <%= content_tag(:span, link_to('&nbsp;&nbsp;'.html_safe, nil, {
       :title => 'Save', 
       :class => 'mdwiki_btn mdwiki_save_btn',
       :onclick => 'return ' + @header_params.save_cmd + '_page();'})) %>
   <% end %>
-  <% if @header_params.cancel %>
+  <% if @header_params.cancel? %>
     <%= content_tag(:span, link_to('&nbsp;&nbsp;'.html_safe, '/mdwiki/' + @header_params.id, {
       :title => 'Cancel', 
       :class => 'mdwiki_btn mdwiki_cancel_btn'})) %>
   <% end %>
-  <% if @header_params.create %>
+  <% if @header_params.create? %>
     <%= content_tag(:span, link_to('&nbsp;&nbsp;'.html_safe, '/mdwiki/' + @header_params.id + '/new', {
       :title => 'Create', 
       :class => 'mdwiki_btn mdwiki_create_btn'})) %>
   <% end %>
-  <% if @header_params.edit %>
+  <% if @header_params.edit? %>
     <%= content_tag(:span, link_to('&nbsp;&nbsp;'.html_safe, '/mdwiki/' + @header_params.id + '/edit', {
       :title => 'Edit', 
       :class => 'mdwiki_btn mdwiki_edit_btn'})) %>
   <% end %>
-  <% if @header_params.remove %>
+  <% if @header_params.remove? %>
     <%= content_tag(:span, link_to('&nbsp;&nbsp;'.html_safe, nil, {
       :title => 'Remove', 
       :class => 'mdwiki_btn mdwiki_remove_btn', 
@@ -40,6 +40,14 @@
       :class => 'mdwiki_btn mdwiki_remove_with_children_btn', 
       :onclick => 'return remove_page_with_children(\'' + @header_params.id + '\');'})) %>
   <% end %>
+  <span class="mdwiki_checkbox">
+    <%= check_box_tag('chk_title', nil, @header_params.chk_title?, {}) %>
+    <label for="chk_title" title="Title"></label>
+  </span>
+  <span class="mdwiki_checkbox">
+    <%= check_box_tag('chk_content', nil, @header_params.chk_content?, {}) %>
+    <label for="chk_content" title="Content"></label>
+  </span>
   <%= content_tag(:span, text_field_tag('search_key', @header_params.keyword)) %>
   <%= content_tag(:span, link_to('&nbsp;&nbsp;'.html_safe, nil, {
     :title => 'Search', 

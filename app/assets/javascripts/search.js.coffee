@@ -10,7 +10,12 @@ $ ->
     return search_pages()
 
 search_pages =() ->
+  params  = '?keyword=' + encodeURIComponent($('#search_key').val())
+  if !$('#chk_title').prop('checked')
+    params += '&no_t='
+  if !$('#chk_content').prop('checked')
+    params += '&no_c='
   $(location).attr(
     'href',
-    '/mdwiki/search?keyword=' + encodeURIComponent($('#search_key').val()))
+    '/mdwiki/search' + params)
   return false

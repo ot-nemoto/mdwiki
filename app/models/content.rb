@@ -133,14 +133,15 @@ class Content
     return @id
   end
 
-  def self.find(keyword)
+  def self.find(keyword, chk_title = true, chk_content = true)
     rt = Array.new()
     Summary.ids.each {|id|
       c = Content.new(id.to_s)
-      if c.title.index(keyword) || c.content.index(keyword)
+      if (chk_title && c.title.index(keyword)) || 
+        (chk_content && c.content.index(keyword))
         rt.push(c)
       end
-    }
+    } if !keyword.nil? && !keyword.empty?
     return rt
   end
 
