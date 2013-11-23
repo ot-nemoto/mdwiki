@@ -97,11 +97,18 @@ a:hover {
   position: absolute;
   left:     0px;
   top:      50px;
+  bottom:   0px;
+  width:    250px;
+  overflow: auto;
 }
 
 .mdwiki_list ul {
   list-style: none;
   padding:    0px 20px;
+}
+
+.mdwiki_list_for_show {
+  top:      90px;
 }
 
 .mdwiki_breadcrumb {
@@ -113,8 +120,7 @@ a:hover {
 
 .mdwiki_show {
   position: absolute;
-  width:    100%;
-  left:     0px;
+  left:     250px;
   top:      90px;
 }
 

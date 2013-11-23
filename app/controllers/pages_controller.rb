@@ -1,14 +1,21 @@
 class PagesController < ApplicationController
 
   def main
-    @summaries = Content.child_list(Content::ROOT_PARENT_ID)
+    @summaries_list = Array.new()
+    @summaries_list.push({
+      :id => Content::ROOT_PARENT_ID, 
+      :summaries => Content.child_list(Content::ROOT_PARENT_ID)})
     @header_params = HeaderParams.new(HeaderParams::MAIN, Content::ROOT_PARENT_ID)
     render 'main'
   end
 
   def list(id = params[:id])
-    @summaries = Content.child_list(id)
-    render :partial => "list", :object => @summaries
+    @summaries_list = Array.new()
+    @summaries_list.push({
+      :id => id, 
+      :summaries => Content.child_list(id)})
+    render :partial => "list", :locals => {
+      :summaries_list => @summaries_list}
   end
 
   def show(id = params[:id])
@@ -22,6 +29,15 @@ class PagesController < ApplicationController
     end
 
     @content = Content.new(id)
+    @summaries_list = Array.new()
+    @summaries_list.push({
+      :id => Content::ROOT_PARENT_ID, 
+      :summaries => Content.child_list(Content::ROOT_PARENT_ID)})
+    @content.breadcrumb_list.each {|c|
+      @summaries_list.push({
+        :id => c[:id], 
+        :summaries => Content.child_list(c[:id])})
+    }
     @header_params = HeaderParams.new(HeaderParams::SHOW, id)
   end
 
