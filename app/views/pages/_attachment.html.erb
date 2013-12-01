@@ -1,6 +1,9 @@
 <%= content_tag(:div, nil, :class => 'mdwiki_attachment_drop') do %>
   <%= form_tag(nil, :multipart => true, :id => 'mdwiki_attachment_form') do %>
-    <%= file_field_tag('attachment',{:class => 'attachment', :onchange => 'return upload_attachment();'}) %>
+    <%= file_field_tag('attachment',{
+      :class => 'attachment', 
+      :accept => 'image/*',
+      :onchange => 'return upload_attachment();'}) %>
     <%= hidden_field_tag('id', id) %>
     <%= content_tag(:span, 'Drop Attachment', :class => 'mdwiki_attachment_lbl') %>
   <% end %>
