@@ -7,6 +7,13 @@
     :breadcrumb_list => @content.breadcrumb_list}) %>
 <% end %>
 
+<div class="mdwiki_list mdwiki_list_for_show">
+  <%= content_tag(:div, nil, {:id => ('div_' + Content::ROOT_PARENT_ID)}) do %>
+    <%= render(:partial => "list", :locals => {
+      :summaries_list => @summaries_list}) %>
+  <% end %>
+</div>
+
 <%= content_tag(:div, nil, {:class => 'mdwiki_show'}) do %>
   <%= render(:partial => "preview", :object => @content) %>
 <% end %>

@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class Content
 
   PREVIEW_ID = 'PREVIEW'
@@ -133,14 +134,31 @@ class Content
     return @id
   end
 
-  def self.find(keyword)
+  def exist_on_title?(keyword)
+    return false if keyword.nil? || keyword.empty?
+    keyword.split(/\s|　/).each {|key|
+      return false if title.index(key).nil?
+    }
+    return true
+  end
+
+  def exist_on_content?(keyword)
+    return false if keyword.nil? || keyword.empty?
+    keyword.split(/\s|　/).each {|key|
+      return false if content.index(key).nil?
+    }
+    return true
+  end
+
+  def self.find(keyword, chk_title = true, chk_content = true)
     rt = Array.new()
     Summary.ids.each {|id|
       c = Content.new(id.to_s)
-      if c.title.index(keyword) || c.content.index(keyword)
+      if (chk_title && c.exist_on_title?(keyword)) || 
+         (chk_content && c.exist_on_content?(keyword))
         rt.push(c)
       end
-    }
+    } if !keyword.nil? && !keyword.empty?
     return rt
   end
 

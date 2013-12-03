@@ -1,5 +1,7 @@
 Mdwiki::Application.routes.draw do
 
+  root :to                        => redirect("/mdwiki")
+
   get 'mdwiki/login'              => 'login#index'
   get 'mdwiki/search'             => 'search#search'
   get 'mdwiki'                    => 'pages#main'

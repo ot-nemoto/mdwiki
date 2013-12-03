@@ -10,6 +10,7 @@ development:
 
 test:
   <<: *defaults
+  users_conf_path: <%= "#{Rails.root}/test/config" %>
 
 production:
   <<: *defaults

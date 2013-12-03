@@ -97,11 +97,18 @@ a:hover {
   position: absolute;
   left:     0px;
   top:      50px;
+  bottom:   0px;
+  width:    250px;
+  overflow: auto;
 }
 
 .mdwiki_list ul {
   list-style: none;
   padding:    0px 20px;
+}
+
+.mdwiki_list_for_show {
+  top:      90px;
 }
 
 .mdwiki_breadcrumb {
@@ -113,9 +120,10 @@ a:hover {
 
 .mdwiki_show {
   position: absolute;
-  width:    100%;
-  left:     0px;
+  left:     250px;
+  right:    0px;
   top:      90px;
+  bottom:   0px;
 }
 
 .mdwiki_title {
@@ -132,8 +140,15 @@ a:hover {
 }
 
 .mdwiki_content {
-  padding: 10px 10px;
-  margin:  0px 5px;
+  padding:  0px 10px;
+  margin:   10px 0px;
+}
+
+.mdwiki_show .mdwiki_content {
+  position: absolute;
+  top:      40px;
+  bottom:   0px;
+  overflow: auto;
 }
 
 .mdwiki_content pre {
@@ -270,8 +285,8 @@ a:hover {
 
 .mdwiki_preview {
   position: absolute;
-  width:    100%;
   left:     0px;
+  right:    0px;
   top:      515px;
 }
 
