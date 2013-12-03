@@ -1,6 +1,7 @@
 class LoginController < ApplicationController
 
   def index
+    session[:user_id] = nil
   end
 
   def login
