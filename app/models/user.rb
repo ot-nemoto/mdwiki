@@ -1,9 +1,11 @@
 class User
 
-  def initialize(u)
-    @user = u[:user]
-    @pass = u[:pass]
-    @mail = u[:mail]
+  def initialize(u = nil)
+    if !u.nil?
+      @user = u[:user]
+      @pass = u[:pass]
+      @mail = u[:mail]
+    end
   end
 
   def user
@@ -15,7 +17,8 @@ class User
   end
 
   def auth?(pass)
-    return (@pass == nil || @pass == pass)
+    return false if @user.nil? || @user.empty?
+    return (@pass.nil? || @pass == pass)
   end
 
   def self.find(user)

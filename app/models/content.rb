@@ -8,7 +8,7 @@ class Content
   def initialize(id)
     @id        = id
     @summary   = Summary.new(id)
-    if Summary.exist(id)
+    if Summary.exists?(id)
       File.open(file_path(), mode = 'r') {|f|
         @content = f.read
       }
@@ -134,7 +134,7 @@ class Content
     return @id
   end
 
-  def exist_on_title?(keyword)
+  def exists_on_title?(keyword)
     return false if keyword.nil? || keyword.empty?
     keyword.split(/\s|　/).each {|key|
       return false if title.index(key).nil?
@@ -142,7 +142,7 @@ class Content
     return true
   end
 
-  def exist_on_content?(keyword)
+  def exists_on_content?(keyword)
     return false if keyword.nil? || keyword.empty?
     keyword.split(/\s|　/).each {|key|
       return false if content.index(key).nil?
@@ -154,16 +154,16 @@ class Content
     rt = Array.new()
     Summary.ids.each {|id|
       c = Content.new(id.to_s)
-      if (chk_title && c.exist_on_title?(keyword)) || 
-         (chk_content && c.exist_on_content?(keyword))
+      if (chk_title && c.exists_on_title?(keyword)) || 
+         (chk_content && c.exists_on_content?(keyword))
         rt.push(c)
       end
     } if !keyword.nil? && !keyword.empty?
     return rt
   end
 
-  def self.exist(id)
-    return Summary.exist(id.to_s)
+  def self.exists?(id)
+    return Summary.exists?(id.to_s)
   end
 
 end

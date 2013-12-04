@@ -132,7 +132,7 @@ class Summary
     return SUMMARIES.keys
   end
 
-  def self.exist(id)
+  def self.exists?(id)
     return (SUMMARIES[id.to_sym] != nil)
   end
 
