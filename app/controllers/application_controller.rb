@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   private
   def authorize
     unless User.find(session[:user_id])
+      session[:request_path] = request.fullpath 
       redirect_to '/mdwiki/login'
     end
   end

@@ -11,7 +11,9 @@ class LoginController < ApplicationController
       rt.store('alert', "Invalid username or password.")
     else
       session[:user_id] = u.user
-      rt.store('href', '/mdwiki')
+      fullpath = session[:request_path].nil? ? '/mdwiki' : session[:request_path]
+      session[:request_path] = nil
+      rt.store('href', fullpath)
     end
     render :json => rt
   end
