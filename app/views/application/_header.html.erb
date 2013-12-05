@@ -12,6 +12,7 @@
   <% if @header_params.save? %>
     <%= content_tag(:span, link_to('&nbsp;&nbsp;'.html_safe, nil, {
       :title => 'Save', 
+      :id => 'mdwiki_save_btn',
       :class => 'mdwiki_btn mdwiki_save_btn',
       :onclick => 'return ' + @header_params.save_cmd + '_page();'})) %>
   <% end %>
