@@ -1,7 +1,13 @@
+# user => User name is required.
+# pass => Password. If undefined, does not require authentication.
+# mail => Mail Address.
+# role => reader | editor | admin
 users:
   - user: subscriber
     pass: 
     mail:
+    role: 
   - user: admin
     pass: admin
     mail:
+    role: admin
