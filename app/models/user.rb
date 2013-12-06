@@ -1,9 +1,12 @@
 class User
 
+  DEFAULT_ROLE = RoleModule::READER
+
   def initialize(u)
     @user = u[:user]
     @pass = u[:pass]
     @mail = u[:mail]
+    @role = u[:role]
   end
 
   def user
@@ -16,6 +19,11 @@ class User
 
   def auth?(pass)
     return (@pass == nil || @pass == pass)
+  end
+
+  def role
+    rt = RoleModule.value_of(@role)
+    return rt.nil? ? DEFAULT_ROLE : rt
   end
 
   def self.find(user)
