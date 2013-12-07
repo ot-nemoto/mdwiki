@@ -24,7 +24,7 @@ class PagesController < ApplicationController
       redirect_to '/mdwiki/' and return
     end
 
-    if !Content.exist(id)
+    if !Content.exists?(id)
       redirect_to '/mdwiki/' and return
     end
 
@@ -88,7 +88,7 @@ class PagesController < ApplicationController
 
   def remove_all(id = params[:id])
     rt = Hash.new
-    if Content.exist(id)
+    if Content.exists?(id)
       content = Content.new(id)
       content.remove_all().each {|removed_id|
         Attachment.remove(removed_id) if removed_id != nil
@@ -100,7 +100,7 @@ class PagesController < ApplicationController
 
   def remove(id = params[:id])
     rt = Hash.new
-    if Content.exist(id)
+    if Content.exists?(id)
       content = Content.new(id)
       removed_id = content.remove()
       Attachment.remove(removed_id) if removed_id != nil
@@ -132,7 +132,7 @@ class PagesController < ApplicationController
     id = nil
     begin
       id = Digest::MD5.hexdigest(SecureRandom.uuid)
-    end while Content.exist(id)
+    end while Content.exists?(id)
     return id
   end
 
