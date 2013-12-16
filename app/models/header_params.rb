@@ -6,6 +6,8 @@ class HeaderParams
   NEW    = 'new'
   EDIT   = 'edit'
 
+  attr_reader :id, :keyword, :save_cmd
+
   def initialize(type, param = nil)
     case type
     when HeaderParams::MAIN then
@@ -59,18 +61,6 @@ class HeaderParams
 
   def cancel?
     return @cancel.nil? ? false : @cancel
-  end
-
-  def id
-    return @id
-  end
-
-  def save_cmd
-    return @save_cmd
-  end
-
-  def keyword
-    return @keyword
   end
 
   def chk_title?

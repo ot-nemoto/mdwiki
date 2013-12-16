@@ -2,7 +2,11 @@ class Summary
 
   ROOT_PARENT_ID = 'ROOT'
 
-  def initialize(id)
+  attr_accessor :title, :parent, :create_user, :create_date, :update_user, :update_date
+  attr_reader :id
+
+  def initialize(id = nil)
+    return if id.nil?
     @id = id
     s   = SUMMARIES[id.to_sym]
     if s != nil
@@ -13,58 +17,6 @@ class Summary
       @update_user = s[:update_user]
       @update_date = s[:update_date]
     end
-  end
-
-  def id
-    return @id
-  end
-
-  def title
-    return @title
-  end
-
-  def title=(s)
-    @title = s
-  end
-
-  def parent
-    return @parent
-  end
-
-  def parent=(s)
-    @parent = s
-  end
-
-  def create_user
-    return @create_user
-  end
-
-  def create_user=(s)
-    @create_user = s
-  end
-
-  def create_date
-    return @create_date
-  end
-
-  def create_date=(s)
-    @create_date = s
-  end
-
-  def update_user
-    return @update_user
-  end
-
-  def update_user=(s)
-    @update_user = s
-  end
-
-  def update_date
-    return @update_date
-  end
-
-  def update_date=(s)
-    @update_date = s
   end
 
   def breadcrumb_list

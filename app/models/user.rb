@@ -2,6 +2,8 @@ class User
 
   DEFAULT_ROLE = RoleModule::READER
 
+  attr_reader :user, :mail
+
   def initialize(u = nil)
     if !u.nil?
       @user = u[:user]
@@ -11,22 +13,9 @@ class User
     end
   end
 
-  def user
-    return @user
-  end
-
-  def mail
-    return @mail
-  end
-
   def auth?(pass)
     return false if @user.nil? || @user.empty?
     return (@pass.nil? || @pass == pass)
-  end
-
-  def role
-    rt = RoleModule.value_of(@role)
-    return rt.nil? ? DEFAULT_ROLE : rt
   end
 
   def role
