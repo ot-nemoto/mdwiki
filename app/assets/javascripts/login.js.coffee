@@ -26,7 +26,10 @@ login =() ->
       if data.href
         $(location).attr('href', data.href)
       if data.alert
-        $('#alert').html(data.alert)
+        $('#alert_message').html(data.alert)
+        $('#alert_message').show()
         $('#password').focus()
         $('#password').select()
+        $('#username').addClass('alert')
+        $('#password').addClass('alert')
   return false

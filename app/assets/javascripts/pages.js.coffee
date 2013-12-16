@@ -22,6 +22,12 @@ $ ->
       (data) ->
         if data.href
           $(location).attr('href', data.href)
+        if data.alert
+          $('#alert_message').html(data.alert)
+          $('#alert_message').show()
+          $('#md_title').focus()
+          $('#md_title').select()
+          $('#md_title').addClass('alert')
     return false
 
   @update_page =() ->
@@ -32,6 +38,12 @@ $ ->
       (data) ->
         if data.href
           $(location).attr('href', data.href)
+        if data.alert
+          $('#alert_message').html(data.alert)
+          $('#alert_message').show()
+          $('#md_title').focus()
+          $('#md_title').select()
+          $('#md_title').addClass('alert')
     return false
 
   @remove_page =(id) ->

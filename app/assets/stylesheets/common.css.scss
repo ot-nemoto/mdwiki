@@ -6,5 +6,32 @@ body.env_production {
 }
 
 body.env_development {
-  background-color: skyblue
+  background-color: skyblue;
+}
+
+body, input, button {
+  font-family: monospace;
+}
+
+.alert {
+  background-color: hotpink;
+}
+
+.alert_message {
+  position:      absolute;
+  bottom:        10px;
+  right:         10px;
+  background:    lawngreen;
+  padding:       5px;
+  border-radius: 5px;
+  color:         white;
+  display:       none;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
 }

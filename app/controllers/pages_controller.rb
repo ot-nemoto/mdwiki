@@ -24,7 +24,7 @@ class PagesController < ApplicationController
       redirect_to '/mdwiki/' and return
     end
 
-    if !Content.exist(id)
+    if !Content.exists?(id)
       redirect_to '/mdwiki/' and return
     end
 
@@ -57,6 +57,11 @@ class PagesController < ApplicationController
   end
 
   def insert(parent_id = params[:parent_id])
+    rt = Hash.new
+    if StringUtil.blank?(params[:md_title])
+      rt.store('alert', "Title has not been entered.")
+      render :json => rt and return
+    end
     id = make_content_id()
     content = Content.new(id)
     content.parent = parent_id
@@ -68,12 +73,16 @@ class PagesController < ApplicationController
     content.content = params[:md_content]
     content.save()
 
-    rt = Hash.new
     rt.store('href', '/mdwiki/' + id)
     render :json => rt
   end
 
   def update(id = params[:id])
+    rt = Hash.new
+    if StringUtil.blank?(params[:md_title])
+      rt.store('alert', "Title has not been entered.")
+      render :json => rt and return
+    end
     content = Content.new(id)
     content.update_user = session[:user_id]
     content.update_date = Time.now.strftime("%Y-%m-%d %H:%M:%S")
@@ -81,14 +90,13 @@ class PagesController < ApplicationController
     content.content = params[:md_content]
     content.save()
 
-    rt = Hash.new
     rt.store('href', '/mdwiki/' + id)
     render :json => rt
   end
 
   def remove_all(id = params[:id])
     rt = Hash.new
-    if Content.exist(id)
+    if Content.exists?(id)
       content = Content.new(id)
       content.remove_all().each {|removed_id|
         Attachment.remove(removed_id) if removed_id != nil
@@ -100,7 +108,7 @@ class PagesController < ApplicationController
 
   def remove(id = params[:id])
     rt = Hash.new
-    if Content.exist(id)
+    if Content.exists?(id)
       content = Content.new(id)
       removed_id = content.remove()
       Attachment.remove(removed_id) if removed_id != nil
@@ -132,7 +140,7 @@ class PagesController < ApplicationController
     id = nil
     begin
       id = Digest::MD5.hexdigest(SecureRandom.uuid)
-    end while Content.exist(id)
+    end while Content.exists?(id)
     return id
   end
 
