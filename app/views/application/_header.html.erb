@@ -29,6 +29,7 @@
   <% if @header_params.edit? %>
     <%= content_tag(:span, link_to('&nbsp;&nbsp;'.html_safe, '/mdwiki/' + @header_params.id + '/edit', {
       :title => 'Edit', 
+      :id => 'mdwiki_edit_btn',
       :class => 'mdwiki_btn mdwiki_edit_btn'})) %>
   <% end %>
   <% if @header_params.remove? %>
