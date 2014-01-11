@@ -15,4 +15,12 @@ $(function(){
     }
     return true;
   });
+  // 'Create' shortcut key
+  $(document).bind('keydown', 'c', function(){
+    if ($('#mdwiki_create_btn').size() > 0) {
+      $(location).attr('href', $('#mdwiki_create_btn').attr('href'))
+      return false;
+    }
+    return true;
+  });
 });

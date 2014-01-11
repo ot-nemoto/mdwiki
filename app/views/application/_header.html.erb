@@ -24,6 +24,7 @@
   <% if @header_params.create? %>
     <%= content_tag(:span, link_to('&nbsp;&nbsp;'.html_safe, '/mdwiki/' + @header_params.id + '/new', {
       :title => 'Create', 
+      :id => 'mdwiki_create_btn',
       :class => 'mdwiki_btn mdwiki_create_btn'})) %>
   <% end %>
   <% if @header_params.edit? %>
