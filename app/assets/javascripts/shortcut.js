@@ -23,4 +23,12 @@ $(function(){
     }
     return true;
   });
+  // 'Preview' shortcut key
+  $(document).bind('keydown', 'ctrl+shift+e', function(){
+    if ($('#mdwiki_preview_btn').size() > 0) {
+      $('#mdwiki_preview_btn').click();
+      return false;
+    }
+    return true;
+  });
 });

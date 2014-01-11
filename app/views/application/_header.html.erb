@@ -6,6 +6,7 @@
   <% if @header_params.preview? %>
     <%= content_tag(:span, link_to('&nbsp;&nbsp;'.html_safe, nil, {
       :title => 'Preview', 
+      :id => 'mdwiki_preview_btn',
       :onclick => 'return preview();', 
       :class => 'mdwiki_btn mdwiki_preview_btn'})) %>
   <% end %>
