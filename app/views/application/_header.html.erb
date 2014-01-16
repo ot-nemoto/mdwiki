@@ -1,6 +1,8 @@
-<%= content_tag(:div, nil, {:class => 'mdwiki_header'}) do %>
-  <%= link_to image_tag('/assets/mdwiki-logo.png',:height => '40px'), '/mdwiki' %>
-<% end %>
+<div class="mdwiki_header">
+  <a href="/mdwiki" class="mdwiki_logo_link">
+    <span class="mdwiki_logo">mdwiki</span>
+  </a>
+</div>
 
 <%= content_tag(:div, nil, {:class => 'mdwiki_menu'}) do %>
   <% if @header_params.preview? %>
