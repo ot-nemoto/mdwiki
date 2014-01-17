@@ -3,10 +3,12 @@
   <%= content_tag(:div, text_field_tag('username')) %>
   <%= content_tag(:div, password_field_tag('password')) %>
   <%= content_tag(:div, '&nbsp;'.html_safe) %>
-  <%= content_tag(:div, link_to('&nbsp;&nbsp;'.html_safe, nil, {
-    :title => 'Login', 
-    :class => 'mdwiki_btn mdwiki_login_btn', 
-    :onclick => 'return login();'})) %>
+  <div>
+    <span class="mdwiki_menu_item">
+      <a href="#" onclick="return login();" 
+        class="mdwiki_menu_link">Login</a>
+    </span>
+  </div>
 <% end %>
 
 <%= content_tag(:span, @alert, {

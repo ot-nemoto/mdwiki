@@ -2,14 +2,6 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-.mdwiki_login {
-  position: absolute;
-  left: 5px;
-  right: 5px;
-  top:   30%;
-  text-align: center;
-}
-
 .mdwiki_btn {
   font-size:            xx-large;
   background-position:  center center;
@@ -27,58 +19,12 @@
   background-color: #ffff22;
 }
 
-.mdwiki_login_btn {
-  font-size:        xx-large;
-  background-image: url('/assets/mdwiki_login.png');
-}
-
-.mdwiki_logout_btn {
-  background-image: url('/assets/mdwiki_logout.png');
-}
-
-.mdwiki_remove_btn {
-  background-image: url('/assets/mdwiki_remove.png');
-}
-
-.mdwiki_remove_with_children_btn {
-  background-image: url('/assets/mdwiki_remove_with_children.png');
-}
-
-.mdwiki_edit_btn {
-  background-image: url('/assets/mdwiki_edit.png');
-}
-
-.mdwiki_create_btn {
-  background-image: url('/assets/mdwiki_create.png');
-}
-
-.mdwiki_cancel_btn {
-  background-image: url('/assets/mdwiki_cancel.png');
-}
-
-.mdwiki_save_btn {
-  background-image: url('/assets/mdwiki_save.png');
-}
-
-.mdwiki_preview_btn {
-  background-image: url('/assets/mdwiki_preview.png');
-}
-
-.mdwiki_search_btn {
-  background-image: url('/assets/mdwiki_search.png');
-}
-
 .mdwiki_header {
   position: absolute;
   left:     0px;
   top:      0px;
   height:   40px;
   width:    200px;
-}
-
-.mdwiki_menu {
-  text-align: right;
-  margin:     5px 10px;
 }
 
 .mdwiki_list {

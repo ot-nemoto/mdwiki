@@ -1,50 +1,49 @@
 <div class="mdwiki_header">
-  <a href="/mdwiki" class="mdwiki_logo_link">
-    <span class="mdwiki_logo">mdwiki</span>
-  </a>
+  <span class="mdwiki_logo">
+    <a href="/mdwiki" class="mdwiki_logo_link">mdwiki</a>
+  </span>
 </div>
 
 <%= content_tag(:div, nil, {:class => 'mdwiki_menu'}) do %>
   <% if @header_params.preview? %>
-    <%= content_tag(:span, link_to('&nbsp;&nbsp;'.html_safe, nil, {
-      :title => 'Preview', 
-      :id => 'mdwiki_preview_btn',
-      :onclick => 'return preview();', 
-      :class => 'mdwiki_btn mdwiki_preview_btn'})) %>
+  <span class="mdwiki_menu_item">
+    <a href="#" onclick="return preview();" 
+      class="mdwiki_menu_link" id="mdwiki_preview_btn">Preview</a>
+  </span>
   <% end %>
   <% if @header_params.save? %>
-    <%= content_tag(:span, link_to('&nbsp;&nbsp;'.html_safe, nil, {
-      :title => 'Save', 
-      :id => 'mdwiki_save_btn',
-      :class => 'mdwiki_btn mdwiki_save_btn',
-      :onclick => 'return ' + @header_params.save_cmd + '_page();'})) %>
+  <span class="mdwiki_menu_item">
+    <a href="#" onclick="return <%= @header_params.save_cmd %>_page();" 
+      class="mdwiki_menu_link" id="mdwiki_save_btn">Save</a>
+  </span>
   <% end %>
   <% if @header_params.cancel? %>
-    <%= content_tag(:span, link_to('&nbsp;&nbsp;'.html_safe, '/mdwiki/' + @header_params.id, {
-      :title => 'Cancel', 
-      :class => 'mdwiki_btn mdwiki_cancel_btn'})) %>
+  <span class="mdwiki_menu_item">
+    <a href='/mdwiki/<%= @header_params.id %>' 
+      class="mdwiki_menu_link">Cancel</a>
+  </span>
   <% end %>
   <% if @header_params.create? %>
-    <%= content_tag(:span, link_to('&nbsp;&nbsp;'.html_safe, '/mdwiki/' + @header_params.id + '/new', {
-      :title => 'Create', 
-      :id => 'mdwiki_create_btn',
-      :class => 'mdwiki_btn mdwiki_create_btn'})) %>
+  <span class="mdwiki_menu_item">
+    <a href='/mdwiki/<%= @header_params.id %>/new' 
+      class="mdwiki_menu_link" id='mdwiki_create_btn'>Create</a>
+  </span>
   <% end %>
   <% if @header_params.edit? %>
-    <%= content_tag(:span, link_to('&nbsp;&nbsp;'.html_safe, '/mdwiki/' + @header_params.id + '/edit', {
-      :title => 'Edit', 
-      :id => 'mdwiki_edit_btn',
-      :class => 'mdwiki_btn mdwiki_edit_btn'})) %>
+  <span class="mdwiki_menu_item">
+    <a href='/mdwiki/<%= @header_params.id %>/edit' 
+      class="mdwiki_menu_link" id='mdwiki_edit_btn'>Edit</a>
+  </span>
   <% end %>
   <% if @header_params.remove? %>
-    <%= content_tag(:span, link_to('&nbsp;&nbsp;'.html_safe, nil, {
-      :title => 'Remove', 
-      :class => 'mdwiki_btn mdwiki_remove_btn', 
-      :onclick => 'return remove_page(\'' + @header_params.id + '\');'})) %>
-    <%= content_tag(:span, link_to('&nbsp;&nbsp;'.html_safe, nil, {
-      :title => 'Remove with children', 
-      :class => 'mdwiki_btn mdwiki_remove_with_children_btn', 
-      :onclick => 'return remove_page_with_children(\'' + @header_params.id + '\');'})) %>
+  <span class="mdwiki_menu_item">
+    <a href="#" onclick="return remove_page('<%= @header_params.id %>');" 
+      class="mdwiki_menu_link">Remove</a>
+  </span>
+  <span class="mdwiki_menu_item">
+    <a href="#" onclick="return remove_page_with_children('<%= @header_params.id %>');" 
+      class="mdwiki_menu_link">Remove All</a>
+  </span>
   <% end %>
   <span class="mdwiki_checkbox">
     <%= check_box_tag('chk_title', nil, @header_params.chk_title?, {}) %>
@@ -55,15 +54,13 @@
     <label for="chk_content" title="Content"></label>
   </span>
   <%= content_tag(:span, text_field_tag('search_key', @header_params.keyword)) %>
-  <%= content_tag(:span, link_to('&nbsp;&nbsp;'.html_safe, nil, {
-    :title => 'Search', 
-    :class => 'mdwiki_btn mdwiki_search_btn',
-    :onclick => 'return search_pages();'})) %>
-  <%= content_tag(:span, session[:user_id]) %>
-  <%= content_tag(:span, link_to('&nbsp;&nbsp;'.html_safe, nil, {
-    :title => 'Logout', 
-    :class => 'mdwiki_btn mdwiki_logout_btn', 
-    :onclick => 'return logout();'})) %>
+  <span class="mdwiki_menu_item">
+    <a href="#" onclick="return search_pages();" class="mdwiki_menu_link">Search</a>
+  </span>
+  <span class="mdwiki_menu_user"><%= session[:user_id] %></span>
+  <span class="mdwiki_menu_item">
+    <a href="#" onclick="return logout();" class="mdwiki_menu_link">Logout</a>
+  </span>
 <% end %>
 
 <div id="mdwiki_modal">
