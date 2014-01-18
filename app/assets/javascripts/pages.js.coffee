@@ -48,7 +48,7 @@ $ ->
 
   @remove_page =(id) ->
     mdwiki_dialog(
-      "Are you sure?"
+      "Can I delete it?"
       () ->
         $.post '/mdwiki/remove',
           id: id
@@ -65,7 +65,7 @@ $ ->
 
   @remove_page_with_children =(id) ->
     mdwiki_dialog(
-      "Are you sure?"
+      "Can I delete it?"
       () ->
         $.post '/mdwiki/removeall',
           id: id
@@ -82,7 +82,7 @@ $ ->
 
   @remove_attachment =(id, file) ->
     mdwiki_dialog(
-      "Are you sure?"
+      "Can I delete it?"
       () ->
         $.post '/mdwiki/attachment/remove',
           id: id
