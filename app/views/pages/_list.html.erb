@@ -11,19 +11,14 @@
         <nobr>
           <% if summary[:child] %>
             <% if is_child %>
-              <%= link_to('&nbsp;&nbsp;'.html_safe, nil, {
-                :id => ('cur_' + key), 
-                :onclick => 'return show_child(\'' + key + '\');', 
-                :class => 'mdwiki_btn mdwiki_close_btn'}) %>
+              <a href="#" onclick="return show_child('<%= key %>');"><div 
+                  id="cur_<%= key %>" class="mdwiki_close_btn"></div></a>
             <% else %>
-              <%= link_to('&nbsp;&nbsp;'.html_safe, nil, {
-                :id => ('cur_' + key), 
-                :onclick => 'return show_child(\'' + key + '\');', 
-                :class => 'mdwiki_btn mdwiki_open_btn'}) %>
+              <a href="#" onclick="return show_child('<%= key %>');"><div 
+                  id="cur_<%= key %>" class="mdwiki_open_btn"></div></a>
              <% end %>
           <% else %>
-            <%= content_tag(:span, '&nbsp;&nbsp;'.html_safe, {
-              :class => 'mdwiki_none'}) %>
+            <div class="mdwiki_none"></div>
           <% end %>
           <%= link_to(title, '/mdwiki/' + key, {:class => 'content_list'}) %>
         </nobr>

@@ -9,7 +9,11 @@ body.env_development {
   background-color: skyblue;
 }
 
-body, input, button {
+body {
+  font-family: 'Alegreya Sans', sans-serif;
+}
+
+input, button {
   font-family: monospace;
 }
 
