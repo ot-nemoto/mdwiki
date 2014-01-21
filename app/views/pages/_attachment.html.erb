@@ -12,7 +12,9 @@
 <%= content_tag(:div, nil, {:class => 'mdwiki_attach_list'}) do %>
   <% attachments.each do |attach| %>
     <%= content_tag(:div, nil, {:class => 'mdwiki_attach_box'}) do %>
-      <%= image_tag(id + '/' + attach, :size => '150x150') %>
+      <%= image_tag(id + '/' + attach, {
+        :size => '150x150', 
+        :onclick => 'return preview_attachment(this.src);'}) %>
       <span class="mdwiki_menu_btn">
         <a href="#" onclick="return remove_attachment('<%= id %>', '<%= attach %>');" 
           class="mdwiki_menu_link">x</a>
