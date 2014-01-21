@@ -2,6 +2,11 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+.mdwiki_current_list {
+  font-weight: bolder;
+  text-decoration:underline;
+}
+
 .mdwiki_open_btn {
   position: relative;
   width:0;

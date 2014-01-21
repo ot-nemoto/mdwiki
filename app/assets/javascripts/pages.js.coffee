@@ -113,10 +113,11 @@ $ ->
         $('#attachment_content').html(data)
     return false
 
-  @show_child = (id) ->
+  @show_child = (id, current_id) ->
     if $('#cur_' + id).hasClass('mdwiki_open_btn')
       $.post '/mdwiki/list', 
         id: id 
+        current_id: current_id
         (data) ->
           $('#div_' + id).html(data)
           $('#cur_' + id).removeClass('mdwiki_open_btn').addClass('mdwiki_close_btn')

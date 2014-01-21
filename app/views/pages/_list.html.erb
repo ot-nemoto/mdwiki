@@ -11,21 +11,25 @@
         <nobr>
           <% if summary[:child] %>
             <% if is_child %>
-              <a href="#" onclick="return show_child('<%= key %>');"><div 
+              <a href="#" onclick="return show_child('<%= key %>', '<%= current_id %>');"><div 
                   id="cur_<%= key %>" class="mdwiki_close_btn"></div></a>
             <% else %>
-              <a href="#" onclick="return show_child('<%= key %>');"><div 
+              <a href="#" onclick="return show_child('<%= key %>', '<%= current_id %>');"><div 
                   id="cur_<%= key %>" class="mdwiki_open_btn"></div></a>
              <% end %>
           <% else %>
             <div class="mdwiki_none"></div>
           <% end %>
-          <%= link_to(title, '/mdwiki/' + key, {:class => 'content_list'}) %>
+          <% if current_id == key %>
+            <%= link_to(title, '/mdwiki/' + key, {:class => 'mdwiki_current_list'}) %>
+          <% else %>
+            <%= link_to(title, '/mdwiki/' + key) %>
+          <% end %>
         </nobr>
         <% if is_child %>
           <%= content_tag(:div, nil, :id => ('div_' + key)) do %>
             <%= render(:partial => "list", :locals => {
-              :summaries_list => summaries_list}) %>
+              :summaries_list => summaries_list, :current_id => current_id}) %>
           <% end %>
         <% else %>
           <%= content_tag(:div, nil, :id => ('div_' + key)) %>
