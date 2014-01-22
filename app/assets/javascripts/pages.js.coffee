@@ -102,9 +102,9 @@ $ ->
     )
     return false
 
-  @preview_attachment =(src) ->
+  $("img").click ->
     mdwiki_attach_preview(
-      src
+      this.src
       () ->
         $("#mdwiki_attach_modal").fadeOut(250)
         return false
