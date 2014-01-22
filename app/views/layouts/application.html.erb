@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Mdwiki</title>
+  <% if !@content.nil? && !@content.title.nil? %>
+    <title>mdwiki - <%= @content.title %></title>
+  <% else %>
+    <title>mdwiki</title>
+  <% end %>
   <link href='https://fonts.googleapis.com/css?family=Alegreya+Sans:300' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=Dosis' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
