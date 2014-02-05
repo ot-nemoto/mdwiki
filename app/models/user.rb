@@ -15,7 +15,7 @@ class User
 
   def auth?(pass)
     return false if @user.nil? || @user.empty?
-    return (@pass.nil? || @pass == pass)
+    return (@pass.nil? || @pass == Digest::SHA256.hexdigest(pass))
   end
 
   def role
