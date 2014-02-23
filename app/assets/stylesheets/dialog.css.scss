@@ -1,0 +1,62 @@
+// Place all the styles related to the pages controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+#mdwiki_dlg_modal {
+  display:  none;
+  position: fixed;
+  top:      0px;
+  left:     0px;
+  width:    100%;
+  height:   100%;
+  z-index:  100;
+}
+
+#mdwiki_dlg_bg {
+  position:         fixed;
+  width:            100%;
+  height:           100%;
+  background-color: #000000;
+  opacity:          0.75;
+  filter:           alpha(opacity=75);
+  -ms-filter:       "alpha(opacity=75)";
+}
+
+#mdwiki_dlg {
+  position:         relative;
+  width:            300px;
+  height:           200px;
+  background-color: #ffffff;
+  border-radius:    10px;
+}
+
+#mdwiki_dlg_message {
+  position:   absolute;
+  text-align: center;
+  width:      100%;
+  top:        40%;
+  font-family: 'Poiret One', cursive;
+  font-size: 20px;
+}
+
+.mdwiki_dlg_border {
+  position:     absolute;
+  border-width: 0px 1px 1px 0px;
+  border-style: solid;
+  border-color: gray;
+  bottom:       40px;
+  left:         5px;
+  right:        5px;
+}
+
+.mdwiki_dlg_accept_btn {
+  position:         absolute;
+  bottom:           10px;
+  right:            70px;
+}
+
+.mdwiki_dlg_cancel_btn {
+  position:         absolute;
+  bottom:           10px;
+  right:            20px;
+}

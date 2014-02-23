@@ -1,0 +1,51 @@
+// Place all the styles related to the pages controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.mdwiki_current_list {
+  font-weight: bolder;
+  text-decoration:underline;
+}
+
+.mdwiki_open_btn {
+  position: relative;
+  width:0;
+  height:0;
+  border-top:    5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left:   10px solid black;
+
+  display: inline-block;
+  _display: inline;
+}
+
+.mdwiki_open_btn:hover {
+  border-left:   10px solid #ffaaaa;
+}
+
+.mdwiki_close_btn {
+  position: relative;
+  width:0;
+  height:0;
+  border-top:    10px solid black;
+  border-right:  5px solid transparent;
+  border-left:   5px solid transparent;
+
+  display: inline-block;
+  _display: inline;
+}
+
+.mdwiki_close_btn:hover {
+  border-top:    10px solid #ffaaaa;
+}
+
+.mdwiki_none {
+  width:8px;
+  height:8px;
+  border-width: 1px 1px 1px 1px;
+  border-style: solid;
+  border-color: gray;
+
+  display: inline-block;
+  _display: inline;
+}

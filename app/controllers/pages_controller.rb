@@ -9,13 +9,13 @@ class PagesController < ApplicationController
     render 'main'
   end
 
-  def list(id = params[:id])
+  def list(id = params[:id], current_id = params[:current_id])
     @summaries_list = Array.new()
     @summaries_list.push({
       :id => id, 
       :summaries => Content.child_list(id)})
     render :partial => "list", :locals => {
-      :summaries_list => @summaries_list}
+      :summaries_list => @summaries_list, :current_id => current_id}
   end
 
   def show(id = params[:id])

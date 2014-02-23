@@ -1,0 +1,24 @@
+// Place all the styles related to the login controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.mdwiki_menu {
+  text-align: right;
+}
+
+.mdwiki_menu_user {
+  font-family: 'Poiret One', cursive;
+  font-size: 20px;
+  margin: 0px 5px 0px 5px;
+}
+
+.mdwiki_menu_btn {
+  font-family: 'Dosis', sans-serif;
+  font-size: 16px;
+  margin: 0px 5px 0px 5px;
+}
+
+a.mdwiki_menu_link:link    { color:#000000; text-decoration:none }
+a.mdwiki_menu_link:visited { color:#000000; text-decoration:none }
+a.mdwiki_menu_link:hover   { color:#ffaaaa; text-decoration:none }
+a.mdwiki_menu_link:active  { color:#000000; text-decoration:none }
