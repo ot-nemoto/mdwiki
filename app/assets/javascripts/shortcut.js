@@ -9,6 +9,9 @@ $(function(){
   });
   // 'Edit' shortcut key
   $(document).bind('keydown', 'e', function(){
+    if ($(':focus').attr('id') === 'search_key') {
+      return true;
+    }
     if ($('#mdwiki_edit_btn').size() > 0) {
       $(location).attr('href', $('#mdwiki_edit_btn').attr('href'))
       return false;
@@ -17,6 +20,9 @@ $(function(){
   });
   // 'Create' shortcut key
   $(document).bind('keydown', 'c', function(){
+    if ($(':focus').attr('id') === 'search_key') {
+      return true;
+    }
     if ($('#mdwiki_create_btn').size() > 0) {
       $(location).attr('href', $('#mdwiki_create_btn').attr('href'))
       return false;
