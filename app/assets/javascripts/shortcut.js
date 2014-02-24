@@ -1,7 +1,7 @@
 $(function(){
   $(document).keydown(function(e) {
     // 'Save' shortcut key 'ctrl+s'
-    if (e.ctrlKey && e.which === 83) {
+    if (!e.shiftKey && e.ctrlKey && e.which === 83) {
       if ($('#mdwiki_save_btn').size() > 0) {
         $('#mdwiki_save_btn').click();
         return false;
@@ -19,7 +19,7 @@ $(function(){
     }
 
     // 'Edit' shortcut key 'e'
-    if (e.which === 69) {
+    if (!e.shiftKey && !e.ctrlKey && e.which === 69) {
       if ($(':focus').attr('id') === 'search_key') {
         return true;
       }
@@ -31,7 +31,7 @@ $(function(){
     }
 
     // 'Create' shortcut key 'c'
-    if (e.which === 67) {
+    if (!e.shiftKey && !e.ctrlKey && e.which === 67) {
       if ($(':focus').attr('id') === 'search_key') {
         return true;
       }
