@@ -5,55 +5,55 @@
 </div>
 
 <%= content_tag(:div, nil, {:class => 'mdwiki_menu'}) do %>
-  <% if @header_params.preview? %>
+  <% if @f_permit.preview? %>
   <span class="mdwiki_menu_btn">
     <a href="#" onclick="return preview();" 
       class="mdwiki_menu_link" id="mdwiki_preview_btn">Preview</a>
   </span>
   <% end %>
-  <% if @header_params.save? %>
+  <% if @f_permit.save? %>
   <span class="mdwiki_menu_btn">
-    <a href="#" onclick="return <%= @header_params.save_cmd %>_page();" 
+    <a href="#" onclick="return <%= @f_permit.save_cmd %>_page();" 
       class="mdwiki_menu_link" id="mdwiki_save_btn">Save</a>
   </span>
   <% end %>
-  <% if @header_params.cancel? %>
+  <% if @f_permit.cancel? %>
   <span class="mdwiki_menu_btn">
-    <a href='/mdwiki/<%= @header_params.id %>' 
+    <a href='/mdwiki/<%= @f_permit.id %>' 
       class="mdwiki_menu_link">Cancel</a>
   </span>
   <% end %>
-  <% if @header_params.create? %>
+  <% if @f_permit.create? %>
   <span class="mdwiki_menu_btn">
-    <a href='/mdwiki/<%= @header_params.id %>/new' 
+    <a href='/mdwiki/<%= @f_permit.id %>/new' 
       class="mdwiki_menu_link" id='mdwiki_create_btn'>Create</a>
   </span>
   <% end %>
-  <% if @header_params.edit? %>
+  <% if @f_permit.edit? %>
   <span class="mdwiki_menu_btn">
-    <a href='/mdwiki/<%= @header_params.id %>/edit' 
+    <a href='/mdwiki/<%= @f_permit.id %>/edit' 
       class="mdwiki_menu_link" id='mdwiki_edit_btn'>Edit</a>
   </span>
   <% end %>
-  <% if @header_params.remove? %>
+  <% if @f_permit.remove? %>
   <span class="mdwiki_menu_btn">
-    <a href="#" onclick="return remove_page('<%= @header_params.id %>');" 
+    <a href="#" onclick="return remove_page('<%= @f_permit.id %>');" 
       class="mdwiki_menu_link">Remove</a>
   </span>
   <span class="mdwiki_menu_btn">
-    <a href="#" onclick="return remove_page_with_children('<%= @header_params.id %>');" 
+    <a href="#" onclick="return remove_page_with_children('<%= @f_permit.id %>');" 
       class="mdwiki_menu_link">Remove All</a>
   </span>
   <% end %>
   <span class="mdwiki_checkbox">
-    <%= check_box_tag('chk_title', nil, @header_params.chk_title?, {}) %>
+    <%= check_box_tag('chk_title', nil, @f_permit.chk_title?, {}) %>
     <label for="chk_title" title="Title"></label>
   </span>
   <span class="mdwiki_checkbox">
-    <%= check_box_tag('chk_content', nil, @header_params.chk_content?, {}) %>
+    <%= check_box_tag('chk_content', nil, @f_permit.chk_content?, {}) %>
     <label for="chk_content" title="Content"></label>
   </span>
-  <%= content_tag(:span, text_field_tag('search_key', @header_params.keyword)) %>
+  <%= content_tag(:span, text_field_tag('search_key', @f_permit.keyword)) %>
   <span class="mdwiki_menu_btn">
     <a href="#" onclick="return search_pages();" class="mdwiki_menu_link">Search</a>
   </span>

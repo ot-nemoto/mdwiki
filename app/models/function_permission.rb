@@ -1,4 +1,4 @@
-class HeaderParams
+class FunctionPermission
 
   MAIN   = 'main'
   SEARCH = 'search'
@@ -10,27 +10,27 @@ class HeaderParams
 
   def initialize(type, param = nil)
     case type
-    when HeaderParams::MAIN then
+    when FunctionPermission::MAIN then
       @create = true
       @id     = param
-    when HeaderParams::SEARCH then
+    when FunctionPermission::SEARCH then
       if !param.nil?
         @keyword = param[:keyword]
         @chk_title = param[:chk_title]
         @chk_content = param[:chk_content]
       end
-    when HeaderParams::SHOW then
+    when FunctionPermission::SHOW then
       @create = true
       @remove = true
       @edit   = true
       @id     = param
-    when HeaderParams::NEW then
+    when FunctionPermission::NEW then
       @save     = true
       @save_cmd = 'insert'
       @preview  = true
       @cancel   = true
       @id       = param
-    when HeaderParams::EDIT then
+    when FunctionPermission::EDIT then
       @save     = true
       @save_cmd = 'update'
       @preview  = true

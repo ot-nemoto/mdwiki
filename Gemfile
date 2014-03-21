@@ -49,3 +49,9 @@ gem 'therubyracer'
 gem 'settingslogic'
 
 gem 'kramdown'
+
+group :test do
+  gem "rspec"
+  gem "rspec-rails"
+  gem 'fakefs', :require => "fakefs/safe"
+end

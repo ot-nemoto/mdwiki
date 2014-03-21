@@ -8,7 +8,7 @@ class SearchController < ApplicationController
       # oreder by update_date desc
       b.update_date <=> a.update_date
     }
-    @header_params = HeaderParams.new(HeaderParams::SEARCH, {
+    @f_permit = FunctionPermission.new(FunctionPermission::SEARCH, {
       :keyword => keyword,
       :chk_title => chk_title, 
       :chk_content => chk_content})

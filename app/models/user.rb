@@ -1,6 +1,6 @@
 class User
 
-  DEFAULT_ROLE = RoleModule::READER
+  DEFAULT_ROLE = Enum::Role::READER
 
   attr_reader :user, :mail
 
@@ -13,24 +13,25 @@ class User
     end
   end
 
-  def auth?(pass)
+  def auth?(input_pass)
     return false if @user.nil? || @user.empty?
-    return (@pass.nil? || @pass == Digest::SHA256.hexdigest(pass))
+    return true if @pass.nil?
+    return false if input_pass.nil?
+    return (@pass == Digest::SHA256.hexdigest(input_pass))
   end
 
   def role
-    rt = RoleModule.value_of(@role)
+    rt = Enum::Role.value_of(@role)
     return rt.nil? ? DEFAULT_ROLE : rt
   end
 
-  def self.find(user)
+  def self.find(user, user_list = USERS[:users])
     return nil if user.nil?
     return nil if user.empty?
-    USERS[:users].each {|u|
+    user_list.each {|u|
       next if u[:user] != user
       return User.new(u)
     }
     return nil
   end
-
 end

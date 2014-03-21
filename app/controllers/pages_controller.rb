@@ -5,7 +5,7 @@ class PagesController < ApplicationController
     @summaries_list.push({
       :id => Content::ROOT_PARENT_ID, 
       :summaries => Content.child_list(Content::ROOT_PARENT_ID)})
-    @header_params = HeaderParams.new(HeaderParams::MAIN, Content::ROOT_PARENT_ID)
+    @f_permit = FunctionPermission.new(FunctionPermission::MAIN, Content::ROOT_PARENT_ID)
     render 'main'
   end
 
@@ -38,21 +38,21 @@ class PagesController < ApplicationController
         :id => c[:id], 
         :summaries => Content.child_list(c[:id])})
     }
-    @header_params = HeaderParams.new(HeaderParams::SHOW, id)
+    @f_permit = FunctionPermission.new(FunctionPermission::SHOW, id)
   end
 
   def new(parent_id = params[:id])
     @content = Content.new(Content::NEW_CONTENT_ID)
     @content.parent = parent_id
     @attachments = Array.new
-    @header_params = HeaderParams.new(HeaderParams::NEW, parent_id)
+    @f_permit = FunctionPermission.new(FunctionPermission::NEW, parent_id)
     render 'edit'
   end
 
   def edit(id = params[:id])
     @content = Content.new(id)
-    @attachments = Attachment.find(id)
-    @header_params = HeaderParams.new(HeaderParams::EDIT, id)
+    @attachments = AttachmentUtil.find(id)
+    @f_permit = FunctionPermission.new(FunctionPermission::EDIT, id)
     render 'edit'
   end
 
@@ -99,7 +99,7 @@ class PagesController < ApplicationController
     if Content.exists?(id)
       content = Content.new(id)
       content.remove_all().each {|removed_id|
-        Attachment.remove(removed_id) if removed_id != nil
+        AttachmentUtil.remove_all(removed_id) if removed_id != nil
       }
       rt.store('href', '/mdwiki/' + content.parent)
     end
@@ -111,7 +111,7 @@ class PagesController < ApplicationController
     if Content.exists?(id)
       content = Content.new(id)
       removed_id = content.remove()
-      Attachment.remove(removed_id) if removed_id != nil
+      AttachmentUtil.remove_all(removed_id) if removed_id != nil
       rt.store('href', '/mdwiki/' + content.parent)
     end
     render :json => rt
@@ -125,15 +125,15 @@ class PagesController < ApplicationController
   end
 
   def upload_attach(id = params[:id], a = params[:attachment])
-    Attachment.upload(id, a)
+    AttachmentUtil.save(id, a)
     render :partial => "attachment", 
-      :locals => {:id => id, :attachments => Attachment.find(id)}
+      :locals => {:id => id, :attachments => AttachmentUtil.find(id)}
   end
 
   def remove_attach(id = params[:id], filename = params[:file])
-    Attachment.remove(id, filename)
+    AttachmentUtil.remove(id, filename)
     render :partial => "attachment", 
-      :locals => {:id => id, :attachments => Attachment.find(id)}
+      :locals => {:id => id, :attachments => AttachmentUtil.find(id)}
   end
 
   def make_content_id
