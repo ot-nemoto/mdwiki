@@ -4,13 +4,13 @@
 
 <%= content_tag(:div, nil, {:class => 'mdwiki_breadcrumb'}) do %>
   <%= render(:partial => 'breadcrumb', :locals => {
-    :breadcrumb_list => @content.breadcrumb_list}) %>
+    :breadcrumb_list => @content.summary.parents}) %>
 <% end %>
 
 <div class="mdwiki_list mdwiki_list_for_show">
   <%= content_tag(:div, nil, {:id => ('div_' + Content::ROOT_PARENT_ID)}) do %>
     <%= render(:partial => "list", :locals => {
-      :summaries_list => @summaries_list, :current_id => @content.id}) %>
+      :summaries => @summaries, :current_id => @content.id}) %>
   <% end %>
 </div>
 

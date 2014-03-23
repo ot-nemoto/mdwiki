@@ -1,5 +1,5 @@
 <%= link_to('TOP', {controller => 'mdwiki', :action => 'main'}) %>
 <% breadcrumb_list.each do |breadcrumb| %>
   <%= content_tag(:span, '/') %> 
-  <%= link_to(breadcrumb[:title], '/mdwiki/' + breadcrumb[:id]) %>
+  <%= link_to(breadcrumb.title.to_s, '/mdwiki/' + breadcrumb.id.to_s) %>
 <% end %>

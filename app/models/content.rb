@@ -5,10 +5,12 @@ class Content
   NEW_CONTENT_ID = 'NEW_CONTENT_ID'
   ROOT_PARENT_ID = Summary::ROOT_PARENT_ID
 
+  attr_reader :summary
+
   def initialize(id)
     @id        = id
     @summary   = Summary.new(id)
-    if Summary.exists?(id)
+    if Summary.exist?(id)
       File.open(file_path(), mode = 'r') {|f|
         @content = f.read
       }
@@ -89,18 +91,6 @@ class Content
     return dir_path().join(id().to_s)
   end
 
-  def breadcrumb_list
-    return @summary == nil ? Array.new() : @summary.breadcrumb_list() 
-  end
-
-  def child_list
-    return @summary == nil ? Array.new() : @summary.child_list() 
-  end
-  
-  def self.child_list(id)
-    return Summary.child_list(id)
-  end
-
   def save
     FileUtils.mkdir_p(dir_path()) unless FileTest.exists?(dir_path())
     File.open(file_path(), mode = 'w') {|f|
@@ -112,8 +102,8 @@ class Content
 
   def remove_all
     rt = Array.new()
-    child_list().each {|child|
-      c = Content.new(child[:key])
+    @summary.children.each {|child|
+      c = Content.new(child.id)
       c.remove_all().each {|removed_id|
         rt.push(removed_id)
       }
@@ -124,10 +114,9 @@ class Content
 
   def remove
     File.unlink(file_path())
-    child_list().each {|child|
-      summary = Summary.new(child[:key])
-      summary.parent = parent()
-      summary.update()
+    @summary.children.each {|child|
+      child.parent = parent
+      child.update
     }
     @summary.remove()
     @summary.commit()
@@ -163,7 +152,7 @@ class Content
   end
 
   def self.exists?(id)
-    return Summary.exists?(id.to_s)
+    return Summary.exist?(id.to_s)
   end
 
 end

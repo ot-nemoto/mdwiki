@@ -1,7 +1,7 @@
 # encoding: UTF-8
 require 'spec_helper'
 
-describe AttachmentUtil do
+describe Attachment do
   describe 'save' do
     before {
       File.open("image_new", "w").close()
@@ -10,7 +10,7 @@ describe AttachmentUtil do
       it {
         file = File.new("image_new")
         ufile = ActionDispatch::Http::UploadedFile.new({:tempfile => file, :filename => File.basename(file)})
-        AttachmentUtil.save('xxx', ufile, ".")
+        Attachment.save('xxx', ufile, ".")
         expect(FileTest.exist?('xxx')).to be true
         expect(FileTest.exist?('xxx/image_new')).to be true
       }
@@ -23,7 +23,7 @@ describe AttachmentUtil do
       it {
         file = File.new("image_new")
         ufile = ActionDispatch::Http::UploadedFile.new({:tempfile => file, :filename => File.basename(file)})
-        AttachmentUtil.save('xxx', ufile, ".")
+        Attachment.save('xxx', ufile, ".")
         expect(FileTest.exist?('xxx')).to be true
         expect(FileTest.exist?('xxx/image_1')).to be true
         expect(FileTest.exist?('xxx/image_new')).to be true
@@ -40,7 +40,7 @@ describe AttachmentUtil do
       File.open("yyy/image_3", "w").close()
     }
     it {
-      AttachmentUtil.remove_all('xxx', '.')
+      Attachment.remove_all('xxx', '.')
       expect(FileTest.exist?('xxx')).to be false
       expect(FileTest.exist?('xxx/image_1')).to be false
       expect(FileTest.exist?('xxx/image_2')).to be false
@@ -56,7 +56,7 @@ describe AttachmentUtil do
       File.open("xxx/image_2", "w").close()
     }
     it {
-      AttachmentUtil.remove('xxx', 'image_1', '.')
+      Attachment.remove('xxx', 'image_1', '.')
       expect(FileTest.exist?('xxx')).to be true
       expect(FileTest.exist?('xxx/image_1')).to be false
       expect(FileTest.exist?('xxx/image_2')).to be true
@@ -66,11 +66,11 @@ describe AttachmentUtil do
   describe 'find' do
     describe 'not files' do
       before { FileUtils::mkdir_p 'xxx' }
-      it { expect(AttachmentUtil.find('xxx', '.')).to match_array([]) }
+      it { expect(Attachment.find('xxx', '.')).to match_array([]) }
     end
     describe 'in derectory' do
       before { FileUtils::mkdir_p 'xxx/yyy' }
-      it { expect(AttachmentUtil.find('xxx', '.')).to match_array([]) }
+      it { expect(Attachment.find('xxx', '.')).to match_array([]) }
     end
     describe 'file exist' do
       before {
@@ -78,7 +78,7 @@ describe AttachmentUtil do
         File.open("xxx/image_1", "w").close()
         File.open("xxx/image_2", "w").close()
       }
-      it { expect(AttachmentUtil.find('xxx', '.')).to match_array([ 'image_1', 'image_2' ]) }
+      it { expect(Attachment.find('xxx', '.')).to match_array([ 'image_1', 'image_2' ]) }
     end
   end
 end

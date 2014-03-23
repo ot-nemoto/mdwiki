@@ -1,4 +1,4 @@
-module AttachmentUtil
+class Attachment
 
   def self.save(id, attachment, image_path = Settings.image_path)
     dir_path = Pathname(image_path).join(id.to_s)
@@ -11,8 +11,8 @@ module AttachmentUtil
 
   def self.remove_all(id, image_path = Settings.image_path)
     dir_path = Pathname(image_path).join(id.to_s)
-    AttachmentUtil.find(id.to_s, image_path).each {|f|
-      AttachmentUtil.remove(id.to_s, f, image_path) 
+    Attachment.find(id.to_s, image_path).each {|f|
+      Attachment.remove(id.to_s, f, image_path) 
     }
     Dir.unlink(dir_path) if FileTest.exist?(dir_path)
   end

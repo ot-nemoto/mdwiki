@@ -4,7 +4,7 @@
 
 <%= content_tag(:div, nil, {:class => 'mdwiki_breadcrumb'}) do %>
   <%= render(:partial => 'breadcrumb', :locals => {
-    :breadcrumb_list => @content.breadcrumb_list}) %>
+    :breadcrumb_list => @content.summary.parents}) %>
 <% end %>
 
 <%= content_tag(:div, nil, {:class => 'mdwiki_edit'}) do %>

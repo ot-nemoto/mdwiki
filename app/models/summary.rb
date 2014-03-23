@@ -5,11 +5,13 @@ class Summary
   attr_accessor :title, :parent, :create_user, :create_date, :update_user, :update_date
   attr_reader :id
 
-  def initialize(id = nil)
-    return if id.nil?
-    @id = id
-    s   = SUMMARIES[id.to_sym]
-    if s != nil
+  def initialize(
+    id, summary_path = Pathname(Settings.data_path).join(Settings.summary_file), summaries = SUMMARIES)
+    @id           = id
+    @summary_path = summary_path
+    @summaries    = summaries
+    s = @summaries[@id.to_sym]
+    if !s.nil? then
       @title       = s[:title]
       @parent      = s[:parent]
       @create_user = s[:create_user]
@@ -19,41 +21,37 @@ class Summary
     end
   end
 
-  def breadcrumb_list
-    return self.class.breadcrumb_list(parent())
+  def parents
+    return Summary.parents(@parent, @summaries)
   end
 
-  def self.breadcrumb_list(id)
-    rt = Array.new()
+  def self.parents(id, summaries = SUMMARIES)
+    rt = Array.new
     if id != Summary::ROOT_PARENT_ID
-      rt = Summary.breadcrumb_list(SUMMARIES[id.to_sym][:parent])
-      rt.push({:id => id, :title => SUMMARIES[id.to_sym][:title]})
+      rt = Summary.parents(summaries[id.to_sym][:parent], summaries)
+      rt.push(Summary.new(id.to_sym, nil, summaries))
     end
     return rt
   end
 
-  def child_list
-    return self.class.child_list(@id)
+  def children
+    return Summary.children(@id, @summaries)
   end
   
-  def self.child_list(id)
-    result = Array.new()
-    SUMMARIES.keys.each {|key|
-      if SUMMARIES[key.to_sym][:parent].to_s == id.to_s
-        result.push({
-          :key => key,
-          :title => SUMMARIES[key.to_sym][:title],
-          :child => Summary.has_child(key)})
+  def self.children(id, summaries = SUMMARIES)
+    rt = Array.new
+    summaries.keys.each {|idy|
+      summary = Summary.new(idy, nil, summaries)
+      if summary.parent.to_s == id.to_s
+        rt.push(summary)
       end
     }
-    return result.sort {|a,b|
-      a[:title] <=> b[:title]
-    }
+    return rt.sort {|a,b| a.title <=> b.title }
   end
 
-  def self.has_child(id)
-    SUMMARIES.keys.each {|key|
-      return true if SUMMARIES[key.to_sym][:parent].to_s == id.to_s
+  def children_exist?
+    Summary.ids(@summaries).each {|idy|
+      return true if @summaries[idy.to_sym][:parent].to_s == @id.to_s
     }
     return false
   end
@@ -66,26 +64,25 @@ class Summary
     items.store(:create_date, @create_date)
     items.store(:update_user, @update_user)
     items.store(:update_date, @update_date)
-    SUMMARIES.store(@id.to_sym, items)
+    @summaries.store(@id.to_sym, items)
   end
 
   def remove
-    SUMMARIES.delete(@id.to_sym)
+    @summaries.delete(@id.to_sym)
   end
 
   def commit
-    file_path = Pathname(Settings.data_path).join(Settings.summary_file)
-    File.open(file_path, mode = 'w') {|f|
-      JSON.dump(SUMMARIES, f)
+    File.open(@summary_path, mode = 'w') {|f|
+      JSON.dump(@summaries, f)
     }
   end
 
-  def self.ids()
-    return SUMMARIES.keys
+  def self.ids(summaries = SUMMARIES)
+    return summaries.keys
   end
 
-  def self.exists?(id)
-    return (SUMMARIES[id.to_sym] != nil)
+  def self.exist?(id, summaries = SUMMARIES)
+    return false if id.nil?
+    return (summaries[id.to_sym] != nil)
   end
-
 end
