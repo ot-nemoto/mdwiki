@@ -3,7 +3,7 @@ class Summary
   ROOT_PARENT_ID = 'ROOT'
 
   attr_accessor :title, :parent, :create_user, :create_date, :update_user, :update_date
-  attr_reader :id
+  attr_reader :id, :summary_path, :summaries
 
   def initialize(
     id, summary_path = Pathname(Settings.data_path).join(Settings.summary_file), summaries = SUMMARIES)

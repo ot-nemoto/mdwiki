@@ -5,20 +5,22 @@ class Content
   NEW_CONTENT_ID = 'NEW_CONTENT_ID'
   ROOT_PARENT_ID = Summary::ROOT_PARENT_ID
 
-  attr_reader :summary
+  attr_reader :id, :data_root, :dir_path, :file_path, :summary
+  attr_accessor :content
 
-  def initialize(id)
-    @id        = id
-    @summary   = Summary.new(id)
+  def initialize(id, summary = nil, data_root = Pathname(Settings.data_path))
+    @id = id
+    @data_root = data_root
+    if !id.nil? then
+      @dir_path = data_root.join(@id.to_s[0,1]).join(@id.to_s[1,1])
+      @file_path = @dir_path.join(@id.to_s)
+    end
+    @summary = summary.nil? ? Summary.new(id) : summary
     if Summary.exist?(id)
-      File.open(file_path(), mode = 'r') {|f|
+      File.open(@file_path, mode = 'r') {|f|
         @content = f.read
       }
     end
-  end
-
-  def id
-    return @id
   end
 
   def title
@@ -62,97 +64,74 @@ class Content
   end
 
   def update_date
-    return @summary == nil ? '' : @summary.update_date
+    return @summary.nil? ? '' : @summary.update_date
   end
 
   def update_date=(s)
     @summary.update_date = s
   end
 
-  def content
-    return @content
-  end
-
-  def content=(s)
-    @content = s
-  end
-
   def content_to_html
     return Kramdown::Document.new(@content).to_html
   end
 
-  def dir_path
-    return nil if id() == nil
-    return Pathname(Settings.data_path).join(id().to_s[0,1]).join(id().to_s[1,1])
-  end
-
-  def file_path
-    return nil if dir_path() == nil
-    return dir_path().join(id().to_s)
-  end
-
-  def save
-    FileUtils.mkdir_p(dir_path()) unless FileTest.exists?(dir_path())
+  def save(is_commit = true)
+    FileUtils.mkdir_p(@dir_path) unless FileTest.exist?(@dir_path)
     File.open(file_path(), mode = 'w') {|f|
       f.puts @content
     }
     @summary.update()
-    @summary.commit()
+    @summary.commit() if is_commit
   end
 
-  def remove_all
+  def remove_all(is_commit = true)
     rt = Array.new()
     @summary.children.each {|child|
-      c = Content.new(child.id)
-      c.remove_all().each {|removed_id|
-        rt.push(removed_id)
+      c = Content.new(child.id, Summary.new(child.id, nil, child.summaries), @data_root)
+      c.remove_all(false).each {|removed_id|
+        rt.push(removed_id.to_s)
       }
     }
-    rt.push(remove())
+    rt.push(remove(false))
+    @summary.commit if is_commit
     return rt
   end
 
-  def remove
-    File.unlink(file_path())
+  def remove(is_commit = true)
+    File.unlink(@file_path)
     @summary.children.each {|child|
       child.parent = parent
       child.update
     }
-    @summary.remove()
-    @summary.commit()
+    @summary.remove
+    @summary.commit if is_commit
     return @id
   end
 
-  def exists_on_title?(keyword)
-    return false if keyword.nil? || keyword.empty?
-    keyword.split(/\s|　/).each {|key|
-      return false if title.index(key).nil?
-    }
-    return true
+  def exist_on_title?(keyword)
+    return StringUtil.exist?(title(), keyword)
   end
 
-  def exists_on_content?(keyword)
-    return false if keyword.nil? || keyword.empty?
-    keyword.split(/\s|　/).each {|key|
-      return false if content.index(key).nil?
-    }
-    return true
+  def exist_on_content?(keyword)
+    return StringUtil.exist?(content(), keyword)
   end
 
-  def self.find(keyword, chk_title = true, chk_content = true)
+  def find?(keyword, chk_title = true, chk_content = true)
+    if (chk_title && exist_on_title?(keyword)) || 
+       (chk_content && exist_on_content?(keyword))
+      return true
+    end
+    return false
+  end
+
+  def self.find(keyword, chk_title = true, chk_content = true, data_root = Pathname(Settings.data_path))
     rt = Array.new()
     Summary.ids.each {|id|
-      c = Content.new(id.to_s)
-      if (chk_title && c.exists_on_title?(keyword)) || 
-         (chk_content && c.exists_on_content?(keyword))
+      c = Content.new(id.to_s, nil, data_root)
+      if c.find?(keyword, chk_title, chk_content) then
         rt.push(c)
       end
-    } if !keyword.nil? && !keyword.empty?
+    } if !keyword.blank?
     return rt
   end
-
-  def self.exists?(id)
-    return Summary.exist?(id.to_s)
-  end
-
 end
