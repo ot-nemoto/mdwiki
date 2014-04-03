@@ -94,6 +94,8 @@ $ ->
           file: file
           (data) ->
             $('#attachment_content').html(data)
+            $('img').unbind()
+            $('img').bind("click", () -> return img_click(this.src))
         $("#mdwiki_dlg_modal").fadeOut(250)
         return false
       () ->
@@ -103,13 +105,7 @@ $ ->
     return false
 
   $("img").click ->
-    mdwiki_attach_preview(
-      this.src
-      () ->
-        $("#mdwiki_attach_modal").fadeOut(250)
-        return false
-    )
-    return false
+    return img_click(this.src)
 
   @upload_attachment =() ->
     $form  = $('#mdwiki_attachment_form')
@@ -125,6 +121,8 @@ $ ->
         alert errorThrown
       success: (data, textStatus, jqXHR) ->
         $('#attachment_content').html(data)
+        $('img').unbind()
+        $('img').bind("click", () -> return img_click(this.src))
     return false
 
   @show_child = (id, current_id) ->
@@ -139,6 +137,15 @@ $ ->
       $('#div_' + id).html('')
       $('#cur_' + id).removeClass('mdwiki_close_btn').addClass('mdwiki_open_btn')
     return false
+  return false
+
+img_click =(src) ->
+  mdwiki_attach_preview(
+    src
+    () ->
+      $("#mdwiki_attach_modal").fadeOut(250)
+      return false
+  )
   return false
 
 mdwiki_dialog =(message, accept_func, cancel_func) ->
