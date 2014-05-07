@@ -43,7 +43,7 @@ class PagesController < ApplicationController
 
   def edit(id = params[:id])
     @content = Content.new(id)
-    @attachments = Attachment.find(id)
+    @attachments = Attachment.where content_id: id, deleted: false
     @f_permit = FunctionPermission.new(FunctionPermission::EDIT, id)
     render 'edit'
   end
@@ -90,9 +90,11 @@ class PagesController < ApplicationController
     rt = Hash.new
     if Summary.exist?(id)
       content = Content.new(id)
-      content.remove_all().each {|removed_id|
-        Attachment.remove_all(removed_id) if removed_id != nil
-      }
+      content.remove_all().each do |removed_content_id|
+        if !removed_content_id.nil?
+          Attachment.remove_by_content_id removed_content_id, session[:user_id], Time.now
+        end
+      end
       rt.store('href', '/mdwiki/' + content.parent)
     end
     render :json => rt
@@ -102,8 +104,10 @@ class PagesController < ApplicationController
     rt = Hash.new
     if Summary.exist?(id)
       content = Content.new(id)
-      removed_id = content.remove()
-      Attachment.remove_all(removed_id) if removed_id != nil
+      removed_content_id = content.remove()
+      if !removed_content_id.nil?
+        Attachment.remove_by_content_id removed_content_id, session[:user_id], Time.now
+      end
       rt.store('href', '/mdwiki/' + content.parent)
     end
     render :json => rt
@@ -114,18 +118,6 @@ class PagesController < ApplicationController
     @content.title = params[:md_title]
     @content.content = params[:md_content]
     render :partial => "preview", :object => @content
-  end
-
-  def upload_attach(id = params[:id], a = params[:attachment])
-    Attachment.save(id, a)
-    render :partial => "attachment", 
-      :locals => {:id => id, :attachments => Attachment.find(id)}
-  end
-
-  def remove_attach(id = params[:id], filename = params[:file])
-    Attachment.remove(id, filename)
-    render :partial => "attachment", 
-      :locals => {:id => id, :attachments => Attachment.find(id)}
   end
 
   def make_content_id

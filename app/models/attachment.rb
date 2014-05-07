@@ -1,36 +1,36 @@
-class Attachment
+class Attachment < ActiveRecord::Base
+  self.table_name = 'attachments'
+  self.primary_keys = :content_id, :filename
+  self.record_timestamps = false
 
-  def self.save(id, attachment, image_path = Settings.image_path)
-    dir_path = Pathname(image_path).join(id.to_s)
-    FileUtils.mkdir_p(dir_path) unless FileTest.exist?(dir_path)
-    file_path = dir_path.join(attachment.original_filename)
-    File.open(file_path, mode = 'wb') {|f|
-      f.write(attachment.read)
-    }
-  end
-
-  def self.remove_all(id, image_path = Settings.image_path)
-    dir_path = Pathname(image_path).join(id.to_s)
-    Attachment.find(id.to_s, image_path).each {|f|
-      Attachment.remove(id.to_s, f, image_path) 
-    }
-    Dir.unlink(dir_path) if FileTest.exist?(dir_path)
-  end
-
-  def self.remove(id, filename, image_path = Settings.image_path)
-    dir_path = Pathname(image_path).join(id.to_s)
-    file_path = dir_path.join(filename)
-    File.unlink file_path if FileTest.exist?(file_path)
-  end
-
-  def self.find(id, image_path = Settings.image_path)
-    rt = Array.new
-    dir_path = Pathname(image_path).join(id.to_s)
-    if FileTest.exist?(dir_path)
-      Dir::entries(dir_path).each {|f|
-        rt.push(f) if FileTest.file?(dir_path.join(f))
-      }
+  def upload(user = session[:user_id], date = Time.now)
+    atch = Attachment.find_by content_id: content_id, filename: filename
+    if atch.nil? then
+      atch = Attachment.new
+      atch.attachment_id = Digest::MD5.hexdigest(SecureRandom.uuid)
+      atch.content_id    = content_id
+      atch.filename      = filename
     end
-    return rt
+    atch.attachment   = attachment
+    atch.content_type = content_type
+    atch.updated_user = user
+    atch.updated_at   = date
+    atch.deleted      = false
+    atch.save
+  end
+
+  def remove(user = session[:user_id], date = Time.now)
+    atch = Attachment.find_by attachment_id: attachment_id, deleted: false
+    atch.updated_user = user
+    atch.updated_at   = date
+    atch.deleted      = true
+    atch.save
+  end
+
+  def self.remove_by_content_id(content_id, user = session[:user_id], date = Time.now)
+    atchs = Attachment.where content_id: content_id, deleted: false
+    atchs.each do |atch|
+      atch.remove user, date
+    end
   end
 end

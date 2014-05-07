@@ -2,21 +2,14 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 $ ->
-  $(window).resize ->
-    # dialog
-    adjust_position("#mdwiki_dlg")
-    # image preview
-    img_height = $("#mdwiki_attach_img").height()
-    img_width  = $("#mdwiki_attach_img").width()
-    adjust_position("#mdwiki_attach", img_height, img_width)
-    return false
-
   @preview = () ->
     $.post '/mdwiki/preview', 
       md_title: $('#md_title').val()
       md_content: $('#md_content').val()
       (data) ->
         $('#preview_content').html(data)
+        $('img').unbind()
+        $('img').bind("click", () -> return img_click(this.src))
     return false
 
   @insert_page =() ->
@@ -85,13 +78,13 @@ $ ->
     )
     return false;
 
-  @remove_attachment =(id, file) ->
+  @remove_attachment =(id, attachment_id) ->
     mdwiki_dialog(
       "Can I delete it?"
       () ->
         $.post '/mdwiki/attachment/remove',
           id: id
-          file: file
+          attachment_id: attachment_id
           (data) ->
             $('#attachment_content').html(data)
             $('img').unbind()
@@ -103,9 +96,6 @@ $ ->
         return false
     )
     return false
-
-  $("img").click ->
-    return img_click(this.src)
 
   @upload_attachment =() ->
     $form  = $('#mdwiki_attachment_form')
@@ -138,65 +128,3 @@ $ ->
       $('#cur_' + id).removeClass('mdwiki_close_btn').addClass('mdwiki_open_btn')
     return false
   return false
-
-img_click =(src) ->
-  mdwiki_attach_preview(
-    src
-    () ->
-      $("#mdwiki_attach_modal").fadeOut(250)
-      return false
-  )
-  return false
-
-mdwiki_dialog =(message, accept_func, cancel_func) ->
-  # Adjustment position
-  adjust_position("#mdwiki_dlg")
-  # Set message
-  $("#mdwiki_dlg_message").text(message)
-  # bind for mdwiki_dlg_accept_btn
-  $("#mdwiki_dlg_accept_btn").unbind()
-  $("#mdwiki_dlg_accept_btn").bind("click", accept_func)
-  # bind for mdwiki_dlg_cancel_btn
-  $("#mdwiki_dlg_cancel_btn").unbind()
-  $("#mdwiki_dlg_cancel_btn").bind("click", cancel_func)
-  # bind for mdwiki_dlg_bg
-  $("#mdwiki_dlg_bg").unbind()
-  $("#mdwiki_dlg_bg").bind("click", cancel_func)
-  # Open
-  $("#mdwiki_dlg_modal").fadeIn(500)
-  return false;
-
-mdwiki_attach_preview =(src, close_func) ->
-  # insert image source
-  $("#mdwiki_attach_img").attr("src", src)
-  # bind for mdwiki_attach_img
-  $("#mdwiki_attach_img").unbind()
-  $("#mdwiki_attach_img").bind(
-    "load"
-    () ->
-      # Adjustment position
-      img_height = $("#mdwiki_attach_img").height()
-      img_width  = $("#mdwiki_attach_img").width()
-      adjust_position("#mdwiki_attach", img_height, img_width)
-  )
-  $("#mdwiki_attach_img").bind("click", close_func)
-  # bind for mdwiki_attach
-  $("#mdwiki_attach").unbind()
-  $("#mdwiki_attach").bind("click", close_func)
-  # bind for mdwiki_attach_bg
-  $("#mdwiki_attach_bg").unbind()
-  $("#mdwiki_attach_bg").bind("click", close_func)
-  # Open
-  $("#mdwiki_attach_modal").fadeIn(500)
-  return false;
-
-adjust_position =(target, height, width) ->
-  if height == undefined
-    height = $(target).height()
-  if width == undefined
-    width  = $(target).width()
-  margin_top  = ($(window).height() - height) / 2
-  margin_left = ($(window).width() - width) / 2
-  $(target).css
-    top: margin_top + "px"
-    left: margin_left + "px"

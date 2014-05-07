@@ -10,11 +10,11 @@
 <% end %>
 
 <%= content_tag(:div, nil, {:class => 'mdwiki_attach_list'}) do %>
-  <% attachments.each do |attach| %>
+  <% attachments.each do |atch| %>
     <%= content_tag(:div, nil, {:class => 'mdwiki_attach_box'}) do %>
-      <%= image_tag(id + '/' + attach, :size => '150x150') %>
+      <img alt="<%= atch.filename %>" height="150" width="150" src=<%= "/mdwiki/attachment/#{atch.attachment_id}" %>>
       <span class="mdwiki_menu_btn">
-        <a href="#" onclick="return remove_attachment('<%= id %>', '<%= attach %>');" 
+        <a href="#" onclick="return remove_attachment('<%= id %>', '<%= atch.attachment_id %>');" 
           class="mdwiki_menu_link">x</a>
       </span>
     <% end %>

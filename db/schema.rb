@@ -11,6 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 20140504131833) do
+
+  create_table "attachments", id: false, force: true do |t|
+    t.string   "attachment_id",                                  null: false
+    t.string   "content_id",                                     null: false
+    t.string   "filename",                                       null: false
+    t.binary   "attachment",    limit: 16777215
+    t.string   "content_type"
+    t.string   "updated_user"
+    t.datetime "updated_at"
+    t.boolean  "deleted",                        default: false, null: false
+  end
+
+  add_index "attachments", ["attachment_id"], name: "index_attachments_on_attachment_id", unique: true, using: :btree
+  add_index "attachments", ["content_id", "filename"], name: "index_attachments_on_content_id_and_filename", unique: true, using: :btree
 
 end
