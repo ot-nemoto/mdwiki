@@ -1,220 +1,195 @@
 require 'spec_helper'
 
 describe Content do
-  describe 'save' do
-    before {
-      @summaries = {
-        :test1 => {:title => '4-title', :parent => 'ROOT'},
-        :test2 => {:title => '3-title', :parent => 'test1'},
-        :test3 => {:title => '2-title', :parent => 'test2'},
-        :test4 => {:title => '1-title', :parent => 'test2'}
-      }
-      @s1 = Summary.new('test5', nil, @summaries)
-      Summary.stub(:exist?).and_return(false)
-      @c = Content.new('test5', @s1, Pathname('.'))
-      @c.parent = 'test1'
-    }
-    it {
-      expect(FileTest.exist?('t/e/test5')).to be false
-      @c.save false
-      expect(FileTest.exist?('t/e/test5')).to be true
-      expect(@summaries[:test1][:parent]).to eq 'ROOT'
-      expect(@summaries[:test2][:parent]).to eq 'test1'
-      expect(@summaries[:test3][:parent]).to eq 'test2'
-      expect(@summaries[:test4][:parent]).to eq 'test2'
-      expect(@summaries[:test5][:parent]).to eq 'test1'
-    }
+  fixtures :contents
+  # content_id
+  # 001
+  #  |- 002
+  #  |   |- 004
+  #  |   |- 005
+  #  |   |- 006
+  #  |   |   |- 007
+  #  |   |   |   `- 008
+  #  |   |   `- 010
+  #  |   `- 009:deleted
+  #  `- 003
+
+  describe 'md_to_html' do
+    before { @content = Content.find_by content_id: 'C001' }
+    it { expect(@content.md_to_html).to eq "<p>content-001</p>\n" }
   end
 
-  describe 'remove_all' do
-    before {
-      @summaries = {
-        :test1 => {:title => '4-title', :parent => 'ROOT'},
-        :test2 => {:title => '3-title', :parent => 'test1'},
-        :test3 => {:title => '2-title', :parent => 'test2'},
-        :test4 => {:title => '1-title', :parent => 'test2'}
+  describe 'breadcrumb_list' do
+    describe 'target is children' do
+      before { @content = Content.find_by content_id: 'C007' }
+      it {
+        actual = @content.breadcrumb_list
+        expect(actual.size).to eq 3
+        expect(actual[0].content_id).to eq 'C006'
+        expect(actual[1].content_id).to eq 'C002'
+        expect(actual[2].content_id).to eq 'C001'
       }
-      @s1 = Summary.new('test2', nil, @summaries)
-      Summary.stub(:exist?).and_return(false)
-      FileUtils.mkdir_p("t/e")
-      File.open("t/e/test1", "w").close()
-      File.open("t/e/test2", "w").close()
-      File.open("t/e/test3", "w").close()
-      File.open("t/e/test4", "w").close()
-      @c = Content.new('test2', @s1, Pathname('.'))
-    }
-    it {
-      expect(@c.remove_all false).to match_array ['test2', 'test3', 'test4']
-      expect(FileTest.exist?('t/e/test1')).to be true
-      expect(FileTest.exist?('t/e/test2')).to be false
-      expect(FileTest.exist?('t/e/test3')).to be false
-      expect(FileTest.exist?('t/e/test4')).to be false
-      expect(@summaries[:test1][:parent]).to eq 'ROOT'
-      expect(@summaries[:test2]).to be_nil
-      expect(@summaries[:test3]).to be_nil
-      expect(@summaries[:test4]).to be_nil
-    }
+    end
+    describe 'target is ROOT' do
+      before { @content = Content.find_by content_id: 'C001' }
+      it {
+        actual = @content.breadcrumb_list
+        expect(actual.size).to eq 0
+      }
+    end
+  end
+
+  describe 'children' do
+    describe 'has children' do
+      # subject
+      # C004 : zzzz-004
+      # C005 : xxxx-005
+      # C006 : yyyy-006
+      before { @content = Content.find_by content_id: 'C002' }
+      it {
+        actual = @content.children
+        expect(actual.size).to eq 3
+        expect(actual[0].content_id).to eq 'C005'
+        expect(actual[1].content_id).to eq 'C006'
+        expect(actual[2].content_id).to eq 'C004'
+      }
+    end
+    describe 'not children' do
+      before { @content = Content.find_by content_id: 'C003' }
+      it {
+        actual = @content.children
+        expect(actual.size).to eq 0
+      }
+    end
+  end
+
+  describe 'children?' do
+    describe 'has children' do
+      before { @content = Content.find_by content_id: 'C002' }
+      it { expect(@content.children?).to be true }
+    end
+    describe 'not children' do
+      before { @content = Content.find_by content_id: 'C003' }
+      it { expect(@content.children?).to be false }
+    end
+  end
+
+  describe 'insert' do
+    describe 'registrable' do
+      before {
+        @content = Content.new
+        @content.content_id  = 'C999'
+        @content.parent_id   = 'ROOT'
+        @content.subject     = 'subject_xxx'
+        @content.content     = 'content_xxx'
+      }
+      it {
+        @content.insert 'test_user', Time.utc(2014, 4, 11, 1, 1, 1)
+        actual = Content.find_by content_id: 'C999'
+        expect(actual.content_id).to eq 'C999'
+        expect(actual.parent_id).to eq 'ROOT'
+        expect(actual.subject).to eq 'subject_xxx'
+        expect(actual.content).to eq 'content_xxx'
+        expect(actual.created_user).to eq 'test_user'
+        expect(actual.created_at.strftime("%Y-%m-%d %H:%M:%S")).to eq '2014-04-11 01:01:01'
+        expect(actual.updated_user).to eq 'test_user'
+        expect(actual.updated_at.strftime("%Y-%m-%d %H:%M:%S")).to eq '2014-04-11 01:01:01'
+        expect(actual.deleted).to be false
+      }
+    end
+    describe 'ActiveRecord::RecordNotUnique' do
+      before { @content = Content.find_by content_id: 'C001' }
+      it { expect { @content.insert 'test_user', Time.utc(2014, 4, 11, 1, 1, 1) }.to raise_error ActiveRecord::RecordNotUnique }
+    end
+  end
+
+  describe 'update' do
+    describe 'registrable' do
+      before {
+        @content = Content.find_by content_id: 'C001'
+        @content.subject = 'subject_xxx'
+        @content.content = 'content_xxx'
+      }
+      it {
+        @content.update 'test_user', Time.utc(2014, 4, 11, 1, 1, 1)
+        actual = Content.find_by content_id: 'C001'
+        expect(actual.content_id).to eq 'C001'
+        expect(actual.parent_id).to eq 'ROOT'
+        expect(actual.subject).to eq 'subject_xxx'
+        expect(actual.content).to eq 'content_xxx'
+        expect(actual.created_user).to eq 'nemonium1'
+        expect(actual.created_at.strftime("%Y-%m-%d %H:%M:%S")).to eq '2014-04-10 00:00:00'
+        expect(actual.updated_user).to eq 'test_user'
+        expect(actual.updated_at.strftime("%Y-%m-%d %H:%M:%S")).to eq '2014-04-11 01:01:01'
+        expect(actual.deleted).to be false
+      }
+    end
   end
 
   describe 'remove' do
-    before {
-      @summaries = {
-        :test1 => {:title => '4-title', :parent => 'ROOT'},
-        :test2 => {:title => '3-title', :parent => 'test1'},
-        :test3 => {:title => '2-title', :parent => 'test2'},
-        :test4 => {:title => '1-title', :parent => 'test2'}
-      }
-      @s1 = Summary.new('test2', nil, @summaries)
-      Summary.stub(:exist?).and_return(false)
-      FileUtils.mkdir_p("t/e")
-      File.open("t/e/test1", "w").close()
-      File.open("t/e/test2", "w").close()
-      File.open("t/e/test3", "w").close()
-      File.open("t/e/test4", "w").close()
-      @c = Content.new('test2', @s1, Pathname('.'))
-    }
-    it {
-      expect(@c.remove false).to eq 'test2'
-      expect(FileTest.exist?('t/e/test1')).to be true
-      expect(FileTest.exist?('t/e/test2')).to be false
-      expect(FileTest.exist?('t/e/test3')).to be true
-      expect(FileTest.exist?('t/e/test4')).to be true
-      expect(@summaries[:test1][:parent]).to eq 'ROOT'
-      expect(@summaries[:test2]).to be_nil
-      expect(@summaries[:test3][:parent]).to eq 'test1'
-      expect(@summaries[:test4][:parent]).to eq 'test1'
-    }
-  end
-
-  describe 'exist_on_title?' do
-    before {
-      @c = Content.new('dummy')
-      @c.stub(:title).and_return('ABC')
-      @c.stub(:content).and_return('XYZ')
-    }
-    it {
-      expect(@c.exist_on_title?('B')).to be true
-      expect(@c.exist_on_title?('Y')).to be false
-    }
-  end
-
-  describe 'exist_on_content?' do
-    before {
-      @c = Content.new('dummy')
-      @c.stub(:title).and_return('ABC')
-      @c.stub(:content).and_return('XYZ')
-    }
-    it {
-      expect(@c.exist_on_content?('B')).to be false
-      expect(@c.exist_on_content?('Y')).to be true
-    }
-  end
-
-  describe 'find?' do
-    describe 'find both' do
-      before {
-        @c = Content.new('dummy')
-        @c.stub(:exist_on_title?).and_return(true)
-        @c.stub(:exist_on_content?).and_return(true)
-      }
-      describe 'target both' do
-        it { expect(@c.find?('xxx', true, true)).to be true }
-      end
-      describe 'target title' do
-        it { expect(@c.find?('xxx', true, false)).to be true }
-      end
-      describe 'target content' do
-        it { expect(@c.find?('xxx', false, true)).to be true }
-      end
-      describe 'none target' do
-        it { expect(@c.find?('xxx', false, false)).to be false }
-      end
-    end
-    describe 'find title only' do
-      before {
-        @c = Content.new('dummy')
-        @c.stub(:exist_on_title?).and_return(true)
-        @c.stub(:exist_on_content?).and_return(false)
-      }
-      describe 'target both' do
-        it { expect(@c.find?('xxx', true, true)).to be true }
-      end
-      describe 'target title' do
-        it { expect(@c.find?('xxx', true, false)).to be true }
-      end
-      describe 'target content' do
-        it { expect(@c.find?('xxx', false, true)).to be false }
-      end
-      describe 'none target' do
-        it { expect(@c.find?('xxx', false, false)).to be false }
-      end
-    end
-    describe 'find content only' do
-      before {
-        @c = Content.new('dummy')
-        @c.stub(:exist_on_title?).and_return(false)
-        @c.stub(:exist_on_content?).and_return(true)
-      }
-      describe 'target both' do
-        it { expect(@c.find?('xxx', true, true)).to be true }
-      end
-      describe 'target title' do
-        it { expect(@c.find?('xxx', true, false)).to be false }
-      end
-      describe 'target content' do
-        it { expect(@c.find?('xxx', false, true)).to be true }
-      end
-      describe 'none target' do
-        it { expect(@c.find?('xxx', false, false)).to be false }
-      end
-    end
-    describe 'not find' do
-      before {
-        @c = Content.new('dummy')
-        @c.stub(:exist_on_title?).and_return(false)
-        @c.stub(:exist_on_content?).and_return(false)
-      }
-      describe 'target both' do
-        it { expect(@c.find?('xxx', true, true)).to be false }
-      end
-      describe 'target title' do
-        it { expect(@c.find?('xxx', true, false)).to be false }
-      end
-      describe 'target content' do
-        it { expect(@c.find?('xxx', false, true)).to be false }
-      end
-      describe 'none target' do
-        it { expect(@c.find?('xxx', false, false)).to be false }
-      end
-    end
-  end
-
-  describe 'find' do
-    before {
-      Summary.stub(:ids).and_return(['test1', 'test2', 'test3'])
-      Summary.stub(:exist?).and_return(true)
-      FileUtils.mkdir_p("t/e")
-      File.open("t/e/test1", "w") {|f| f.write 'ABC'}
-      File.open("t/e/test2", "w") {|f| f.write 'XYZ'}
-      File.open("t/e/test3", "w") {|f| f.write 'ABC'}
-    }
-    describe 'hits only one' do
+    describe 'registrable' do
+      before { @content = Content.find_by content_id: 'C006' }
       it {
-        actual = Content.find('Y', true, true, Pathname('.'))
-        expect(actual.size).to eq 1
-        expect(actual[0].id).to eq 'test2'
+        removed_content_id = @content.remove 'test_user', Time.utc(2014, 4, 11, 1, 1, 1)
+        expect(removed_content_id).to eq 'C006'
+
+        actual = Content.find_by content_id: 'C006'
+        expect(actual.content_id).to eq 'C006'
+        expect(actual.parent_id).to eq 'C002'
+        expect(actual.subject).to eq 'yyyy-006'
+        expect(actual.content).to eq 'content-006'
+        expect(actual.created_user).to eq 'nemonium1'
+        expect(actual.created_at.strftime("%Y-%m-%d %H:%M:%S")).to eq '2014-04-10 00:00:00'
+        expect(actual.updated_user).to eq 'test_user'
+        expect(actual.updated_at.strftime("%Y-%m-%d %H:%M:%S")).to eq '2014-04-11 01:01:01'
+        expect(actual.deleted).to be true
+
+        # Parent of a children changes
+        c1 = Content.find_by content_id: 'C007'
+        expect(c1.parent_id).to eq 'C002'
+        expect(c1.updated_user).to eq 'nemonium2'
+        expect(c1.updated_at.strftime("%Y-%m-%d %H:%M:%S")).to eq '2014-04-11 12:12:12'
+        c2 = Content.find_by content_id: 'C010'
+        expect(c2.parent_id).to eq 'C002'
+        expect(c2.updated_user).to eq 'nemonium2'
+        expect(c2.updated_at.strftime("%Y-%m-%d %H:%M:%S")).to eq '2014-04-11 12:12:12'
       }
-    end
-    describe 'more than one hit' do
-      it {
-        actual = Content.find('B', true, true, Pathname('.'))
-        expect(actual.size).to eq 2
-        expect(actual[0].id).to eq 'test1'
-        expect(actual[1].id).to eq 'test3'
-      }
-    end
-    describe 'not hit' do
-      it { expect(Content.find('H', true, true, Pathname('.')).size).to eq 0 }
     end
   end
+
+  describe 'remove_all' do
+    describe 'registrable' do
+      before { @content = Content.find_by content_id: 'C006' }
+      it {
+        removed_content_ids = @content.remove_all 'test_user', Time.utc(2014, 4, 11, 1, 1, 1)
+        expect(removed_content_ids).to match_array ['C006', 'C007', 'C008', 'C010']
+
+        actual = Content.find_by content_id: 'C006'
+        expect(actual.content_id).to eq 'C006'
+        expect(actual.parent_id).to eq 'C002'
+        expect(actual.subject).to eq 'yyyy-006'
+        expect(actual.content).to eq 'content-006'
+        expect(actual.created_user).to eq 'nemonium1'
+        expect(actual.created_at.strftime("%Y-%m-%d %H:%M:%S")).to eq '2014-04-10 00:00:00'
+        expect(actual.updated_user).to eq 'test_user'
+        expect(actual.updated_at.strftime("%Y-%m-%d %H:%M:%S")).to eq '2014-04-11 01:01:01'
+        expect(actual.deleted).to be true
+
+        # deleted children
+        c1 = Content.find_by content_id: 'C007'
+        expect(c1.updated_user).to eq 'test_user'
+        expect(c1.updated_at.strftime("%Y-%m-%d %H:%M:%S")).to eq '2014-04-11 01:01:01'
+        expect(c1.deleted).to be true
+        c2 = Content.find_by content_id: 'C008'
+        expect(c2.updated_user).to eq 'test_user'
+        expect(c2.updated_at.strftime("%Y-%m-%d %H:%M:%S")).to eq '2014-04-11 01:01:01'
+        expect(c2.deleted).to be true
+        c3 = Content.find_by content_id: 'C010'
+        expect(c3.updated_user).to eq 'test_user'
+        expect(c3.updated_at.strftime("%Y-%m-%d %H:%M:%S")).to eq '2014-04-11 01:01:01'
+        expect(c3.deleted).to be true
+      }
+    end
+  end
+
 end

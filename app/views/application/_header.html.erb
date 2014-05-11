@@ -14,7 +14,8 @@
     <% end %>
     <% if @f_permit.save? %>
     <span class="mdwiki_menu_btn">
-      <a href="#" onclick="return <%= @f_permit.save_cmd %>_page();"
+      <!-- <a href="#" onclick="return <%= @f_permit.save_cmd %>_page();" -->
+      <a href="#" onclick="return save_content();"
         class="mdwiki_menu_link" id="mdwiki_save_btn">Save</a>
     </span>
     <% end %>

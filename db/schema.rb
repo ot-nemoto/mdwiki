@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140504131833) do
+ActiveRecord::Schema.define(version: 20140508115336) do
 
   create_table "attachments", id: false, force: true do |t|
     t.string   "attachment_id",                                  null: false
@@ -26,5 +26,19 @@ ActiveRecord::Schema.define(version: 20140504131833) do
 
   add_index "attachments", ["attachment_id"], name: "index_attachments_on_attachment_id", unique: true, using: :btree
   add_index "attachments", ["content_id", "filename"], name: "index_attachments_on_content_id_and_filename", unique: true, using: :btree
+
+  create_table "contents", id: false, force: true do |t|
+    t.string   "content_id",                   null: false
+    t.string   "parent_id",                    null: false
+    t.string   "subject"
+    t.text     "content"
+    t.string   "created_user"
+    t.datetime "created_at"
+    t.string   "updated_user"
+    t.datetime "updated_at"
+    t.boolean  "deleted",      default: false, null: false
+  end
+
+  add_index "contents", ["content_id"], name: "index_contents_on_content_id", unique: true, using: :btree
 
 end

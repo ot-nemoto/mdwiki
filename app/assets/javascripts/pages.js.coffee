@@ -4,45 +4,58 @@
 $ ->
   @preview = () ->
     $.post '/mdwiki/preview', 
-      md_title: $('#md_title').val()
-      md_content: $('#md_content').val()
+      subject:    $('#subject').val()
+      content:    $('#content').val()
+#      md_title: $('#md_title').val()
+#      md_content: $('#md_content').val()
       (data) ->
         $('#preview_content').html(data)
         $('img').unbind()
         $('img').bind("click", () -> return img_click(this.src))
     return false
 
-  @insert_page =() ->
-    $.post '/mdwiki/insert', 
-      parent_id: $('#page_parent_id').val()
-      md_title: $('#md_title').val()
-      md_content: $('#md_content').val()
+  @save_content =() ->
+    $.post '/mdwiki/save', 
+      content_id: $('#content_id').val()
+      parent_id:  $('#parent_id').val()
+      subject:    $('#subject').val()
+      content:    $('#content').val()
       (data) ->
         if data.href
           $(location).attr('href', data.href)
-        if data.alert
-          $('#alert_message').html(data.alert)
-          $('#alert_message').show()
-          $('#md_title').focus()
-          $('#md_title').select()
-          $('#md_title').addClass('alert')
     return false
 
-  @update_page =() ->
-    $.post '/mdwiki/update', 
-      id: $('#page_id').val()
-      md_title: $('#md_title').val()
-      md_content: $('#md_content').val()
-      (data) ->
-        if data.href
-          $(location).attr('href', data.href)
-        if data.alert
-          $('#alert_message').html(data.alert)
-          $('#alert_message').show()
-          $('#md_title').focus()
-          $('#md_title').select()
-          $('#md_title').addClass('alert')
-    return false
+#  @insert_page =() ->
+#    $.post '/mdwiki/insert', 
+#      parent_id: $('#page_parent_id').val()
+#      md_title: $('#md_title').val()
+#      md_content: $('#md_content').val()
+#      (data) ->
+#        if data.href
+#          $(location).attr('href', data.href)
+#        if data.alert
+#          $('#alert_message').html(data.alert)
+#          $('#alert_message').show()
+#          $('#md_title').focus()
+#          $('#md_title').select()
+#          $('#md_title').addClass('alert')
+#    return false
+#
+#  @update_page =() ->
+#    $.post '/mdwiki/update', 
+#      id: $('#page_id').val()
+#      md_title: $('#md_title').val()
+#      md_content: $('#md_content').val()
+#      (data) ->
+#        if data.href
+#          $(location).attr('href', data.href)
+#        if data.alert
+#          $('#alert_message').html(data.alert)
+#          $('#alert_message').show()
+#          $('#md_title').focus()
+#          $('#md_title').select()
+#          $('#md_title').addClass('alert')
+#    return false
 
   @remove_page =(id) ->
     mdwiki_dialog(

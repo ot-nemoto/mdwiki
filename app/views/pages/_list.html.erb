@@ -2,12 +2,12 @@
   <% summary = summaries.shift %>
   <% summary.children.each do |child| %>
     <% id    = child.id.to_s %>
-    <% title = child.title.to_s %>
+    <% subject = child.subject.to_s %>
     <% is_child = (summaries.length > 0 && summaries[0].id.to_s == id.to_s) %>
     <%= content_tag(:li) do %>
       <%= content_tag(:div) do %>
         <nobr>
-          <% if child.children_exist? %>
+          <% if child.children? %>
             <% if is_child %>
               <a href="#" onclick="return show_child('<%= id %>', '<%= current_id %>');"><div 
                   id="cur_<%= id %>" class="mdwiki_close_btn"></div></a>
@@ -19,9 +19,9 @@
             <div class="mdwiki_none"></div>
           <% end %>
           <% if current_id == id %>
-            <%= link_to(title, '/mdwiki/' + id, {:class => 'mdwiki_current_list'}) %>
+            <%= link_to(subject, "/mdwiki/#{id}", {:class => 'mdwiki_current_list'}) %>
           <% else %>
-            <%= link_to(title, '/mdwiki/' + id) %>
+            <%= link_to(subject, "/mdwiki/#{id}") %>
           <% end %>
         </nobr>
         <% if is_child %>

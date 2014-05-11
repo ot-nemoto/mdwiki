@@ -18,6 +18,8 @@ Mdwiki::Application.routes.draw do
   post 'mdwiki/update'            => 'pages#update'
   post 'mdwiki/list'              => 'pages#list'
 
+  post 'mdwiki/save'              => 'pages#save'
+
   # attachment
   get  'mdwiki/attachment/:id/'   => 'attachment#show'
   post 'mdwiki/attachment/upload' => 'attachment#upload'
