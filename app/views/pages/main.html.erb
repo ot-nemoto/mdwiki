@@ -1,7 +1,3 @@
-<%= content_tag(:div, nil) do %>
-  <%= render(:partial => "header", :object  => @f_permit) %>
-<% end %>
-
 <div class="mdwiki_list">
   <%= content_tag(:div, nil, {:id => ('div_' + Content::ROOT_PARENT_ID)}) do %>
     <%= render(:partial => "list", :locals => {

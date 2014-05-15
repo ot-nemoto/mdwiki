@@ -1,7 +1,3 @@
-<%= content_tag(:div, nil) do %>
-  <%= render(:partial => "header", :object  => @f_permit) %>
-<% end %>
-
 <%= content_tag(:div, nil, {:class => 'mdwiki_breadcrumb'}) do %>
   <%= render(:partial => 'breadcrumb', :locals => {
     :breadcrumb_list => @content.breadcrumb_list}) %>

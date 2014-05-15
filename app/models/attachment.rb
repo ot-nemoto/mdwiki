@@ -3,7 +3,7 @@ class Attachment < ActiveRecord::Base
   self.primary_keys = :content_id, :filename
   self.record_timestamps = false
 
-  def upload(user = session[:user_id], date = Time.now)
+  def upload(user, date)
     atch = Attachment.find_by content_id: content_id, filename: filename
     if atch.nil? then
       atch = Attachment.new
@@ -19,7 +19,7 @@ class Attachment < ActiveRecord::Base
     atch.save
   end
 
-  def remove(user = session[:user_id], date = Time.now)
+  def remove(user, date)
     atch = Attachment.find_by attachment_id: attachment_id, deleted: false
     atch.updated_user = user
     atch.updated_at   = date
@@ -27,7 +27,7 @@ class Attachment < ActiveRecord::Base
     atch.save
   end
 
-  def self.remove_by_content_id(content_id, user = session[:user_id], date = Time.now)
+  def self.remove_by_content_id(content_id, user, date)
     atchs = Attachment.where content_id: content_id, deleted: false
     atchs.each do |atch|
       atch.remove user, date

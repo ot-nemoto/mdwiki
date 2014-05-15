@@ -6,63 +6,70 @@
   </div>
 
   <%= content_tag(:div, nil, {:class => 'mdwiki_menu'}) do %>
-    <% if @f_permit.preview? %>
+    <% if @header_params[:preview] %>
     <span class="mdwiki_menu_btn">
       <a href="#" onclick="return preview();"
         class="mdwiki_menu_link" id="mdwiki_preview_btn">Preview</a>
     </span>
     <% end %>
-    <% if @f_permit.save? %>
+    <% if @header_params[:save] %>
     <span class="mdwiki_menu_btn">
-      <!-- <a href="#" onclick="return <%= @f_permit.save_cmd %>_page();" -->
       <a href="#" onclick="return save_content();"
         class="mdwiki_menu_link" id="mdwiki_save_btn">Save</a>
     </span>
     <% end %>
-    <% if @f_permit.cancel? %>
+    <% if @header_params[:cancel] %>
     <span class="mdwiki_menu_btn">
-      <a href='/mdwiki/<%= @f_permit.id %>'
+      <a href='/mdwiki/<%= @header_params[:id] %>'
         class="mdwiki_menu_link">Cancel</a>
     </span>
     <% end %>
-    <% if @f_permit.create? %>
+    <% if @header_params[:create] %>
     <span class="mdwiki_menu_btn">
-      <a href='/mdwiki/<%= @f_permit.id %>/new'
+      <a href='/mdwiki/<%= @header_params[:id] %>/new'
         class="mdwiki_menu_link" id='mdwiki_create_btn'>Create</a>
     </span>
     <% end %>
-    <% if @f_permit.edit? %>
+    <% if @header_params[:edit] %>
       <span class="mdwiki_menu_btn">
-      <a href='/mdwiki/<%= @f_permit.id %>/edit'
+      <a href='/mdwiki/<%= @header_params[:id] %>/edit'
         class="mdwiki_menu_link" id='mdwiki_edit_btn'>Edit</a>
     </span>
     <% end %>
-    <% if @f_permit.remove? %>
+    <% if @header_params[:remove] %>
     <span class="mdwiki_menu_btn">
-      <a href="#" onclick="return remove_page('<%= @f_permit.id %>');"
+      <a href="#" onclick="return remove_page('<%= @header_params[:id] %>');"
         class="mdwiki_menu_link">Remove</a>
     </span>
     <span class="mdwiki_menu_btn">
-      <a href="#" onclick="return remove_page_with_children('<%= @f_permit.id %>');"
+      <a href="#" onclick="return remove_page_with_children('<%= @header_params[:id] %>');"
         class="mdwiki_menu_link">Remove All</a>
     </span>
     <% end %>
     <span class="mdwiki_checkbox">
-      <%= check_box_tag('chk_title', nil, @f_permit.chk_title?, {}) %>
+      <%= check_box_tag('chk_title', nil, @header_params[:find_by_subject], {}) %>
       <label for="chk_title" title="Title"></label>
     </span>
     <span class="mdwiki_checkbox">
-      <%= check_box_tag('chk_content', nil, @f_permit.chk_content?, {}) %>
+      <%= check_box_tag('chk_content', nil, @header_params[:find_by_content], {}) %>
       <label for="chk_content" title="Content"></label>
     </span>
-    <%= content_tag(:span, text_field_tag('search_key', @f_permit.keyword)) %>
+    <%= content_tag(:span, text_field_tag('search_key', @header_params[:keywords])) %>
     <span class="mdwiki_menu_btn">
       <a href="#" onclick="return search_pages();" class="mdwiki_menu_link">Search</a>
     </span>
-    <span class="mdwiki_menu_user"><%= session[:user_id] %></span>
+    <span class="mdwiki_menu_user"><%= current_user.email %></span>
     <span class="mdwiki_menu_btn">
-      <a href="#" onclick="return logout();" class="mdwiki_menu_link">Logout</a>
+      <%= link_to 'Edit profile', edit_user_registration_path, :class => 'mdwiki_menu_link' %>   
     </span>
+    <span class="mdwiki_menu_btn">
+      <%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'mdwiki_menu_link' %>
+    </span>
+    <% if current_user.try(:admin?) %>
+      <span class="mdwiki_menu_btn">
+        <%= link_to "Sign up", new_user_registration_path, :class => 'mdwiki_menu_link' %>
+      </span>
+    <% end %>
   <% end %>
 
   <div id="mdwiki_dlg_modal">

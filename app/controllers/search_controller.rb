@@ -43,10 +43,17 @@ class SearchController < ApplicationController
         @contents = Content.find_by_sql query.to_sql
       end
     end
-
-    @f_permit = FunctionPermission.new(FunctionPermission::SEARCH, {
-      :keyword     => keywords,
-      :chk_title   => !params[:subject].nil?, 
-      :chk_content => !params[:content].nil?})
+    @header_params = {
+      :create => false,
+      :save => false,
+      :preview => false,
+      :remove => false,
+      :edit => false,
+      :cancel => false,
+      :find_by_subject => !params[:subject].nil?,
+      :find_by_content => !params[:content].nil?,
+      :keywords => keywords,
+      :id => nil
+    }
   end
 end

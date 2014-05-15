@@ -11,7 +11,7 @@ class AttachmentController < ApplicationController
       atch.filename     = attachment.original_filename
       atch.attachment   = attachment.read
       atch.content_type = attachment.content_type
-      atch.upload session[:user_id], Time.now
+      atch.upload current_user.email, Time.now
     rescue => e
       logger.error e.message
     ensure
@@ -24,7 +24,7 @@ class AttachmentController < ApplicationController
     begin
       atch = Attachment.new
       atch.attachment_id = attachment_id
-      atch.remove session[:user_id], Time.now
+      atch.remove current_user.email, Time.now
     rescue => e
       logger.error e.message
     ensure

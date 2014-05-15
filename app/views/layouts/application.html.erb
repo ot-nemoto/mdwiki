@@ -15,6 +15,19 @@
 </head>
 <body class="env_<%= ENV['RAILS_ENV'] %>">
 
+<% if user_signed_in? %>
+  <%= content_tag(:div, nil) do %>
+    <%= render(:partial => "header", :object  => @header_params) %>
+  <% end %>
+<% end %>
+
+<% if !notice.nil? %>
+  <ul><li id="notice"><%= notice %></li></ul>
+<% end %>
+<% if !alert.nil? %>
+  <ul><li id="alert"><%= alert %></li></ul>
+<% end %>
+
 <%= yield %>
 
 </body>

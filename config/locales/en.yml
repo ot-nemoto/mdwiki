@@ -21,3 +21,6 @@
 
 en:
   hello: "Hello world"
+  mdwiki:
+    failure:
+      permission_denied: "Permission denied"

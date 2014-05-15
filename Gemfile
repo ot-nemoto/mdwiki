@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.0.0'
+gem 'rails', '4.0.1'
 
 # Use mysql as the database for Active Record
 gem 'mysql2'
@@ -49,6 +49,7 @@ gem 'therubyracer'
 gem 'settingslogic'
 
 gem 'kramdown'
+gem 'devise'
 gem 'composite_primary_keys', '6.0.1'
 
 group :test do

@@ -2,7 +2,18 @@ class PagesController < ApplicationController
 
   def main
     @summaries = [ Content.new(content_id: Content::ROOT_PARENT_ID, deleted: false) ]
-    @f_permit = FunctionPermission.new(FunctionPermission::MAIN, Content::ROOT_PARENT_ID)
+    @header_params = {
+      :create => true,
+      :save => false,
+      :preview => false,
+      :remove => false,
+      :edit => false,
+      :cancel => false,
+      :find_by_subject => true,
+      :find_by_content => true,
+      :keywords => nil,
+      :id => Content::ROOT_PARENT_ID
+    }
     render 'main'
   end
 
@@ -26,20 +37,53 @@ class PagesController < ApplicationController
     @content.breadcrumb_list.reverse.each {|summary|
       @summaries.push summary
     }
-    @f_permit = FunctionPermission.new(FunctionPermission::SHOW, content_id)
+    @header_params = {
+      :create => true,
+      :save => false,
+      :preview => false,
+      :remove => true,
+      :edit => true,
+      :cancel => false,
+      :find_by_subject => true,
+      :find_by_content => true,
+      :keywords => nil,
+      :id => content_id
+    }
   end
 
   def new(parent_id = params[:id])
     @content = Content.new content_id: Content::NEW_CONTENT_ID, parent_id: parent_id
     @attachments = Array.new
-    @f_permit = FunctionPermission.new(FunctionPermission::NEW, parent_id)
+    @header_params = {
+      :create => false,
+      :save => true,
+      :preview => true,
+      :remove => false,
+      :edit => false,
+      :cancel => true,
+      :find_by_subject => true,
+      :find_by_content => true,
+      :keywords => nil,
+      :id => parent_id
+    }
     render 'edit'
   end
 
   def edit(content_id = params[:id])
     @content = Content.find_by content_id: content_id, deleted: false
     @attachments = Attachment.where content_id: content_id, deleted: false
-    @f_permit = FunctionPermission.new(FunctionPermission::EDIT, content_id)
+    @header_params = {
+      :create => false,
+      :save => true,
+      :preview => true,
+      :remove => false,
+      :edit => false,
+      :cancel => true,
+      :find_by_subject => true,
+      :find_by_content => true,
+      :keywords => nil,
+      :id => content_id
+    }
     render 'edit'
   end
 
@@ -51,12 +95,12 @@ class PagesController < ApplicationController
       content.parent_id  = params[:parent_id]
       content.subject = params[:subject]
       content.content = params[:content]
-      content.insert session[:user_id], Time.now
+      content.insert current_user.email, Time.now
     else
       content = Content.find_by content_id: params[:content_id]
       content.subject = params[:subject]
       content.content = params[:content]
-      content.update session[:user_id], Time.now
+      content.update current_user.email, Time.now
     end
     rt.store('href', "/mdwiki/#{content.content_id}")
     render :json => rt
@@ -66,9 +110,9 @@ class PagesController < ApplicationController
     rt = Hash.new
     content = Content.find_by content_id: content_id, deleted: false
     if !content.nil?
-      removed_content_ids = content.remove_all session[:user_id], Time.now
+      removed_content_ids = content.remove_all current_user.email, Time.now
       removed_content_ids.each do |removed_content_id|
-        Attachment.remove_by_content_id removed_content_id, session[:user_id], Time.now
+        Attachment.remove_by_content_id removed_content_id, current_user.email, Time.now
       end
       rt.store('href', "/mdwiki/#{content.parent_id}")
     end
@@ -79,8 +123,8 @@ class PagesController < ApplicationController
     rt = Hash.new
     content = Content.find_by content_id: content_id, deleted: false
     if !content.nil?
-      removed_content_id = content.remove session[:user_id], Time.now
-      Attachment.remove_by_content_id removed_content_id, session[:user_id], Time.now
+      removed_content_id = content.remove current_user.email, Time.now
+      Attachment.remove_by_content_id removed_content_id, current_user.email, Time.now
       rt.store('href', "/mdwiki/#{content.parent_id}")
     end
     render :json => rt
