@@ -22,11 +22,32 @@ Simple wiki to write in markdown
         cd mdwiki
         bundle install
 
-3. Setup database
+3. Setup database (If you use MySQL)
 
-        rake db:setup
+    /etc/my.cnf
+
+        character-set-server=utf8
+        max_allowed_packet=128M
+
+    ---
+
+        mysql> create user 'mdwiki'@'localhost' identified by 'passwd';
+        mysql> grant all on *.* to 'mdwiki'@'localhost';
+
+    ---
+
+        rake db:setup RAILS_ENV=production
 
 4. Boot
 
         rails s
 
+5. Login
+
+- Email
+
+    admin@example.com
+
+- Password
+
+    administrator
