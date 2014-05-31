@@ -1,147 +1,141 @@
 class PagesController < ApplicationController
 
   def main
-    @summaries_list = Array.new()
-    @summaries_list.push({
-      :id => Content::ROOT_PARENT_ID, 
-      :summaries => Content.child_list(Content::ROOT_PARENT_ID)})
-    @header_params = HeaderParams.new(HeaderParams::MAIN, Content::ROOT_PARENT_ID)
+    @summaries = [ Content.new(content_id: Content::ROOT_PARENT_ID, deleted: false) ]
+    @header_params = {
+      :create => true,
+      :save => false,
+      :preview => false,
+      :remove => false,
+      :edit => false,
+      :cancel => false,
+      :find_by_subject => true,
+      :find_by_content => true,
+      :keywords => nil,
+      :id => Content::ROOT_PARENT_ID
+    }
     render 'main'
   end
 
-  def list(id = params[:id], current_id = params[:current_id])
-    @summaries_list = Array.new()
-    @summaries_list.push({
-      :id => id, 
-      :summaries => Content.child_list(id)})
+  def list(content_id = params[:id], current_id = params[:current_id])
+    @summaries = [ Content.new(content_id: content_id, deleted: false) ]
     render :partial => "list", :locals => {
-      :summaries_list => @summaries_list, :current_id => current_id}
+      :summaries => @summaries, :current_id => current_id}
   end
 
-  def show(id = params[:id])
-    # Redirect to Top
-    if id == Content::ROOT_PARENT_ID
+  def show(content_id = params[:id])
+    if content_id == Content::ROOT_PARENT_ID
       redirect_to '/mdwiki/' and return
     end
 
-    if !Content.exists?(id)
+    @content = Content.find_by content_id: content_id, deleted: false
+    if @content.nil?
       redirect_to '/mdwiki/' and return
     end
 
-    @content = Content.new(id)
-    @summaries_list = Array.new()
-    @summaries_list.push({
-      :id => Content::ROOT_PARENT_ID, 
-      :summaries => Content.child_list(Content::ROOT_PARENT_ID)})
-    @content.breadcrumb_list.each {|c|
-      @summaries_list.push({
-        :id => c[:id], 
-        :summaries => Content.child_list(c[:id])})
+    @summaries = [ Content.new(content_id: Content::ROOT_PARENT_ID, deleted: false) ]
+    @content.breadcrumb_list.reverse.each {|summary|
+      @summaries.push summary
     }
-    @header_params = HeaderParams.new(HeaderParams::SHOW, id)
+    @header_params = {
+      :create => true,
+      :save => false,
+      :preview => false,
+      :remove => true,
+      :edit => true,
+      :cancel => false,
+      :find_by_subject => true,
+      :find_by_content => true,
+      :keywords => nil,
+      :id => content_id
+    }
   end
 
   def new(parent_id = params[:id])
-    @content = Content.new(Content::NEW_CONTENT_ID)
-    @content.parent = parent_id
+    @content = Content.new content_id: Content::NEW_CONTENT_ID, parent_id: parent_id
     @attachments = Array.new
-    @header_params = HeaderParams.new(HeaderParams::NEW, parent_id)
+    @header_params = {
+      :create => false,
+      :save => true,
+      :preview => true,
+      :remove => false,
+      :edit => false,
+      :cancel => true,
+      :find_by_subject => true,
+      :find_by_content => true,
+      :keywords => nil,
+      :id => parent_id
+    }
     render 'edit'
   end
 
-  def edit(id = params[:id])
-    @content = Content.new(id)
-    @attachments = Attachment.find(id)
-    @header_params = HeaderParams.new(HeaderParams::EDIT, id)
+  def edit(content_id = params[:id])
+    @content = Content.find_by content_id: content_id, deleted: false
+    @attachments = Attachment.where content_id: content_id, deleted: false
+    @header_params = {
+      :create => false,
+      :save => true,
+      :preview => true,
+      :remove => false,
+      :edit => false,
+      :cancel => true,
+      :find_by_subject => true,
+      :find_by_content => true,
+      :keywords => nil,
+      :id => content_id
+    }
     render 'edit'
   end
 
-  def insert(parent_id = params[:parent_id])
+  def save
     rt = Hash.new
-    if StringUtil.blank?(params[:md_title])
-      rt.store('alert', "Title has not been entered.")
-      render :json => rt and return
+    if params[:content_id].empty? || params[:content_id] == Content::NEW_CONTENT_ID then
+      content = Content.new
+      content.content_id = Digest::MD5.hexdigest(SecureRandom.uuid)
+      content.parent_id  = params[:parent_id]
+      content.subject = params[:subject]
+      content.content = params[:content]
+      content.insert current_user.email, Time.now
+    else
+      content = Content.find_by content_id: params[:content_id]
+      content.subject = params[:subject]
+      content.content = params[:content]
+      content.update current_user.email, Time.now
     end
-    id = make_content_id()
-    content = Content.new(id)
-    content.parent = parent_id
-    content.update_user = session[:user_id]
-    content.update_date = Time.now.strftime("%Y-%m-%d %H:%M:%S")
-    content.create_user = content.update_user
-    content.create_date = content.update_date
-    content.title = params[:md_title]
-    content.content = params[:md_content]
-    content.save()
-
-    rt.store('href', '/mdwiki/' + id)
+    rt.store('href', "/mdwiki/#{content.content_id}")
     render :json => rt
   end
 
-  def update(id = params[:id])
+  def remove_all(content_id = params[:id])
     rt = Hash.new
-    if StringUtil.blank?(params[:md_title])
-      rt.store('alert', "Title has not been entered.")
-      render :json => rt and return
-    end
-    content = Content.new(id)
-    content.update_user = session[:user_id]
-    content.update_date = Time.now.strftime("%Y-%m-%d %H:%M:%S")
-    content.title = params[:md_title]
-    content.content = params[:md_content]
-    content.save()
-
-    rt.store('href', '/mdwiki/' + id)
-    render :json => rt
-  end
-
-  def remove_all(id = params[:id])
-    rt = Hash.new
-    if Content.exists?(id)
-      content = Content.new(id)
-      content.remove_all().each {|removed_id|
-        Attachment.remove(removed_id) if removed_id != nil
-      }
-      rt.store('href', '/mdwiki/' + content.parent)
+    content = Content.find_by content_id: content_id, deleted: false
+    if !content.nil?
+      removed_content_ids = content.remove_all current_user.email, Time.now
+      removed_content_ids.each do |removed_content_id|
+        Attachment.remove_by_content_id removed_content_id, current_user.email, Time.now
+      end
+      rt.store('href', "/mdwiki/#{content.parent_id}")
     end
     render :json => rt
   end
 
-  def remove(id = params[:id])
+  def remove(content_id = params[:id])
     rt = Hash.new
-    if Content.exists?(id)
-      content = Content.new(id)
-      removed_id = content.remove()
-      Attachment.remove(removed_id) if removed_id != nil
-      rt.store('href', '/mdwiki/' + content.parent)
+    content = Content.find_by content_id: content_id, deleted: false
+    if !content.nil?
+      removed_content_id = content.remove current_user.email, Time.now
+      Attachment.remove_by_content_id removed_content_id, current_user.email, Time.now
+      rt.store('href', "/mdwiki/#{content.parent_id}")
     end
     render :json => rt
   end
 
   def preview
-    @content = Content.new(Content::PREVIEW_ID)
-    @content.title = params[:md_title]
-    @content.content = params[:md_content]
+    @content = Content.new(
+      content_id: Content::PREVIEW_ID,
+      subject: params[:subject],
+      content: params[:content])
     render :partial => "preview", :object => @content
-  end
-
-  def upload_attach(id = params[:id], a = params[:attachment])
-    Attachment.upload(id, a)
-    render :partial => "attachment", 
-      :locals => {:id => id, :attachments => Attachment.find(id)}
-  end
-
-  def remove_attach(id = params[:id], filename = params[:file])
-    Attachment.remove(id, filename)
-    render :partial => "attachment", 
-      :locals => {:id => id, :attachments => Attachment.find(id)}
-  end
-
-  def make_content_id
-    id = nil
-    begin
-      id = Digest::MD5.hexdigest(SecureRandom.uuid)
-    end while Content.exists?(id)
-    return id
   end
 
 end

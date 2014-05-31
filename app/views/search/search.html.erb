@@ -1,23 +1,19 @@
-<%= content_tag(:div, nil) do %>
-  <%= render(:partial => "header", :object  => @header_params) %>
-<% end %>
-
 <%= content_tag(:div, nil, {:class => 'mdwiki_search_list'}) do %>
   <%= content_tag(:ul, nil) do %>
     <% @contents.each do |c| %>
       <%= content_tag(:li) do %>
-        <%= content_tag(:div, link_to(c.title, '/mdwiki/' + c.id),{
+        <%= content_tag(:div, link_to(c.subject, "/mdwiki/#{c.id}"),{
           :class => 'mdwiki_search_title'}) %>
         <%= content_tag(:div, c.content, {
           :class => 'mdwiki_search_content'}) %>
         <%= content_tag(:div, nil, {:class => 'mdwiki_search_date'}) do %>
           <%= content_tag(:span, 'Created by') %>
-          <%= content_tag(:span, c.create_user) %>
-          <%= content_tag(:span, c.create_date) %>
+          <%= content_tag(:span, c.created_user) %>
+          <%= content_tag(:span, c.created_at) %>
           <%= content_tag(:span, '/') %>
           <%= content_tag(:span, 'Updated by') %>
-          <%= content_tag(:span, c.update_user) %>
-          <%= content_tag(:span, c.update_date) %>
+          <%= content_tag(:span, c.updated_user) %>
+          <%= content_tag(:span, c.updated_at) %>
         <% end %>
       <% end %>
     <% end %>

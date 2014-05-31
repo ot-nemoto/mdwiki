@@ -1,0 +1,22 @@
+<%= devise_error_messages! %>
+
+<%= content_tag(:div, nil, :class => 'mdwiki_login') do %>
+<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
+  <%= f.hidden_field :reset_password_token %>
+  <span class="mdwiki_logo">mdwiki</span>
+  <%= content_tag(:div, '&nbsp;'.html_safe) %>
+
+  <div class="devise_items">New Password</div>
+  <div class="devise_input"><%= f.password_field :password, autofocus: true, autocomplete: "off", placeholder: 'New password' %></div>
+
+  <div class="devise_items">Confirm New Password</div>
+  <div class="devise_input"><%= f.password_field :password_confirmation, autocomplete: "off", placeholder: 'Confirm new password' %></div>
+
+  <%= content_tag(:div, '&nbsp;'.html_safe) %>
+  <div>
+    <span class="mdwiki_menu_btn">
+      <a href="#" onclick="$('#new_user').submit();" class="mdwiki_menu_link">Change my password</a>
+    </span>
+  </div>
+<% end %>
+<% end %>

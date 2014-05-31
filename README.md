@@ -1,8 +1,6 @@
 - [Summary](#section1)
 - [Dependencies](#section2)
 - [Getting Started](#section3)
-- [Backup](#section4)
-- [Restore](#section5)
 
 # <a name="section1">Summary
 
@@ -24,46 +22,32 @@ Simple wiki to write in markdown
         cd mdwiki
         bundle install
 
-3. Configure
+3. Setup database (If you use MySQL)
 
-        cp config/users.yml.example config/users.yml
+    /etc/my.cnf
+
+        character-set-server=utf8
+        max_allowed_packet=128M
 
     ---
 
-    *Password hashing*
+        mysql> create user 'mdwiki'@'localhost' identified by 'passwd';
+        mysql> grant all on *.* to 'mdwiki'@'localhost';
 
-        irb
-        > require 'digest/sha2'
-        > s = 'password'  # <= password
-        > puts Digest::SHA256.hexdigest(s)
-        5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8
+    ---
+
+        rake db:setup RAILS_ENV=production
 
 4. Boot
 
         rails s
 
-# <a name="section4">Backup
+5. Login
 
-1. Backup for mdwiki data
+- Email
 
-        cd ${RAILS_ROOT}
-        tar -zcf mdwiki-backup-`date +%Y%m%d`.tar.gz config/users.yml public/images/* db/wiki/*
+    admin@example.com
 
-# <a name="section5">Restore
+- Password
 
-1. Stopping mdwiki
-
-2. Create a backup of the latest for mdwiki data
-
-        cd ${RAILS_ROOT}
-        tar -zcf mdwiki-backup-`date +%Y%m%d`.tar.gz config/users.yml public/images/* db/wiki/*
-
-3. Delete the existing data, if necessary
-
-        rm -rf config/users.yml public/images/* db/wiki/*
-
-4. Restore for mdwiki data
-
-        tar -zxf mdwiki-backup-XXXXXXXX.tar.gz
-
-5. Starting mdwiki
+    administrator

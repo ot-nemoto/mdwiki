@@ -20,17 +20,19 @@
 }
 
 .mdwiki_header {
+  height: 55px;
+}
+
+.mdwiki_main_logo {
   position: absolute;
   left:     0px;
   top:      0px;
-  height:   40px;
-  width:    200px;
 }
 
 .mdwiki_list {
   position: absolute;
   left:     0px;
-  top:      50px;
+  top:      55px;
   bottom:   0px;
   width:    250px;
   overflow: auto;
@@ -46,10 +48,7 @@
 }
 
 .mdwiki_breadcrumb {
-  position: absolute;
-  left:     0px;
-  top:      60px;
-  padding:  5px 10px;
+  padding: 0px 10px;
 }
 
 .mdwiki_show {
@@ -80,8 +79,10 @@
 
 .mdwiki_show .mdwiki_content {
   position: absolute;
-  top:      40px;
+  top:      50px;
   bottom:   0px;
+  left:     0px;
+  right:    0px;
   overflow: auto;
 }
 

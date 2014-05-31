@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <% if !@content.nil? && !@content.title.nil? %>
-    <title>mdwiki - <%= @content.title %></title>
+  <% if !@content.nil? && !@content.subject.nil? %>
+    <title>mdwiki - <%= @content.subject %></title>
   <% else %>
     <title>mdwiki</title>
   <% end %>
@@ -14,6 +14,19 @@
   <%= csrf_meta_tags %>
 </head>
 <body class="env_<%= ENV['RAILS_ENV'] %>">
+
+<% if user_signed_in? %>
+  <%= content_tag(:div, nil) do %>
+    <%= render(:partial => "header", :object  => @header_params) %>
+  <% end %>
+<% end %>
+
+<% if !notice.nil? %>
+  <ul><li id="notice"><%= notice %></li></ul>
+<% end %>
+<% if !alert.nil? %>
+  <ul><li id="alert"><%= alert %></li></ul>
+<% end %>
 
 <%= yield %>
 

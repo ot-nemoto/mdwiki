@@ -1,0 +1,22 @@
+#error_explanation h2 {
+  display: none;
+}
+
+#error_explanation ul {
+  font-size: 14px;
+  color : #ff2222;
+}
+
+#notice {
+  font-size: 14px;
+  color : #2222ff;
+  list-style: none;
+  text-align: right;
+}
+
+#alert {
+  font-size: 14px;
+  color : #ff2222;
+  list-style: none;
+  text-align: right;
+}
