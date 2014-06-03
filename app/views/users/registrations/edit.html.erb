@@ -25,5 +25,17 @@
       <a href="#" onclick="$('#edit_user').submit();" class="mdwiki_menu_link">Password Update</a>
     </span>
   </div>
+
+  <div>&nbsp;</div>
+  <div>
+    <span class="mdwiki_menu_btn">
+      <a href="#" onclick="return remove_account();" class="mdwiki_menu_link">Cancel my account</a>
+    </span>
+  </div>
 <% end %>
+
+<div style="display:none">
+<%= button_to "Cancel my account", registration_path(resource_name), method: :delete, id: :remove_account %>
+</div>
+
 <% end %>

@@ -40,6 +40,19 @@ $ ->
     )
     return false;
 
+  @remove_account =() ->
+    mdwiki_dialog(
+      "Account will not be undone. Are you sure?"
+      () ->
+        $("#remove_account").click()
+        $("#mdwiki_dlg_modal").fadeOut(250)
+        return false
+      () ->
+        $("#mdwiki_dlg_modal").fadeOut(250)
+        return false
+    )
+    return false;
+
   @remove_page_with_children =(id) ->
     mdwiki_dialog(
       "Can I delete it?"
