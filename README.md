@@ -1,6 +1,8 @@
 - [Summary](#section1)
 - [Dependencies](#section2)
 - [Getting Started](#section3)
+- [Initial Account](#section4)
+- [Database Backup and Restore](#section5)
 
 # <a name="section1">Summary
 
@@ -38,16 +40,42 @@ Simple wiki to write in markdown
 
         rake db:setup RAILS_ENV=production
 
-4. Boot
+4. Configuration
 
-        rails s
+    config/enviroments/production.rb
 
-5. Login
+          config.action_mailer.default_url_options = { :host => 'https://localhost:3000' }
+          config.action_mailer.delivery_method = :smtp
+          config.action_mailer.default :charset => "utf-8"
+          config.action_mailer.perform_deliveries = true
+          config.action_mailer.smtp_settings = {
+            :address => 'example.com',
+            :port => 587,
+            :authentication => :plain,
+            :user_name => 'info@example.com',
+            :password => 'password',
+            :domain => 'example.com',
+            :enable_starttls_auto => false
+          }
 
-- Email
+5. Boot
 
-    admin@example.com
+        rails s -e production
 
-- Password
+# <a name="section4">Initial Account
 
-    administrator
+|Email            |Password     |
+|-----------------|-------------|
+|admin@example.com|administrator|
+
+*After creating the user, please delete this user.*
+
+# <a name="section5">Databese Backup and Restore
+
+- Backup
+
+        mysqldump -umdwiki -ppasswd mdwiki_development > mdwiki_production.sql
+
+- Restore
+
+        mysql -umdwiki -ppasswd mdwiki_production < mdwiki_production.sql
