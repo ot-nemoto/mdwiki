@@ -9,11 +9,14 @@
   <link href='https://fonts.googleapis.com/css?family=Alegreya+Sans:300' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=Dosis' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
+  <script src="https://fgnass.github.io/spin.js/spin.js"></script>
   <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <%= csrf_meta_tags %>
 </head>
 <body class="env_<%= ENV['RAILS_ENV'] %>">
+
+<div id="spinner"></div>
 
 <% if user_signed_in? %>
   <%= content_tag(:div, nil) do %>
