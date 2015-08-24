@@ -1,28 +1,17 @@
-Mdwiki::Application.routes.draw do
+Rails.application.routes.draw do
 
-  devise_for :users, :path => 'mdwiki/users', :controllers => {
-    :sessions      => "users/sessions",
-    :registrations => "users/registrations",
-    :passwords     => "users/passwords"
-  }
+  root :to                => redirect('/mdwiki')
 
-  root :to                        => redirect('/mdwiki')
-
-  get 'mdwiki/search'             => 'search#search'
-
-  get 'mdwiki'                    => 'pages#main'
-  get 'mdwiki/:id'                => 'pages#show'
-  get 'mdwiki/:id/new'            => 'pages#new'
-  get 'mdwiki/:id/edit'           => 'pages#edit'
-
-  post 'mdwiki/preview'           => 'pages#preview'
-  post 'mdwiki/remove'            => 'pages#remove'
-  post 'mdwiki/removeall'         => 'pages#remove_all'
-  post 'mdwiki/list'              => 'pages#list'
-  post 'mdwiki/save'              => 'pages#save'
-
-  # attachment
-  get  'mdwiki/attachment/:id/'   => 'attachment#show'
-  post 'mdwiki/attachment/upload' => 'attachment#upload'
-  post 'mdwiki/attachment/remove' => 'attachment#remove'
+  get 'mdwiki'            => 'pages#index'
+  get 'mdwiki/new(/:id)'  => 'pages#new'
+  get 'mdwiki/edit'       => 'pages#edit_home'
+  get 'mdwiki/tree(/:id)' => 'pages#tree'
+  get 'mdwiki/:id'        => 'pages#show'
+  get 'mdwiki/:id/edit'   => 'pages#edit'
+  
+  post 'mdwiki/new(/:id)' => 'pages#create'
+  post 'mdwiki/edit'      => 'pages#update_home'
+  post 'mdwiki/:id/edit'  => 'pages#update'
+  
+  delete 'mdwiki/:id'     => 'pages#delete'
 end

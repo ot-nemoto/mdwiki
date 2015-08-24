@@ -1,0 +1,83 @@
+<nav id="menu_nav" class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/mdwiki">Mdwiki</a>
+    </div>
+<% if url.pagelist? %>
+    <div>
+      <ul class="nav navbar-nav">
+        <li><a data-toggle="modal" href="<%= url.pagelist %>" data-target="#treeModal">PageList</a></li>
+      </ul>
+    </div>
+<% end %>
+    <div class="navbar-right">
+      <ul class="nav navbar-nav">
+<% if url.new? then %>
+        <li><a href="<%= url.new %>">New</a></li>
+<% end %>
+<% if url.edit? then %>
+        <li><a href="<%= url.edit %>">Edit</a></li>
+<% end %>
+<% if url.cancel? then %>
+        <li><a href="<%= url.cancel %>">Cancel</a></li>
+<% end %>
+<% if url.delete? then %>
+        <li><a id="btn_delete" href="#">Delete</a></li>
+<script>
+$('#btn_delete').click(function(){
+  bootbox.confirm("Are you sure?", function(result) {
+    if (result) {
+      $.ajax({
+        type: 'DELETE',
+        url: '<%= url.delete %>',
+        success: function(data, textStatus, jqXHR) {
+          $(location).attr('href', data);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          alert(textStatus);
+        }
+      });
+    }
+  }); 
+});
+</script>
+<% end %>
+<% if url.save? then %>
+        <li><a id="btn_save" href="#">Save</a></li>
+<script>
+$('#btn_save').click(function(){
+  $.ajax({
+    type: 'POST',
+    url: '<%= url.save %>',
+    data: {
+      content: $('#content').val()
+    },
+    dataType: 'text',
+    success: function(data, textStatus, jqXHR) {
+      $(location).attr('href', data);
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+      alert(textStatus);
+    }
+  });
+});
+</script>
+<% end %>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Modal -->
+<div class="modal fade" id="treeModal" tabindex="-1" role="dialog" aria-labelledby="treeModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+    </div>
+  </div>
+</div>
+
+<script>
+  $('#treeModal').on('hidden.bs.modal', function() {
+    $(this).removeData('bs.modal');
+  });
+</script>

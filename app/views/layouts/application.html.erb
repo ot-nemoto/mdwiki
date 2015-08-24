@@ -1,35 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <% if !@content.nil? && !@content.subject.nil? %>
-    <title>mdwiki - <%= @content.subject %></title>
-  <% else %>
-    <title>mdwiki</title>
-  <% end %>
-  <link href='https://fonts.googleapis.com/css?family=Alegreya+Sans:300' rel='stylesheet' type='text/css'>
-  <link href='https://fonts.googleapis.com/css?family=Dosis' rel='stylesheet' type='text/css'>
-  <link href='https://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
-  <script src="https://fgnass.github.io/spin.js/spin.js"></script>
-  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
-  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+  <title>Mdwiki</title>
+  <!-- jQuery -->
+  <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+  <!-- jQuery UI -->
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+  <!-- Bootstrap -->
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
+
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
-<body class="env_<%= ENV['RAILS_ENV'] %>">
-
-<div id="spinner"></div>
-
-<% if user_signed_in? %>
-  <%= content_tag(:div, nil) do %>
-    <%= render(:partial => "header", :object  => @header_params) %>
-  <% end %>
-<% end %>
-
-<% if !notice.nil? %>
-  <ul><li id="notice"><%= notice %></li></ul>
-<% end %>
-<% if !alert.nil? %>
-  <ul><li id="alert"><%= alert %></li></ul>
-<% end %>
+<body>
 
 <%= yield %>
 

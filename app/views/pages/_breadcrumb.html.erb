@@ -1,5 +1,10 @@
-<%= link_to 'TOP', {controller => 'mdwiki', :action => 'main'} %>
-<% breadcrumb_list.reverse.each do |breadcrumb| %>
-  <%= content_tag :span, '/' %> 
-  <%= link_to breadcrumb.subject.to_s, "/mdwiki/#{breadcrumb.content_id.to_s}" %>
+<ul class="breadcrumb" style="margin: 5px;">
+<% breadcrumb.each do |bc| %>
+  <% if bc[:id].nil? %>
+  <li><a href="/mdwiki">HOME</a></li>
+  <% else %>
+  <li><a href="/mdwiki/<%= bc[:id] %>"><%= bc[:title] %></a></li>
+  <% end %>
 <% end %>
+<li class="active"><%= title %></li>
+</ul>

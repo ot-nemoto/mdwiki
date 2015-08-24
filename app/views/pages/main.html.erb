@@ -1,6 +1,0 @@
-<div class="mdwiki_list">
-  <%= content_tag(:div, nil, {:id => ('div_' + Content::ROOT_PARENT_ID)}) do %>
-    <%= render(:partial => "list", :locals => {
-      :summaries => @summaries, :current_id => Content::ROOT_PARENT_ID}) %>
-  <% end %>
-</div>
