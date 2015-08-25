@@ -1,4 +1,4 @@
- # mdwiki
+# mdwiki
 
 - [Summary](#section1)
 - [Dependencies](#section2)

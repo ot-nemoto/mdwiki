@@ -55,7 +55,9 @@ module Mdwiki
       # Initialize summarize.yml
       if !FileTest.exist?(config.summary_file)
         summarize = Hash.new
-        summarize.store('HOME', {:title => 'xxx', :parent_id => nil, :version => Time.now.to_i })
+        summarize.store('HOME', {
+          :title => 'Welcome to Mdwiki', :parent_id => nil, :version => Time.now.to_i
+        })
         open(config.summary_file, "w") do |f|
           YAML.dump(summarize, f)
         end
