@@ -116,7 +116,7 @@ class PagesController < ApplicationController
   def save(id, content, parent_id = nil)
     # Save Summary
     Summary.new(id) do |s|
-      s.title = PageUtil.extract_title(content)
+      s.title = PagesHelper.extract_title(content)
       s.parent_id = parent_id if !parent_id.nil?
       s.save
     end

@@ -60,7 +60,15 @@ class Summary
         :title => value[:title],
         :children => tree(id)}) if value[:parent_id] == parent_id
     end
-    return rt
+    return rt.sort do |d1, d2|
+      if d1[:title] == PagesHelper::DEFAULT_TITLE
+        1
+      elsif d2[:title] == PagesHelper::DEFAULT_TITLE
+        -1
+      else
+        d1[:title] <=> d2[:title]
+      end
+    end
   end
 
   def breadcrumb(id = @parent_id)
