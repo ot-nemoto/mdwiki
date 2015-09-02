@@ -2,7 +2,7 @@
   <li id="leaf_<%= leaf[:id] %>"><a href="/mdwiki/<%= leaf[:id] %>"><%= leaf[:title] %></a>
   <% if leaf[:children].length > 0 %>
     <ul>
-      <%= render(:partial => 'branch', :locals => { :branch => leaf[:children] }) %>
+      <%= render(:partial => 'pagelist', :locals => { :branch => leaf[:children] }) %>
     </ul>
   <% end %>
   </li>

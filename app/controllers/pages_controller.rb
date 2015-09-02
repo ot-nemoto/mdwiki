@@ -11,14 +11,28 @@ class PagesController < ApplicationController
     render 'home'
   end
 
-  def tree(id = params[:id])
-    Summary.new(id.nil? ? 'HOME' : id) do |s|
+  def move_tree(id = params[:id])
+    raise ActionController::RoutingError.new('Page Not Found') \
+      unless Summary.exists?(id)
+
+    Summary.new(id) do |s|
       @tree = s.tree
       @breadcrumb = s.breadcrumb
     end
     @id = id
 
-    render :partial => "tree"
+    render :partial => "tree", locals: { move: true }
+  end
+
+  def pagelist_tree(id = params[:id])
+    Summary.new(id.nil? ? 'HOME' : id) do |s|
+      @tree = s.tree
+      puts @tree
+      @breadcrumb = s.breadcrumb
+    end
+    @id = id
+
+    render :partial => "tree", locals: { move: false }
   end
 
   def show(id = params[:id])
@@ -30,6 +44,7 @@ class PagesController < ApplicationController
     @url.edit = "/mdwiki/#{id}/edit"
     @url.delete = "/mdwiki/#{id}"
     @url.pagelist = "/mdwiki/tree/#{id}"
+    @url.move = "/mdwiki/#{id}/move"
     @page = Page.new(id)
     Summary.new(id) do |s|
       @breadcrumb = s.breadcrumb
@@ -111,6 +126,17 @@ class PagesController < ApplicationController
 
     url = "/mdwiki"; url += "/#{parent_id}" if parent_id != 'HOME'
     render :text => url
+  end
+
+  def move(id = params[:id], parent_id = params[:parent_id])
+    raise ActionController::RoutingError.new('Page Not Found') \
+      unless Summary.exists?(id)
+    raise ActionController::RoutingError.new('Page Not Found') \
+      unless Summary.exists?(parent_id)
+
+    Summary.new(id).move(parent_id)
+
+    render :text => "/mdwiki/#{id}"
   end
 
   def save(id, content, parent_id = nil)

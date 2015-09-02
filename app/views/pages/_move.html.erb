@@ -1,0 +1,15 @@
+<% branch.each do |leaf| %>
+  <li id="leaf_<%= leaf[:id] %>">
+  <% if leaf[:id] != @id %>
+    <a class="btn_move" href="/mdwiki/<%= @id %>/move/<%= leaf[:id] %>"><%= leaf[:title] %></a>
+  <% else %>
+    <span><%= leaf[:title] %></span>
+  <%   next
+     end
+     if leaf[:children].length > 0 %>
+    <ul>
+      <%= render(:partial => 'move', :locals => { :branch => leaf[:children] }) %>
+    </ul>
+  <% end %>
+  </li>
+<% end %>

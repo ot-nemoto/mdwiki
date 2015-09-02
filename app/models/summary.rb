@@ -52,6 +52,13 @@ class Summary
     return @parent_id
   end
 
+  def move(parent_id)
+    @summaries[@id][:parent_id] = parent_id
+    open(@path, "w") do |f|
+      f.write(YAML.dump(@summaries))
+    end
+  end
+
   def tree(parent_id = 'HOME')
     rt = Array.new
     @summaries.each do |id, value|

@@ -1,5 +1,5 @@
 class Url
-  attr_accessor :new, :edit, :cancel, :save, :delete, :pagelist
+  attr_accessor :new, :edit, :cancel, :save, :delete, :pagelist, :move
 
   def new?
     return !@new.nil?
@@ -18,5 +18,8 @@ class Url
   end
   def pagelist?
     return !@pagelist.nil?
+  end
+  def move?
+    return !@move.nil?
   end
 end
