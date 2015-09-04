@@ -6,65 +6,29 @@
 <% if url.pagelist? %>
     <div>
       <ul class="nav navbar-nav">
-        <li><a data-toggle="modal" href="<%= url.pagelist %>" data-target="#treeModal" data-size="modal-sm">PageList</a></li>
+        <li><a id="mbtn-pagelist" data-toggle="modal" href="<%= url.pagelist %>" data-target="#treeModal">PageList</a></li>
       </ul>
     </div>
 <% end %>
     <div class="navbar-right">
       <ul class="nav navbar-nav">
 <% if url.new? then %>
-        <li><a href="<%= url.new %>">New</a></li>
+        <li><a id="gbtn-new" href="<%= url.new %>">New</a></li>
 <% end %>
 <% if url.edit? then %>
-        <li><a href="<%= url.edit %>">Edit</a></li>
+        <li><a id="gbtn-edit" href="<%= url.edit %>">Edit</a></li>
 <% end %>
 <% if url.move? %>
-        <li><a data-toggle="modal" href="<%= url.move %>" data-target="#treeModal" data-size="modal-sm">Move</a></li>
+        <li><a id="mbtn-meve" data-toggle="modal" href="<%= url.move %>" data-target="#treeModal">Move</a></li>
 <% end %>
 <% if url.cancel? then %>
-        <li><a href="<%= url.cancel %>">Cancel</a></li>
+        <li><a id="gbtn-cancel" href="<%= url.cancel %>">Cancel</a></li>
 <% end %>
 <% if url.delete? then %>
-        <li><a id="btn_delete" href="#">Delete</a></li>
-<script>
-$('#btn_delete').click(function(){
-  bootbox.confirm("Are you sure?", function(result) {
-    if (result) {
-      $.ajax({
-        type: 'DELETE',
-        url: '<%= url.delete %>',
-        success: function(data, textStatus, jqXHR) {
-          $(location).attr('href', data);
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-          alert(textStatus);
-        }
-      });
-    }
-  }); 
-});
-</script>
+        <li><a id="dbtn-delete" href="<%= url.delete %>">Delete</a></li>
 <% end %>
 <% if url.save? then %>
-        <li><a id="btn_save" href="#">Save</a></li>
-<script>
-$('#btn_save').click(function(){
-  $.ajax({
-    type: 'POST',
-    url: '<%= url.save %>',
-    data: {
-      content: $('#content').val()
-    },
-    dataType: 'text',
-    success: function(data, textStatus, jqXHR) {
-      $(location).attr('href', data);
-    },
-    error: function(jqXHR, textStatus, errorThrown) {
-      alert(textStatus);
-    }
-  });
-});
-</script>
+        <li><a id="pbtn-save" href="<%= url.save %>">Save</a></li>
 <% end %>
       </ul>
     </div>
@@ -78,20 +42,3 @@ $('#btn_save').click(function(){
     </div>
   </div>
 </div>
-
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
-<script>
-  $('#treeModal').on('show.bs.modal', function (e) {
-    var size = $(e.relatedTarget).data('size');
-    $(this).find('.modal-dialog').addClass(size);
-  });
-  $('#treeModal').on('hidden.bs.modal', function() {
-    if ($(this).find('.modal-dialog').hasClass('modal-sm'))
-      $(this).find('.modal-dialog').removeClass('modal-sm');
-    if ($(this).find('.modal-dialog').hasClass("modal-lg"))
-      $(this).find('.modal-dialog').removeClass('modal-lg');
-
-    $(this).removeData('bs.modal');
-  });
-</script>

@@ -1,5 +1,6 @@
 <% branch.each do |leaf| %>
-  <li id="leaf_<%= leaf[:id] %>"><a href="/mdwiki/<%= leaf[:id] %>"><%= leaf[:title] %></a>
+  <li id="leaf_<%= leaf[:id] %>">
+    <a id="gbtn-pagelist-<%= SecureRandom.uuid %>" href="/mdwiki/<%= leaf[:id] %>"><%= leaf[:title] %></a>
   <% if leaf[:children].length > 0 %>
     <ul>
       <%= render(:partial => 'pagelist', :locals => { :branch => leaf[:children] }) %>

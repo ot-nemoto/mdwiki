@@ -2,7 +2,7 @@
   <%= render(:partial => (move ? 'move' : 'pagelist'), :locals => { :branch => @tree }) %>
 </ul>
 <script>
-$( document ).ready(function() {
+$(document).ready(function() {
   var h = $('#treeModal').height() - 100;
   h = h < 300 ? 300 : h;
   $('#page-tree').css('height', h)
@@ -76,20 +76,28 @@ $('#page-tree').treed({openedClass:'glyphicon-chevron-right', closedClass:'glyph
 
 $('#leaf_<%= @id %>').css('font-weight', '700');
 
-// Move
-$('.btn_move').click(function() {
-  $.ajax({
-    type: 'POST',
-    url: this.href,
-    dataType: 'text',
-    success: function(data, textStatus, jqXHR) {
-      $(location).attr('href', data);
-    },
-    error: function(jqXHR, textStatus, errorThrown) {
-      alert(textStatus);
-    }
+$(function(){
+  $('[id^=pbtn-move-]').on('click', function(){
+    $.ajax({
+      type: 'POST',
+      url: this.href,
+      dataType: 'text',
+      success: function(data, textStatus, jqXHR) {
+        $(location).attr('href', data);
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        alert(textStatus);
+      }
+    });
+    return false;
   });
-  return false;
+  $('[id^=pbtn-]').on('contextmenu', function() {
+    return false;
+  });
+  $('[id^=gbtn-]').on('click', function() {
+    $(location).attr('href', this.href);
+    return false;
+  });
 });
 </script>
 

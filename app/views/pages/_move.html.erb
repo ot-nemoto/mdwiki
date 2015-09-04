@@ -1,7 +1,7 @@
 <% branch.each do |leaf| %>
   <li id="leaf_<%= leaf[:id] %>">
   <% if leaf[:id] != @id %>
-    <a class="btn_move" href="/mdwiki/<%= @id %>/move/<%= leaf[:id] %>"><%= leaf[:title] %></a>
+    <a id="pbtn-move-<%= SecureRandom.uuid %>" href="/mdwiki/<%= @id %>/move/<%= leaf[:id] %>"><%= leaf[:title] %></a>
   <% else %>
     <span><%= leaf[:title] %></span>
   <%   next
