@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   get 'mdwiki/:id/move'   => 'pages#move_tree'
   get 'mdwiki/:id/edit'   => 'pages#edit'
 
+  post 'mdwiki/preview'   => 'pages#preview'
   post 'mdwiki/new(/:id)' => 'pages#create'
   post 'mdwiki/edit'      => 'pages#update_home'
   post 'mdwiki/:id/edit'  => 'pages#update'

@@ -1,7 +1,7 @@
 <nav id="menu_nav" class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="/mdwiki">Mdwiki</a>
+      <a class="navbar-brand" id="gbtn-home" href="/mdwiki">Mdwiki</a>
     </div>
 <% if url.pagelist? %>
     <div>
@@ -20,6 +20,9 @@
 <% end %>
 <% if url.move? %>
         <li><a id="mbtn-meve" data-toggle="modal" href="<%= url.move %>" data-target="#treeModal">Move</a></li>
+<% end %>
+<% if url.preview? then %>
+        <li><a id="mbtn-preview" data-toggle="modal" data-target="#treeModal" data-size="modal-lg" href="#" data-preview_url="<%= url.preview %>">Preview</a></li>
 <% end %>
 <% if url.cancel? then %>
         <li><a id="gbtn-cancel" href="<%= url.cancel %>">Cancel</a></li>

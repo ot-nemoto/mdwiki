@@ -1,0 +1,14 @@
+<div id="page-preview" style="height:500px;overflow-y:auto;">
+  <%= Kramdown::Document.new(content.to_s).to_html.html_safe %>
+</div>
+<script>
+$(document).ready(function() {
+  var h = $('#treeModal').height() - 100;
+  h = h < 300 ? 300 : h;
+  $('#page-preview').css('height', h)
+});
+$(window).resize(function() {
+  var h = $('#treeModal').height() - 100;
+  h = h < 300 ? 300 : h;
+  $('#page-preview').css('height', h)
+});

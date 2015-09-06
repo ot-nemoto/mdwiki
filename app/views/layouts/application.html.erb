@@ -72,6 +72,23 @@
     $('#treeModal').on('show.bs.modal', function (e) {
       var size = $(e.relatedTarget).data('size');
       $(this).find('.modal-dialog').addClass(size);
+
+      var url = $(e.relatedTarget).data('preview_url');
+      if (url != undefined) {
+        $.ajax({
+          type: 'POST',
+          url: url,
+          data: {
+            content: $('#content').val()
+          },
+          success: function(data, textStatus, jqXHR) {
+            $('.modal-content').html(data);
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            alert(textStatus);
+          }
+        });
+      }
     });
     $('#treeModal').on('hidden.bs.modal', function() {
       if ($(this).find('.modal-dialog').hasClass('modal-sm'))

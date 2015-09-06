@@ -35,6 +35,10 @@ class PagesController < ApplicationController
     render :partial => "tree", locals: { move: false }
   end
 
+  def preview(content = params[:content])
+    render :partial => 'preview', locals: { content: content }
+  end
+
   def show(id = params[:id])
     raise ActionController::RoutingError.new('Page Not Found') \
       unless Summary.exists?(id)
@@ -63,6 +67,7 @@ class PagesController < ApplicationController
     @url = Url.new
     @url.cancel = "/mdwiki"; @url.cancel += "/#{parent_id}" unless parent_id.nil?
     @url.save = "/mdwiki/new"; @url.save += "/#{parent_id}" unless parent_id.nil?
+    @url.preview = "/mdwiki/preview"
     @page = Page.new
 
     render 'edit'
@@ -72,6 +77,7 @@ class PagesController < ApplicationController
     @url = Url.new
     @url.cancel = "/mdwiki"
     @url.save = "/mdwiki/edit"
+    @url.preview = "/mdwiki/preview"
     @page = Page.new('HOME')
 
     render 'edit'
@@ -84,6 +90,7 @@ class PagesController < ApplicationController
     @url = Url.new
     @url.cancel = "/mdwiki/#{id}"
     @url.save = "/mdwiki/#{id}/edit"
+    @url.preview = "/mdwiki/preview"
     @page = Page.new(id)
 
     render 'edit'
