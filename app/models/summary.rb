@@ -68,9 +68,9 @@ class Summary
         :children => tree(id)}) if value[:parent_id] == parent_id
     end
     return rt.sort do |d1, d2|
-      if d1[:title] == PagesHelper::DEFAULT_TITLE
+      if d1[:title] == ContentUtil::DEFAULT_TITLE
         1
-      elsif d2[:title] == PagesHelper::DEFAULT_TITLE
+      elsif d2[:title] == ContentUtil::DEFAULT_TITLE
         -1
       else
         d1[:title] <=> d2[:title]

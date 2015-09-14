@@ -1,6 +1,10 @@
 # encoding: utf-8
 class PagesController < ApplicationController
 
+  class Url
+    attr_accessor :new, :edit, :cancel, :save, :delete, :pagelist, :move, :preview
+  end
+
   def index
     @url = Url.new
     @url.new = "/mdwiki/new"
@@ -75,6 +79,7 @@ class PagesController < ApplicationController
 
   def edit_home
     @url = Url.new
+    :q
     @url.cancel = "/mdwiki"
     @url.save = "/mdwiki/edit"
     @url.preview = "/mdwiki/preview"
@@ -149,7 +154,7 @@ class PagesController < ApplicationController
   def save(id, content, parent_id = nil)
     # Save Summary
     Summary.new(id) do |s|
-      s.title = PagesHelper.extract_title(content)
+      s.title = ContentUtil.extract_title(content)
       s.parent_id = parent_id if !parent_id.nil?
       s.save
     end

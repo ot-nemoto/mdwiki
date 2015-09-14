@@ -3,7 +3,7 @@
     <div class="navbar-header">
       <a class="navbar-brand" id="gbtn-home" href="/mdwiki">Mdwiki</a>
     </div>
-<% if url.pagelist? %>
+<% if !url.pagelist.nil? then %>
     <div>
       <ul class="nav navbar-nav">
         <li><a id="mbtn-pagelist" data-toggle="modal" href="<%= url.pagelist %>" data-target="#treeModal">PageList</a></li>
@@ -12,25 +12,25 @@
 <% end %>
     <div class="navbar-right">
       <ul class="nav navbar-nav">
-<% if url.new? then %>
+<% if !url.new.nil? then %>
         <li><a id="gbtn-new" href="<%= url.new %>">New</a></li>
 <% end %>
-<% if url.edit? then %>
+<% if !url.edit.nil? then %>
         <li><a id="gbtn-edit" href="<%= url.edit %>">Edit</a></li>
 <% end %>
-<% if url.move? %>
+<% if !url.move.nil? then %>
         <li><a id="mbtn-meve" data-toggle="modal" href="<%= url.move %>" data-target="#treeModal">Move</a></li>
 <% end %>
-<% if url.preview? then %>
+<% if !url.preview.nil? then %>
         <li><a id="mbtn-preview" data-toggle="modal" data-target="#treeModal" data-size="modal-lg" href="#" data-preview_url="<%= url.preview %>">Preview</a></li>
 <% end %>
-<% if url.cancel? then %>
+<% if !url.cancel.nil? then %>
         <li><a id="gbtn-cancel" href="<%= url.cancel %>">Cancel</a></li>
 <% end %>
-<% if url.delete? then %>
+<% if !url.delete.nil? then %>
         <li><a id="dbtn-delete" href="<%= url.delete %>">Delete</a></li>
 <% end %>
-<% if url.save? then %>
+<% if !url.save.nil? then %>
         <li><a id="pbtn-save" href="<%= url.save %>">Save</a></li>
 <% end %>
       </ul>
