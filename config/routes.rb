@@ -1,28 +1,21 @@
-Mdwiki::Application.routes.draw do
+Rails.application.routes.draw do
 
-  devise_for :users, :path => 'mdwiki/users', :controllers => {
-    :sessions      => "users/sessions",
-    :registrations => "users/registrations",
-    :passwords     => "users/passwords"
-  }
+  root :to                => redirect('/mdwiki')
 
-  root :to                        => redirect('/mdwiki')
+  get 'mdwiki'            => 'pages#index'
+  get 'mdwiki/new(/:id)'  => 'pages#new'
+  get 'mdwiki/edit'       => 'pages#edit_home'
+  get 'mdwiki/tree(/:id)' => 'pages#pagelist_tree'
+  get 'mdwiki/:id'        => 'pages#show'
+  get 'mdwiki/:id/move'   => 'pages#move_tree'
+  get 'mdwiki/:id/edit'   => 'pages#edit'
 
-  get 'mdwiki/search'             => 'search#search'
+  post 'mdwiki/preview'   => 'pages#preview'
+  post 'mdwiki/new(/:id)' => 'pages#create'
+  post 'mdwiki/edit'      => 'pages#update_home'
+  post 'mdwiki/:id/edit'  => 'pages#update'
+  post 'mdwiki/:id/move/:parent_id' \
+                          => 'pages#move'
 
-  get 'mdwiki'                    => 'pages#main'
-  get 'mdwiki/:id'                => 'pages#show'
-  get 'mdwiki/:id/new'            => 'pages#new'
-  get 'mdwiki/:id/edit'           => 'pages#edit'
-
-  post 'mdwiki/preview'           => 'pages#preview'
-  post 'mdwiki/remove'            => 'pages#remove'
-  post 'mdwiki/removeall'         => 'pages#remove_all'
-  post 'mdwiki/list'              => 'pages#list'
-  post 'mdwiki/save'              => 'pages#save'
-
-  # attachment
-  get  'mdwiki/attachment/:id/'   => 'attachment#show'
-  post 'mdwiki/attachment/upload' => 'attachment#upload'
-  post 'mdwiki/attachment/remove' => 'attachment#remove'
+  delete 'mdwiki/:id'     => 'pages#delete'
 end

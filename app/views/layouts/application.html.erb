@@ -1,37 +1,105 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <% if !@content.nil? && !@content.subject.nil? %>
-    <title>mdwiki - <%= @content.subject %></title>
-  <% else %>
-    <title>mdwiki</title>
-  <% end %>
-  <link href='https://fonts.googleapis.com/css?family=Alegreya+Sans:300' rel='stylesheet' type='text/css'>
-  <link href='https://fonts.googleapis.com/css?family=Dosis' rel='stylesheet' type='text/css'>
-  <link href='https://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
-  <script src="https://fgnass.github.io/spin.js/spin.js"></script>
-  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
-  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+  <title>Mdwiki</title>
+  <!-- jQuery -->
+  <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+  <!-- jQuery UI -->
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
-<body class="env_<%= ENV['RAILS_ENV'] %>">
-
-<div id="spinner"></div>
-
-<% if user_signed_in? %>
-  <%= content_tag(:div, nil) do %>
-    <%= render(:partial => "header", :object  => @header_params) %>
-  <% end %>
-<% end %>
-
-<% if !notice.nil? %>
-  <ul><li id="notice"><%= notice %></li></ul>
-<% end %>
-<% if !alert.nil? %>
-  <ul><li id="alert"><%= alert %></li></ul>
-<% end %>
+<body>
+  <!-- Bootstrap -->
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
 
 <%= yield %>
+
+  <script>
+  $(function(){
+    $('#pbtn-save').on('click', function(){
+      $.ajax({
+        type: 'POST',
+        url: this.href,
+        data: {
+          content: $('#content').val()
+        },
+        dataType: 'text',
+        success: function(data, textStatus, jqXHR) {
+          $(location).attr('href', data);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          alert(textStatus);
+        }
+      });
+      return false;
+    });
+    $('#dbtn-delete').on('click', function(){
+      url = this.href
+      bootbox.confirm("Are you sure?", function(result) {
+        if (!result)
+          return;
+        $.ajax({
+          type: 'DELETE',
+          url: url,
+          success: function(data, textStatus, jqXHR) {
+            $(location).attr('href', data);
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            alert(textStatus);
+          }
+        });
+      });
+      return false;
+    });
+    $('[id^=gbtn-]').on('click', function() {
+      $(location).attr('href', this.href);
+      return false;
+    });
+    $('[id^=mbtn-]').on('contextmenu', function() {
+      return false;
+    });
+    $('[id^=pbtn-]').on('contextmenu', function() {
+      return false;
+    });
+    $('[id^=dbtn-]').on('contextmenu', function() {
+      return false;
+    });
+    $('#treeModal').on('show.bs.modal', function (e) {
+      var size = $(e.relatedTarget).data('size');
+      $(this).find('.modal-dialog').addClass(size);
+
+      var url = $(e.relatedTarget).data('preview_url');
+      if (url != undefined) {
+        $.ajax({
+          type: 'POST',
+          url: url,
+          data: {
+            content: $('#content').val()
+          },
+          success: function(data, textStatus, jqXHR) {
+            $('.modal-content').html(data);
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            alert(textStatus);
+          }
+        });
+      }
+    });
+    $('#treeModal').on('hidden.bs.modal', function() {
+      if ($(this).find('.modal-dialog').hasClass('modal-sm'))
+        $(this).find('.modal-dialog').removeClass('modal-sm');
+      if ($(this).find('.modal-dialog').hasClass("modal-lg"))
+        $(this).find('.modal-dialog').removeClass('modal-lg');
+
+      $(this).removeData('bs.modal');
+    });
+  });
+  </script>
 
 </body>
 </html>

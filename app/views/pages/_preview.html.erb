@@ -1,15 +1,14 @@
-<%= content_tag(:div, @content.subject, 
-      {:id => 'title', :class => 'mdwiki_title'}) %>
-<% if @content.id != Content::PREVIEW_ID %>
-  <%= content_tag(:div, nil, {:class => 'mdwiki_date'}) do %>
-    <%= content_tag(:span, 'Created by') %>
-    <%= content_tag(:span, @content.created_user) %>
-    <%= content_tag(:span, @content.created_at) %>
-    <%= content_tag(:span, '/') %>
-    <%= content_tag(:span, 'Updated by') %>
-    <%= content_tag(:span, @content.updated_user) %>
-    <%= content_tag(:span, @content.updated_at) %>
-  <% end %>
-<% end %>
-<%= content_tag(:div, @content.md_to_html.html_safe, 
-      {:id => 'content', :class => 'mdwiki_content'}) %>
+<div id="page-preview" style="height:500px;overflow-y:auto;">
+  <%= Kramdown::Document.new(content.to_s).to_html.html_safe %>
+</div>
+<script>
+$(document).ready(function() {
+  var h = $('#treeModal').height() - 100;
+  h = h < 300 ? 300 : h;
+  $('#page-preview').css('height', h)
+});
+$(window).resize(function() {
+  var h = $('#treeModal').height() - 100;
+  h = h < 300 ? 300 : h;
+  $('#page-preview').css('height', h)
+});

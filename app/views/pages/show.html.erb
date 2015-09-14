@@ -1,15 +1,4 @@
-<%= content_tag(:div, nil, {:class => 'mdwiki_breadcrumb'}) do %>
-  <%= render(:partial => 'breadcrumb', :locals => {
-    :breadcrumb_list => @content.breadcrumb_list}) %>
-<% end %>
+<%= render(:partial => 'menu', :locals => { :url => @url, :id => @page.id }) %>
+<%= render(:partial => 'breadcrumb', :locals => { :breadcrumb => @breadcrumb, :title => @title }) %>
 
-<div class="mdwiki_list mdwiki_list_for_show">
-  <%= content_tag(:div, nil, {:id => ('div_' + Content::ROOT_PARENT_ID)}) do %>
-    <%= render(:partial => "list", :locals => {
-      :summaries => @summaries, :current_id => @content.id}) %>
-  <% end %>
-</div>
-
-<%= content_tag(:div, nil, {:class => 'mdwiki_show'}) do %>
-  <%= render(:partial => "preview", :object => @content) %>
-<% end %>
+<div class="container"><%= @page.md_to_html.html_safe %></div>
